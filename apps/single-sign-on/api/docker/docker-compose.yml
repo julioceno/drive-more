@@ -1,0 +1,15 @@
+version: '3'
+services:
+  dirigir-more-single-sign-on-db:
+    container_name: dirigir-more-single-sign-on-db
+    image: postgres:10.17
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_DB=dirigir_more_single_sign_on'
+    ports:
+      - 5441:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+volumes:
+  pg-data:
