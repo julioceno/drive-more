@@ -1,0 +1,17 @@
+{
+  "name": "dirigir-more",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/single-sign-on/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel"
+  },
+  "author": "julioceno <julioreplay@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "turbo": "^1.9.8"
+  }
+}
