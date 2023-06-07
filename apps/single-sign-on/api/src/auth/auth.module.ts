@@ -6,17 +6,23 @@ import { AuthGuard } from './auth.guard';
 import { jwtConstants } from './constants';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './services/auth.service';
+import { GenerateTokenService } from './services/generate-token/generate-token.service';
+import { PrismaModule } from 'src/prisma/prisma.module';
+import { SignInService } from './services/sign-in/sign-in.service';
 
 @Module({
   controllers: [AuthController],
   providers: [
     AuthService,
-    /*  {
+    {
       provide: APP_GUARD,
       useClass: AuthGuard,
-    }, */
+    },
+    GenerateTokenService,
+    SignInService,
   ],
   imports: [
+    PrismaModule,
     UsersModule,
     JwtModule.register({
       global: true,

@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { randomBytes } from 'crypto';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreatedUserEntity } from 'src/users/entities/created-user.entity';
 import { generateRandomPassword } from 'src/users/utils';
-import { GenerateTokenService } from 'src/auth/services/generate-token/generate-token.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class CreateUserService {
@@ -17,7 +17,7 @@ export class CreateUserService {
     });
 
     if (userAlreadyExists) {
-      new BadRequestException('Usuário já existe.');
+      throw new BadRequestException('Usuário já existe.');
     }
 
     const password = generateRandomPassword(7);
@@ -28,12 +28,14 @@ export class CreateUserService {
       data: {
         email,
         name,
-        password,
+        password: passwordEncrypted,
       },
     });
 
+    const entity = new CreatedUserEntity({ ...user, password });
+
     return {
-      user,
+      user: entity,
     };
   }
 }
