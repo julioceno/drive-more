@@ -12,6 +12,7 @@
   "author": "julioceno <julioreplay@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@nestjs/mapped-types": "*",
     "turbo": "^1.9.8"
   }
 }
