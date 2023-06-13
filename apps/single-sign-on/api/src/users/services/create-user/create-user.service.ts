@@ -1,17 +1,27 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreatedUserEntity } from 'src/users/entities/created-user.entity';
-import { generateRandomPassword } from 'src/users/utils';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { generateRandomPassword } from '../../utils';
 import { CreateUserDto } from './dto/create-user.dto';
+import { CreatedUserEntity } from '../../entities/created-user.entity';
 
 @Injectable()
 export class CreateUserService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async run(dto: CreateUserDto) {
-    const { email, name } = dto;
+    const { email } = dto;
 
+    await this.checkUserExists(email);
+
+    const password = generateRandomPassword(7);
+    const passwordEncrypted = bcrypt.hashSync(password, 8);
+
+    const user = await this.createUser(dto, passwordEncrypted);
+    return new CreatedUserEntity({ ...user, password });
+  }
+
+  private async checkUserExists(email: string) {
     const userAlreadyExists = await this.prismaService.user.findUnique({
       where: { email },
     });
@@ -19,23 +29,17 @@ export class CreateUserService {
     if (userAlreadyExists) {
       throw new BadRequestException('Usuário já existe.');
     }
+  }
 
-    const password = generateRandomPassword(7);
+  private async createUser(dto: CreateUserDto, passwordEncrypted: string) {
+    const { email, name } = dto;
 
-    const passwordEncrypted = bcrypt.hashSync(password, 8);
-
-    const user = await this.prismaService.user.create({
+    return this.prismaService.user.create({
       data: {
         email,
         name,
         password: passwordEncrypted,
       },
     });
-
-    const entity = new CreatedUserEntity({ ...user, password });
-
-    return {
-      user: entity,
-    };
   }
 }
