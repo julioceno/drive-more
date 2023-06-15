@@ -7,8 +7,8 @@ import { SignInDto } from './dto/sign-in.dto';
 @Injectable()
 export class SignInService {
   constructor(
-    private prismaService: PrismaService,
-    private generateTokenService: GenerateTokenService,
+    private readonly prismaService: PrismaService,
+    private readonly generateTokenService: GenerateTokenService,
   ) {}
 
   async run({ email, password }: SignInDto) {
