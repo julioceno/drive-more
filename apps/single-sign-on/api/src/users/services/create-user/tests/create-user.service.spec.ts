@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateUserService } from '../create-user.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { CreatedUserEntity } from '../../../entities/created-user.entity';
-import { handleModuleDependencies, mockPrismaService } from '../../../../utils';
 import { BadRequestException } from '@nestjs/common';
+import { CreateUserService } from '../create-user.service';
+import { handleModuleDependencies, mockPrismaService } from '@/utils';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { CreatedUserEntity } from '@/users/entities/created-user.entity';
 
 describe('CreateUserService', () => {
   let service: CreateUserService;

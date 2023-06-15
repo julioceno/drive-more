@@ -1,5 +1,5 @@
+import { Messages } from '@/common';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { Messages } from 'src/common';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: Messages.required('name') })
