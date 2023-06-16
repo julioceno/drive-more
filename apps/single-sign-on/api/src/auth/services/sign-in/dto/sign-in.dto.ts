@@ -1,5 +1,5 @@
+import { Messages } from '@/common';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { Messages } from 'src/common';
 
 export class SignInDto {
   @IsNotEmpty({ message: Messages.required('email') })
