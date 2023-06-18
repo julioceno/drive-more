@@ -9,6 +9,8 @@ import { CreatedUserEntity } from '../../entities/created-user.entity';
 export class CreateUserService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  private readonly DEFAULT_ROLE = 'USER';
+
   async run(dto: CreateUserDto) {
     const { email } = dto;
 
@@ -34,11 +36,22 @@ export class CreateUserService {
   private async createUser(dto: CreateUserDto, passwordEncrypted: string) {
     const { email, name } = dto;
 
+    const { id: roleId } = await this.getDefaultRole();
+
     return this.prismaService.user.create({
       data: {
         email,
         name,
         password: passwordEncrypted,
+        roleId,
+      },
+    });
+  }
+
+  private getDefaultRole() {
+    return this.prismaService.role.findUniqueOrThrow({
+      where: {
+        name: this.DEFAULT_ROLE,
       },
     });
   }

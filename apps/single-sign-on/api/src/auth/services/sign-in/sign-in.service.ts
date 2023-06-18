@@ -12,7 +12,9 @@ export class SignInService {
   ) {}
 
   async run({ email, password }: SignInDto) {
-    const user = await this.prismaService.user.findUnique({ where: { email } });
+    const user = await this.prismaService.user.findUniqueOrThrow({
+      where: { email },
+    });
 
     const isEqualPasswords = bcrypt.compareSync(password, user.password);
 
