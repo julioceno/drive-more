@@ -3,4 +3,7 @@ export const mockPrismaService = {
     findUnique: jest.fn(),
     create: jest.fn(),
   },
+  role: {
+    findUniqueOrThrow: jest.fn(),
+  },
 };
