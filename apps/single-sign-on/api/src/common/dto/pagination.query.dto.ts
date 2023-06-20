@@ -1,7 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import { IsInt, IsObject, IsOptional } from 'class-validator';
-import { mapValues } from '../pipes';
 import { Messages } from '../messages';
+import { mapValues } from '../functions';
 
 export function getPaginationQueryData<T>(
   paginationQueryDto: PaginationQueryDto<T>,

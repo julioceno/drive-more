@@ -1,4 +1,3 @@
-import { Injectable, PipeTransform } from '@nestjs/common';
 import { set } from 'lodash';
 
 type ValuesType = Record<string, unknown>;
@@ -11,11 +10,4 @@ export function mapValues(values: ValuesType) {
   }
 
   return mappedObj;
-}
-
-@Injectable()
-export class OrderByMapperPipe implements PipeTransform {
-  transform(values: ValuesType) {
-    return values && mapValues(values);
-  }
 }
