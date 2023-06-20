@@ -1,7 +1,15 @@
-export const usersService = {
-  create: jest.fn(),
+export const mockCreateUser = {
+  run: jest.fn(),
 };
 
-export const mockCreateUser = {
+export const mockUpdateUser = {
+  run: jest.fn(),
+};
+
+export const mockFindOneUser = {
+  run: jest.fn(),
+};
+
+export const mockFindAllUsers = {
   run: jest.fn(),
 };
