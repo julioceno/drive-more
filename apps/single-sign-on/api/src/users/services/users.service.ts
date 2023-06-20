@@ -4,10 +4,13 @@ import { CreateUserService } from './create-user/create-user.service';
 import { UpdateUserDto } from './update-user/dto/update-user.dto';
 import { UpdateUserService } from './update-user/update-user.service';
 import { FindOneUserService } from './find-one-user/find-one-user.service';
+import { FindAllUsersDto } from './find-all-users/dto/find-all-users.dto';
+import { FindAllUsersService } from './find-all-users/find-all-users.service';
 
 @Injectable()
 export class UsersService {
   constructor(
+    private readonly findAllUsersService: FindAllUsersService,
     private readonly createUserService: CreateUserService,
     private readonly updateUserService: UpdateUserService,
     private readonly findOneUserService: FindOneUserService,
@@ -15,6 +18,10 @@ export class UsersService {
 
   create(dto: CreateUserDto) {
     return this.createUserService.run(dto);
+  }
+
+  findAll(dto: FindAllUsersDto) {
+    return this.findAllUsersService.run(dto);
   }
 
   findOne(id: string) {
