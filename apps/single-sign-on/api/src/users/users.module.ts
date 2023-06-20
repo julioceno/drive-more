@@ -5,6 +5,7 @@ import { UsersController } from './controller/users.controller';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { GenerateTokenService } from '@/auth/services/generate-token/generate-token.service';
 import { UpdateUserService } from './services/update-user/update-user.service';
+import { FindOneUserService } from './services/find-one-user/find-one-user.service';
 
 @Module({
   imports: [PrismaModule],
@@ -13,6 +14,7 @@ import { UpdateUserService } from './services/update-user/update-user.service';
     CreateUserService,
     GenerateTokenService,
     UpdateUserService,
+    FindOneUserService,
   ],
   exports: [UsersService],
   controllers: [UsersController],
