@@ -2,41 +2,35 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { UserEntity } from '@/users/entities/user.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UpdateUserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async run(dto: UpdateUserDto) {
-    const user = await this.getUser(dto.email);
+  async run(id: string, dto: UpdateUserDto) {
+    const user = await this.getUser(id);
 
     if (!user) {
       throw new NotFoundException('Usuário não existe.');
     }
 
-    const newPasswordEncrypted = bcrypt.hashSync(dto.password, 8);
-
-    const updatedUser = await this.updateUser({
-      ...dto,
-      password: newPasswordEncrypted,
-    });
+    const updatedUser = await this.updateUser(id, dto);
 
     return new UserEntity(updatedUser);
   }
 
-  private getUser(email: string) {
+  private getUser(id: string) {
     return this.prismaService.user.findUnique({
-      where: { email },
+      where: { id },
     });
   }
 
-  private updateUser(dto: UpdateUserDto) {
-    const { email, password, name } = dto;
+  private updateUser(id: string, dto: UpdateUserDto) {
+    const { email, name } = dto;
 
     return this.prismaService.user.update({
-      where: { email },
-      data: { name, email, password },
+      where: { id },
+      data: { name, email },
     });
   }
 }

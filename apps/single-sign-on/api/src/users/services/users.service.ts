@@ -28,7 +28,7 @@ export class UsersService {
     return this.findOneUserService.run(id);
   }
 
-  update(dto: UpdateUserDto) {
-    return this.updateUserService.run(dto);
+  update(userId: string, dto: UpdateUserDto) {
+    return this.updateUserService.run(userId, dto);
   }
 }

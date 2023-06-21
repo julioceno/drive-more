@@ -1,4 +1,3 @@
-export interface PayloadProps {
-  sub: string;
-  email: string;
+export interface IAuthorizedUser {
+  id: string;
 }

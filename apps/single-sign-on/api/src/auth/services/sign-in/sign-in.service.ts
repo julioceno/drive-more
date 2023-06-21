@@ -23,8 +23,7 @@ export class SignInService {
     }
 
     const access_token = await this.generateTokenService.run({
-      email,
-      sub: user.id,
+      id: user.id,
     });
 
     return { access_token };

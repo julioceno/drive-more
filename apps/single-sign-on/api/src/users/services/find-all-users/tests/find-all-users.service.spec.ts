@@ -40,7 +40,7 @@ describe('FindAllUsersService', () => {
     });
   });
 
-  it('should invoke prismaService and call findMany and count from users', async () => {
+  it('should invoke prismaService and call findMany and count from user', async () => {
     const dto: FindAllUsersDto = {};
 
     await service.run(dto);

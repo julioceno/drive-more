@@ -38,8 +38,8 @@ describe('UsersService', () => {
   });
 
   it('should invoke update method', async () => {
-    await service.update({} as UpdateUserDto);
-    expect(mockUpdateUser.run).toHaveBeenLastCalledWith({});
+    await service.update('', {} as UpdateUserDto);
+    expect(mockUpdateUser.run).toHaveBeenLastCalledWith('', {});
   });
 
   it('should invoke findOne method', async () => {

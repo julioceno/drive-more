@@ -3,6 +3,7 @@ import { CreateUserDto } from '../services/create-user/dto/create-user.dto';
 import { UpdateUserDto } from '../services/update-user/dto/update-user.dto';
 import { UsersService } from '../services/users.service';
 import { FindAllUsersDto } from '../services/find-all-users/dto/find-all-users.dto';
+import { AuthorizedUser } from '@/common';
 
 @Controller('users')
 export class UsersController {
@@ -19,8 +20,8 @@ export class UsersController {
   }
 
   @Put()
-  update(@Body() dto: UpdateUserDto) {
-    return this.usersService.update(dto);
+  update(@AuthorizedUser('id') userId: string, @Body() dto: UpdateUserDto) {
+    return this.usersService.update(userId, dto);
   }
 
   @Get(':id')
