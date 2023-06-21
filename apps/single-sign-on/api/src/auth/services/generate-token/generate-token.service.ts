@@ -1,12 +1,12 @@
+import { IAuthorizedUser } from '@/common/interfaces';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PayloadProps } from './types';
 
 @Injectable()
 export class GenerateTokenService {
   constructor(private jwtService: JwtService) {}
 
-  run(payload: PayloadProps) {
+  run(payload: IAuthorizedUser) {
     return this.jwtService.signAsync(payload);
   }
 }

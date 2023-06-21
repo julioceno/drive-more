@@ -5,11 +5,13 @@ import {
   mockCreateUser,
   mockFindAllUsers,
   mockFindOneUser,
+  mockUpdatePasswordUserService,
   mockUpdateUser,
 } from './users';
 import { UpdateUserService } from '@/users/services/update-user/update-user.service';
 import { FindAllUsersService } from '@/users/services/find-all-users/find-all-users.service';
 import { FindOneUserService } from '@/users/services/find-one-user/find-one-user.service';
+import { UpdatePasswordUserService } from '@/users/services/update-password-user/update-password-user.service';
 
 const servicesMocks = [
   {
@@ -33,6 +35,10 @@ const servicesMocks = [
   {
     provide: FindAllUsersService,
     useValue: mockFindAllUsers,
+  },
+  {
+    provide: UpdatePasswordUserService,
+    useValue: mockUpdatePasswordUserService,
   },
 ];
 

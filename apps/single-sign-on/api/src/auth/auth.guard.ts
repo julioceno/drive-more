@@ -14,7 +14,7 @@ import { IS_PUBLIC_KEY } from '../common';
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService, private reflector: Reflector) {}
 
-  canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext) {
     if (this.isPublic(context)) return true;
 
     const request = context.switchToHttp().getRequest();
@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = this.jwtService.verifyAsync(token, {
+      const payload = await this.jwtService.verifyAsync(token, {
         secret: jwtConstants.secret,
       });
 

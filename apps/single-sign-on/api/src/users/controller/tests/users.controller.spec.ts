@@ -41,8 +41,8 @@ describe('UsersController', () => {
   });
 
   it('should invoke update method from UsersController', async () => {
-    await controller.update({} as UpdateUserDto);
-    expect(mockUpdateUser.run).toHaveBeenLastCalledWith({});
+    await controller.update('', {} as UpdateUserDto);
+    expect(mockUpdateUser.run).toHaveBeenLastCalledWith('', {});
   });
 
   it('should invoke findOne method from UsersController', async () => {
