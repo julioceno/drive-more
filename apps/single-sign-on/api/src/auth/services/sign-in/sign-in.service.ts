@@ -22,10 +22,10 @@ export class SignInService {
       throw new UnauthorizedException();
     }
 
-    const access_token = await this.generateTokenService.run({
+    const accessToken = await this.generateTokenService.run({
       id: user.id,
     });
 
-    return { access_token };
+    return { accessToken };
   }
 }
