@@ -3,7 +3,7 @@ import { UpdatePasswordUserService } from '../update-password-user.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdatePasswordUserDto } from '../dto/update-password-user.dto';
 import { UserEntity } from '@/users/entities/user.entity';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 describe('UpdatePasswordUserService', () => {
   let service: UpdatePasswordUserService;
@@ -18,15 +18,24 @@ describe('UpdatePasswordUserService', () => {
     service = module.get<UpdatePasswordUserService>(UpdatePasswordUserService);
   });
 
+  const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
+  const passwordHashed =
+    '$2b$08$3NsRYLYqr1e4.N8WyFpswecXKzzLgRFKjUUgKbENvcb7BJ/xBZdo6';
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
   it('should return updated user instance of UserEntity', async () => {
-    const dto: UpdatePasswordUserDto = { password: 'pass' };
-    const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
+    const dto: UpdatePasswordUserDto = {
+      currentPassword: 'oldPass',
+      password: 'pass',
+    };
 
-    mockPrismaService.user.findUnique.mockResolvedValueOnce({ id });
+    mockPrismaService.user.findUnique.mockResolvedValueOnce({
+      id,
+      password: passwordHashed,
+    });
     mockPrismaService.user.update.mockResolvedValueOnce({ id });
 
     const response = await service.run(id, dto);
@@ -36,10 +45,16 @@ describe('UpdatePasswordUserService', () => {
   });
 
   it('should invoke prismaService and call findUnique and update from user', async () => {
-    const dto: UpdatePasswordUserDto = { password: 'pass' };
+    const dto: UpdatePasswordUserDto = {
+      currentPassword: 'oldPass',
+      password: 'pass',
+    };
     const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
 
-    mockPrismaService.user.findUnique.mockResolvedValueOnce({ id });
+    mockPrismaService.user.findUnique.mockResolvedValueOnce({
+      id,
+      password: passwordHashed,
+    });
     mockPrismaService.user.update.mockResolvedValueOnce({ id });
 
     await service.run(id, dto);
@@ -75,5 +90,28 @@ describe('UpdatePasswordUserService', () => {
     expect(error).toBeDefined();
     expect(error).toBeInstanceOf(NotFoundException);
     expect(error.message).toBe('Usuário não existe.');
+  });
+
+  it('should throw UnauthorizedException when currentPassword is incorrect', async () => {
+    const dto: UpdatePasswordUserDto = {
+      currentPassword: 'oldPass',
+      password: 'pass',
+    };
+    const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
+
+    mockPrismaService.user.findUnique.mockResolvedValueOnce({
+      id,
+      password: 'incorrect password',
+    });
+
+    let error = null;
+    try {
+      await service.run(id, dto);
+    } catch (err) {
+      error = err;
+    }
+
+    expect(error).toBeDefined();
+    expect(error).toBeInstanceOf(UnauthorizedException);
   });
 });

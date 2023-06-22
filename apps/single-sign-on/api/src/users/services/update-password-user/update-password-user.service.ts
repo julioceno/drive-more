@@ -1,6 +1,10 @@
 import { PrismaService } from '@/prisma/prisma.service';
 import { UpdatePasswordUserDto } from './dto/update-password-user.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserEntity } from '@/users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 
@@ -14,6 +18,8 @@ export class UpdatePasswordUserService {
     if (!user) {
       throw new NotFoundException('Usuário não existe.');
     }
+
+    this.validatePassword(dto.currentPassword, user.password);
 
     const updatedUser = await this.updatePassword(id, dto.password);
 
@@ -33,5 +39,13 @@ export class UpdatePasswordUserService {
       where: { id },
       data: { password: passwordEncrypted },
     });
+  }
+
+  private validatePassword(password: string, entityPassword: string) {
+    const isEqualPasswords = bcrypt.compareSync(password, entityPassword);
+
+    if (!isEqualPasswords) {
+      throw new UnauthorizedException();
+    }
   }
 }
