@@ -8,9 +8,10 @@ import { UpdateUserService } from './services/update-user/update-user.service';
 import { FindOneUserService } from './services/find-one-user/find-one-user.service';
 import { FindAllUsersService } from './services/find-all-users/find-all-users.service';
 import { UpdatePasswordUserService } from './services/update-password-user/update-password-user.service';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, JwtModule],
   providers: [
     UsersService,
     CreateUserService,
