@@ -18,6 +18,7 @@ describe('UsersController (e2e)', () => {
   it('/ (GET)', async () => {
     const response = await request(app.getHttpServer()).get('/users');
 
+    console.log(response.body);
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
   });

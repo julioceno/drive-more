@@ -3,7 +3,7 @@ import { prisma } from '../seed';
 
 const data: Prisma.UserCreateManyInput[] = [
   {
-    id: '5bc51e9a-056b-4859-b90f-51995dbce2d0',
+    id: 'fdbe66f2-f31d-4302-bb97-0ff888045292',
     name: 'Admin',
     email: 'admin@dirigir.more.com',
     password: '$2b$08$hQexMg7jWW63kdp/lXLH8.o/ldXaFqggj8zSKpdU3Cahswd7BAwk2',

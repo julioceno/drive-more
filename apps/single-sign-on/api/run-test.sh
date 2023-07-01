@@ -1,0 +1,1 @@
+docker-compose -f ./docker/docker-compose.test.yml up -d && yarn prisma migrate dev &&  yarn prisma db seed &&  jest --config ./test/jest-e2e.json ./test -i --detectOpenHandles; docker rm -f dirigir-more-single-sign-on-test-db
