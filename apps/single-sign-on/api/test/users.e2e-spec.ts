@@ -18,8 +18,23 @@ describe('UsersController (e2e)', () => {
   it('/ (GET)', async () => {
     const response = await request(app.getHttpServer()).get('/users');
 
-    console.log(response.body);
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
+
+    const { totalCount, list } = response.body;
+
+    expect(totalCount).toBe(2);
+    expect(list).toStrictEqual([
+      {
+        id: 'fdbe66f2-f31d-4302-bb97-0ff888045292',
+        email: 'admin@dirigir.more.com',
+        name: 'Admin',
+      },
+      {
+        id: '92ab7ca5-f68a-4723-8a5f-efad6caaf257',
+        email: 'user@dirigir.more.com',
+        name: 'User',
+      },
+    ]);
   });
 });
