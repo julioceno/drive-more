@@ -36,7 +36,7 @@ describe('UsersController (e2e)', () => {
 
     const { totalCount, list } = response.body;
 
-    expect(totalCount).toBe(2);
+    expect(totalCount).toBe(3);
     expect(list).toStrictEqual([
       {
         id: 'fdbe66f2-f31d-4302-bb97-0ff888045292',
@@ -47,6 +47,11 @@ describe('UsersController (e2e)', () => {
         id: '92ab7ca5-f68a-4723-8a5f-efad6caaf257',
         email: 'user@dirigir.more.com',
         name: 'User',
+      },
+      {
+        id: 'c63fb8c3-e238-4785-8907-273ede43f489',
+        name: 'User for delete',
+        email: 'userForDelete@dirigir.more.com',
       },
     ]);
   });
@@ -102,5 +107,27 @@ describe('UsersController (e2e)', () => {
     expect(response).toBeDefined();
     expect(response.status).toBe(409);
     expect(response.body.message).toBe('Email já existe.');
+  });
+
+  it('/ (DELETE)', async () => {
+    const response = await request(app.getHttpServer()).delete(
+      '/users/c63fb8c3-e238-4785-8907-273ede43f489',
+    );
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+    expect(response.body).toStrictEqual({
+      id: expect.any(String),
+      name: 'User for delete',
+      email: 'userForDelete@dirigir.more.com',
+    });
+  });
+
+  it('/ (DELETE -> 400 Register not found)', async () => {
+    const response = await request(app.getHttpServer()).delete('/users/id');
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Registro não encontrado.');
   });
 });

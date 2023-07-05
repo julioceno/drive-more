@@ -14,7 +14,14 @@ const data: Prisma.UserCreateManyInput[] = [
     name: 'User',
     email: 'user@dirigir.more.com',
     password: '$2b$08$ZqYGiCxwNBKUVlcJ.vD0vuqMW9cNgrWDW.339ExcyBRia570uVHLe',
-    roleId: '461ef119-3d2d-42ef-acfd-ba469db9bea1', // ROLE ADMIN
+    roleId: '461ef119-3d2d-42ef-acfd-ba469db9bea1', // ROLE USER
+  },
+  {
+    id: 'c63fb8c3-e238-4785-8907-273ede43f489',
+    name: 'User for delete',
+    email: 'userForDelete@dirigir.more.com',
+    password: '$2b$08$ZqYGiCxwNBKUVlcJ.vD0vuqMW9cNgrWDW.339ExcyBRia570uVHLe',
+    roleId: '461ef119-3d2d-42ef-acfd-ba469db9bea1', // ROLE USER
   },
 ];
 

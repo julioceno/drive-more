@@ -35,6 +35,7 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
           statusCode: status,
           message,
         });
+        break;
       }
 
       default: {

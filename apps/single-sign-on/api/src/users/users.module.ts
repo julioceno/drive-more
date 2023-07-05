@@ -9,6 +9,7 @@ import { FindOneUserService } from './services/find-one-user/find-one-user.servi
 import { FindAllUsersService } from './services/find-all-users/find-all-users.service';
 import { UpdatePasswordUserService } from './services/update-password-user/update-password-user.service';
 import { JwtModule } from '@nestjs/jwt';
+import { DeleteUserService } from './services/delete-user/delete-user.service';
 
 @Module({
   imports: [PrismaModule, JwtModule],
@@ -20,6 +21,7 @@ import { JwtModule } from '@nestjs/jwt';
     FindOneUserService,
     FindAllUsersService,
     UpdatePasswordUserService,
+    DeleteUserService,
   ],
   exports: [UsersService],
   controllers: [UsersController],

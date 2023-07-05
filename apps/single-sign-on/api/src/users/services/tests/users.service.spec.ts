@@ -3,6 +3,7 @@ import { handleModuleDependencies } from '@/utils';
 import { UsersService } from '../users.service';
 import {
   mockCreateUser,
+  mockDeleteUser,
   mockFindAllUsers,
   mockFindOneUser,
   mockUpdateUser,
@@ -45,5 +46,10 @@ describe('UsersService', () => {
   it('should invoke findOne method', async () => {
     await service.findOne('');
     expect(mockFindOneUser.run).toHaveBeenLastCalledWith('');
+  });
+
+  it('should invoke delete method', async () => {
+    await service.delete('');
+    expect(mockDeleteUser.run).toHaveBeenLastCalledWith('');
   });
 });

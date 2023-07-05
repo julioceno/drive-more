@@ -14,6 +14,10 @@ export const mockFindAllUsers = {
   run: jest.fn(),
 };
 
+export const mockDeleteUser = {
+  run: jest.fn(),
+};
+
 export const mockUpdatePasswordUserService = {
   run: jest.fn(),
 };

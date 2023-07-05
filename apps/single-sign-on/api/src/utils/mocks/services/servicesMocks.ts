@@ -3,6 +3,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { mockPrismaService } from './prisma';
 import {
   mockCreateUser,
+  mockDeleteUser,
   mockFindAllUsers,
   mockFindOneUser,
   mockUpdatePasswordUserService,
@@ -12,6 +13,7 @@ import { UpdateUserService } from '@/users/services/update-user/update-user.serv
 import { FindAllUsersService } from '@/users/services/find-all-users/find-all-users.service';
 import { FindOneUserService } from '@/users/services/find-one-user/find-one-user.service';
 import { UpdatePasswordUserService } from '@/users/services/update-password-user/update-password-user.service';
+import { DeleteUserService } from '@/users/services/delete-user/delete-user.service';
 
 const servicesMocks = [
   {
@@ -39,6 +41,10 @@ const servicesMocks = [
   {
     provide: UpdatePasswordUserService,
     useValue: mockUpdatePasswordUserService,
+  },
+  {
+    provide: DeleteUserService,
+    useValue: mockDeleteUser,
   },
 ];
 

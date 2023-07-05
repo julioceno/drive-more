@@ -8,6 +8,7 @@ import { FindAllUsersDto } from './find-all-users/dto/find-all-users.dto';
 import { FindAllUsersService } from './find-all-users/find-all-users.service';
 import { UpdatePasswordUserService } from './update-password-user/update-password-user.service';
 import { UpdatePasswordUserDto } from './update-password-user/dto/update-password-user.dto';
+import { DeleteUserService } from './delete-user/delete-user.service';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,7 @@ export class UsersService {
     private readonly updateUserService: UpdateUserService,
     private readonly updatePasswordUserService: UpdatePasswordUserService,
     private readonly findOneUserService: FindOneUserService,
+    private readonly deleteUserService: DeleteUserService,
   ) {}
 
   create(dto: CreateUserDto) {
@@ -37,5 +39,9 @@ export class UsersService {
 
   updatePassword(userId: string, dto: UpdatePasswordUserDto) {
     return this.updatePasswordUserService.run(userId, dto);
+  }
+
+  delete(id: string) {
+    return this.deleteUserService.run(id);
   }
 }
