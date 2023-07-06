@@ -10,6 +10,7 @@ import { FindAllUsersService } from './services/find-all-users/find-all-users.se
 import { UpdatePasswordUserService } from './services/update-password-user/update-password-user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { DeleteUserService } from './services/delete-user/delete-user.service';
+import { ChangeRoleService } from './services/change-role/change-role.service';
 
 @Module({
   imports: [PrismaModule, JwtModule],
@@ -22,6 +23,7 @@ import { DeleteUserService } from './services/delete-user/delete-user.service';
     FindAllUsersService,
     UpdatePasswordUserService,
     DeleteUserService,
+    ChangeRoleService,
   ],
   exports: [UsersService],
   controllers: [UsersController],

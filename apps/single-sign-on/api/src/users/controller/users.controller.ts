@@ -15,6 +15,7 @@ import { UsersService } from '../services/users.service';
 import { FindAllUsersDto } from '../services/find-all-users/dto/find-all-users.dto';
 import { AuthorizedUser } from '@/common';
 import { UpdatePasswordUserDto } from '../services/update-password-user/dto/update-password-user.dto';
+import { ChangeRoleDto } from '../services/change-role/dto/change-role.dto';
 
 @Controller('users')
 export class UsersController {
@@ -41,6 +42,11 @@ export class UsersController {
     @Body() dto: UpdatePasswordUserDto,
   ) {
     return this.usersService.updatePassword(userId, dto);
+  }
+
+  @Patch('/change-role')
+  changeRole(@Body() dto: ChangeRoleDto) {
+    return this.usersService.changeRole(dto);
   }
 
   @Get(':id')

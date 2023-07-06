@@ -85,20 +85,20 @@ describe('UsersController (e2e)', () => {
 
   it('/ (PUT)', async () => {
     const response = await request(app.getHttpServer()).put('/users').send({
-      name: 'adminUpdated',
-      email: 'adminUpdated@dirigir.more.com.br',
+      name: 'userUpdated',
+      email: 'userUpdated@dirigir.more.com.br',
     });
 
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
     expect(response.body).toStrictEqual({
       id: expect.any(String),
-      name: 'adminUpdated',
-      email: 'adminUpdated@dirigir.more.com.br',
+      name: 'userUpdated',
+      email: 'userUpdated@dirigir.more.com.br',
     });
   });
 
-  it('/ (PUT -> throw Conflict error when email already exists in other user)', async () => {
+  it('/ (PUT -> 409 Throw conflict error when email already exists in other user)', async () => {
     const response = await request(app.getHttpServer()).put('/users').send({
       name: 'other name',
       email: 'c3po@dirigir.more.com.br',
@@ -107,6 +107,54 @@ describe('UsersController (e2e)', () => {
     expect(response).toBeDefined();
     expect(response.status).toBe(409);
     expect(response.body.message).toBe('Email já existe.');
+  });
+
+  it('/ (PATCH -> update password)', async () => {
+    const response = await request(app.getHttpServer())
+      .patch('/users/password')
+      .send({
+        currentPassword: 'user',
+        password: 'newPass',
+      });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+    expect(response.body).toStrictEqual({
+      id: expect.any(String),
+      name: 'userUpdated',
+      email: 'userUpdated@dirigir.more.com.br',
+    });
+  });
+
+  it('/ (PATCH -> 401 throw unauthorized when password is incorrect)', async () => {
+    const response = await request(app.getHttpServer())
+      .patch('/users/password')
+      .send({
+        currentPassword: 'passIncorrect',
+        password: 'newPass',
+      });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('Unauthorized');
+  });
+
+  it('/ (PATCH -> Change role from passed user)', async () => {
+    const response = await request(app.getHttpServer())
+      .patch('/users/change-role')
+      .send({
+        role: 'ADMIN',
+        userId: 'c63fb8c3-e238-4785-8907-273ede43f489',
+      });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+    expect(response.body).toStrictEqual({
+      id: 'c63fb8c3-e238-4785-8907-273ede43f489',
+      email: 'userForDelete@dirigir.more.com',
+      name: 'User for delete',
+      role: 'ADMIN',
+    });
   });
 
   it('/ (DELETE)', async () => {
