@@ -3,12 +3,7 @@ import { UsersController } from '../users.controller';
 import { UsersService } from '@/users/services/users.service';
 import { handleModuleDependencies } from '@/utils';
 import { CreateUserDto } from '@/users/services/create-user/dto/create-user.dto';
-import {
-  mockCreateUser,
-  mockFindAllUsers,
-  mockFindOneUser,
-  mockUpdateUser,
-} from '@/utils/mocks/services/users';
+import { mockUsersService } from '@/utils/mocks/services/users';
 import { FindAllUsersDto } from '@/users/services/find-all-users/dto/find-all-users.dto';
 import { UpdateUserDto } from '@/users/services/update-user/dto/update-user.dto';
 
@@ -32,21 +27,21 @@ describe('UsersController', () => {
 
   it('should invoke findAll method from UsersController', async () => {
     await controller.findAll({} as FindAllUsersDto);
-    expect(mockFindAllUsers.run).toHaveBeenLastCalledWith({});
+    expect(mockUsersService.findAll).toHaveBeenLastCalledWith({});
   });
 
   it('should invoke create method from UsersController', async () => {
     await controller.create({} as CreateUserDto);
-    expect(mockCreateUser.run).toHaveBeenLastCalledWith({});
+    expect(mockUsersService.create).toHaveBeenLastCalledWith({});
   });
 
   it('should invoke update method from UsersController', async () => {
     await controller.update('', {} as UpdateUserDto);
-    expect(mockUpdateUser.run).toHaveBeenLastCalledWith('', {});
+    expect(mockUsersService.update).toHaveBeenLastCalledWith('', {});
   });
 
   it('should invoke findOne method from UsersController', async () => {
     await controller.findOne('');
-    expect(mockFindOneUser.run).toHaveBeenLastCalledWith('');
+    expect(mockUsersService.findOne).toHaveBeenLastCalledWith('');
   });
 });

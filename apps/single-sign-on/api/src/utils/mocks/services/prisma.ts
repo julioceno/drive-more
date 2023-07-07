@@ -8,6 +8,7 @@ export const mockPrismaService = {
     count: jest.fn(),
   },
   role: {
+    findUnique: jest.fn(),
     findUniqueOrThrow: jest.fn(),
   },
 };

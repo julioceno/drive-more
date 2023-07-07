@@ -25,7 +25,7 @@ export class ChangeRoleService {
     const user = await this.prismaService.user.findUnique({ where: { id } });
 
     if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('Usuário não encontrado.');
     }
   }
 
