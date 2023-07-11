@@ -4,7 +4,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { generateRandomPassword } from '../../utils';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CreatedUserEntity } from '../../entities/created-user.entity';
-import { Role } from '../change-role/utils/roles';
+import { Role } from '@/common';
 
 @Injectable()
 export class CreateUserService {

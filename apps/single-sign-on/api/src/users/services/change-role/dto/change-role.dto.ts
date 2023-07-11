@@ -1,6 +1,5 @@
-import { Messages } from '@/common';
+import { Messages, Role } from '@/common';
 import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
-import { Role } from '../utils/roles';
 
 export class ChangeRoleDto {
   @IsNotEmpty({ message: Messages.required('role') })
