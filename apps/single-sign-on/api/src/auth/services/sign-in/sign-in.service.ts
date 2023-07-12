@@ -3,8 +3,10 @@ import { GenerateTokenService } from '../generate-token/generate-token.service';
 import * as bcrypt from 'bcrypt';
 import { SignInDto } from './dto/sign-in.dto';
 import { PrismaService } from '@/prisma/prisma.service';
+import { Public, RoleEnum } from '@/common';
 
 @Injectable()
+@Public()
 export class SignInService {
   constructor(
     private readonly prismaService: PrismaService,
@@ -14,6 +16,9 @@ export class SignInService {
   async run({ email, password }: SignInDto) {
     const user = await this.prismaService.user.findUniqueOrThrow({
       where: { email },
+      include: {
+        role: true,
+      },
     });
 
     const isEqualPasswords = bcrypt.compareSync(password, user.password);
@@ -24,6 +29,7 @@ export class SignInService {
 
     const accessToken = await this.generateTokenService.run({
       id: user.id,
+      role: user.role.name as RoleEnum,
     });
 
     return { accessToken };

@@ -13,10 +13,11 @@ import { CreateUserDto } from '../services/create-user/dto/create-user.dto';
 import { UpdateUserDto } from '../services/update-user/dto/update-user.dto';
 import { UsersService } from '../services/users.service';
 import { FindAllUsersDto } from '../services/find-all-users/dto/find-all-users.dto';
-import { AuthorizedUser } from '@/common';
+import { AuthorizedUser, Role, RoleEnum } from '@/common';
 import { UpdatePasswordUserDto } from '../services/update-password-user/dto/update-password-user.dto';
 import { ChangeRoleDto } from '../services/change-role/dto/change-role.dto';
 
+@Role(RoleEnum.ADMIN)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -32,11 +33,13 @@ export class UsersController {
   }
 
   @Put()
+  @Role(RoleEnum.USER)
   update(@AuthorizedUser('id') userId: string, @Body() dto: UpdateUserDto) {
     return this.usersService.update(userId, dto);
   }
 
   @Patch('/password')
+  @Role(RoleEnum.USER)
   updatePassword(
     @AuthorizedUser('id') userId: string,
     @Body() dto: UpdatePasswordUserDto,

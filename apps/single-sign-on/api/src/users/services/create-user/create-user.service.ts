@@ -4,13 +4,13 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { generateRandomPassword } from '../../utils';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CreatedUserEntity } from '../../entities/created-user.entity';
-import { Role } from '@/common';
+import { RoleEnum } from '@/common';
 
 @Injectable()
 export class CreateUserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  private readonly DEFAULT_ROLE = Role.USER;
+  private readonly DEFAULT_ROLE = RoleEnum.USER;
 
   async run(dto: CreateUserDto) {
     const { email } = dto;

@@ -2,7 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { ChangeRoleDto } from './dto/change-role.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserEntity } from '@/users/entities/user.entity';
-import { Role } from '@/common';
+import { RoleEnum } from '@/common';
 
 @Injectable()
 export class ChangeRoleService {
@@ -29,7 +29,7 @@ export class ChangeRoleService {
     }
   }
 
-  private async verifyRoleExists(name: Role) {
+  private async verifyRoleExists(name: RoleEnum) {
     const role = await this.prismaService.role.findUnique({
       where: { name },
     });
@@ -39,7 +39,7 @@ export class ChangeRoleService {
     }
   }
 
-  private changeRoleFromUser(userId: string, roleName: Role) {
+  private changeRoleFromUser(userId: string, roleName: RoleEnum) {
     return this.prismaService.user.update({
       where: { id: userId },
       data: { role: { connect: { name: roleName } } },
