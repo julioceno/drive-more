@@ -6,13 +6,17 @@ import { RoleEnum } from '../enums';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const role = this.reflector.get<RoleEnum>(ROLE_KEY, context.getHandler());
+    console.log(this.reflector.get);
+    const role = this.reflector.getAllAndOverride<RoleEnum>(ROLE_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
     console.log('role', role);
 
-    // if not have role metadata, return true allowed access in route
+    // if not have role metadata, return true allowed access
     if (!role) {
       return true;
     }
