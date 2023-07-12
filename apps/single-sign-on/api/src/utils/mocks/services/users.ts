@@ -1,4 +1,4 @@
-import { ChangeRoleService } from '@/users/services/change-role/change-role.service';
+import { ChangeRoleUserService } from '@/users/services/change-role-user/change-role-user.service';
 import { CreateUserService } from '@/users/services/create-user/create-user.service';
 import { DeleteUserService } from '@/users/services/delete-user/delete-user.service';
 import { FindAllUsersService } from '@/users/services/find-all-users/find-all-users.service';
@@ -41,7 +41,7 @@ export const mockUpdatePasswordUserService = {
   run: jest.fn(),
 };
 
-export const mockChangeRoleService = {
+export const mockChangeRoleUserService = {
   run: jest.fn(),
 };
 
@@ -75,7 +75,7 @@ export const usersMocks = [
     useValue: mockDeleteUserService,
   },
   {
-    provide: ChangeRoleService,
-    useValue: mockChangeRoleService,
+    provide: ChangeRoleUserService,
+    useValue: mockChangeRoleUserService,
   },
 ];

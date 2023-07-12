@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { handleModuleDependencies } from '@/utils';
 import { UsersService } from '../users.service';
 import {
-  mockChangeRoleService,
+  mockChangeRoleUserService,
   mockCreateUserService,
   mockDeleteUserService,
   mockFindAllUsersService,
@@ -12,8 +12,8 @@ import {
 } from '@/utils/mocks/services/users';
 import { CreateUserDto } from '../create-user/dto/create-user.dto';
 import { UpdateUserDto } from '../update-user/dto/update-user.dto';
-import { ChangeRoleDto } from '../change-role/dto/change-role.dto';
 import { UpdatePasswordUserDto } from '../update-password-user/dto/update-password-user.dto';
+import { ChangeRoleUserDto } from '../change-role-user/dto/change-role-user.dto';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -63,7 +63,7 @@ describe('UsersService', () => {
   });
 
   it('should invoke changeRole method', async () => {
-    await service.changeRole({} as ChangeRoleDto);
-    expect(mockChangeRoleService.run).toHaveBeenLastCalledWith({});
+    await service.changeRole({} as ChangeRoleUserDto);
+    expect(mockChangeRoleUserService.run).toHaveBeenLastCalledWith({});
   });
 });

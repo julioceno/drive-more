@@ -15,7 +15,7 @@ import { UsersService } from '../services/users.service';
 import { FindAllUsersDto } from '../services/find-all-users/dto/find-all-users.dto';
 import { AuthorizedUser, Role, RoleEnum } from '@/common';
 import { UpdatePasswordUserDto } from '../services/update-password-user/dto/update-password-user.dto';
-import { ChangeRoleDto } from '../services/change-role/dto/change-role.dto';
+import { ChangeRoleUserDto } from '../services/change-role-user/dto/change-role-user.dto';
 
 @Role(RoleEnum.ADMIN)
 @Controller('users')
@@ -48,7 +48,7 @@ export class UsersController {
   }
 
   @Patch('/change-role')
-  changeRole(@Body() dto: ChangeRoleDto) {
+  changeRole(@Body() dto: ChangeRoleUserDto) {
     return this.usersService.changeRole(dto);
   }
 

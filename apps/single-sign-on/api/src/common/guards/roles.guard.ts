@@ -14,7 +14,6 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    console.log('role', role);
 
     // if not have role metadata, return true allowed access
     if (!role) {

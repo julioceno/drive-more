@@ -1,14 +1,14 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { ChangeRoleDto } from './dto/change-role.dto';
+import { ChangeRoleUserDto } from './dto/change-role-user.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserEntity } from '@/users/entities/user.entity';
 import { RoleEnum } from '@/common';
 
 @Injectable()
-export class ChangeRoleService {
+export class ChangeRoleUserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async run(dto: ChangeRoleDto) {
+  async run(dto: ChangeRoleUserDto) {
     const { role, userId } = dto;
 
     await Promise.all([

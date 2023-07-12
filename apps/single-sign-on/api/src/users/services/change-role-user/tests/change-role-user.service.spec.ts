@@ -1,26 +1,27 @@
 import { handleModuleDependencies, mockPrismaService } from '@/utils';
-import { ChangeRoleService } from '../change-role.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Role } from '../utils';
-import { ChangeRoleDto } from '../dto/change-role.dto';
+
 import { UserEntity } from '@/users/entities/user.entity';
 import { NotFoundException } from '@nestjs/common';
+import { ChangeRoleUserService } from '../change-role-user.service';
+import { RoleEnum } from '@/common';
+import { ChangeRoleUserDto } from '../dto/change-role-user.dto';
 
-describe('ChangeRoleService', () => {
-  let service: ChangeRoleService;
+describe('ChangeRoleUserService', () => {
+  let service: ChangeRoleUserService;
 
   const userId = 'mock.userId';
 
-  const dto: ChangeRoleDto = { userId, role: Role.USER };
+  const dto: ChangeRoleUserDto = { userId, role: RoleEnum.USER };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ChangeRoleService],
+      providers: [ChangeRoleUserService],
     })
       .useMocker(handleModuleDependencies)
       .compile();
 
-    service = module.get<ChangeRoleService>(ChangeRoleService);
+    service = module.get<ChangeRoleUserService>(ChangeRoleUserService);
   });
 
   mockPrismaService.user.findUnique.mockResolvedValue({ id: userId });
@@ -29,7 +30,7 @@ describe('ChangeRoleService', () => {
 
   mockPrismaService.user.update.mockResolvedValue({
     id: userId,
-    role: { name: Role.USER },
+    role: { name: RoleEnum.USER },
   });
 
   it('should be defined', () => {
@@ -43,7 +44,7 @@ describe('ChangeRoleService', () => {
       data: {
         role: {
           connect: {
-            name: Role.USER,
+            name: RoleEnum.USER,
           },
         },
       },
@@ -93,7 +94,7 @@ describe('ChangeRoleService', () => {
 
     expect(mockPrismaService.role.findUnique).toHaveBeenLastCalledWith({
       where: {
-        name: Role.USER,
+        name: RoleEnum.USER,
       },
     });
 

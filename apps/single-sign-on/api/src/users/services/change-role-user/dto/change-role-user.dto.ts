@@ -1,7 +1,7 @@
 import { Messages, RoleEnum } from '@/common';
 import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
 
-export class ChangeRoleDto {
+export class ChangeRoleUserDto {
   @IsNotEmpty({ message: Messages.required('role') })
   @IsEnum(RoleEnum, { message: Messages.enum('role') })
   role: RoleEnum;

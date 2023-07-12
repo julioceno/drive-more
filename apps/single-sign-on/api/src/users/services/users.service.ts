@@ -9,8 +9,8 @@ import { FindAllUsersService } from './find-all-users/find-all-users.service';
 import { UpdatePasswordUserService } from './update-password-user/update-password-user.service';
 import { UpdatePasswordUserDto } from './update-password-user/dto/update-password-user.dto';
 import { DeleteUserService } from './delete-user/delete-user.service';
-import { ChangeRoleService } from './change-role/change-role.service';
-import { ChangeRoleDto } from './change-role/dto/change-role.dto';
+import { ChangeRoleUserDto } from './change-role-user/dto/change-role-user.dto';
+import { ChangeRoleUserService } from './change-role-user/change-role-user.service';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +21,7 @@ export class UsersService {
     private readonly updatePasswordUserService: UpdatePasswordUserService,
     private readonly findOneUserService: FindOneUserService,
     private readonly deleteUserService: DeleteUserService,
-    private readonly changeRoleService: ChangeRoleService,
+    private readonly changeRoleUserService: ChangeRoleUserService,
   ) {}
 
   create(dto: CreateUserDto) {
@@ -48,7 +48,7 @@ export class UsersService {
     return this.deleteUserService.run(id);
   }
 
-  changeRole(dto: ChangeRoleDto) {
-    return this.changeRoleService.run(dto);
+  changeRole(dto: ChangeRoleUserDto) {
+    return this.changeRoleUserService.run(dto);
   }
 }
