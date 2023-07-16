@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { GenerateTokenService } from '../generate-token/generate-token.service';
 import * as bcrypt from 'bcrypt';
 import { SignInDto } from './dto/sign-in.dto';
@@ -9,6 +9,8 @@ import { GenerateRefreshTokenService } from '../generate-refresh-token/generate-
 @Injectable()
 @Public()
 export class SignInService {
+  private readonly logger = new Logger(`@service/${SignInService.name}`);
+
   constructor(
     private readonly prismaService: PrismaService,
     private readonly generateTokenService: GenerateTokenService,
@@ -16,16 +18,15 @@ export class SignInService {
   ) {}
 
   async run({ email, password }: SignInDto) {
-    const user = await this.prismaService.user.findUniqueOrThrow({
-      where: { email },
-      include: {
-        role: true,
-      },
-    });
+    this.logger.log('run SignInService');
+
+    const user = await this.getUser(email);
+    this.logger.log(`Get user with id ${user.id}`);
 
     const isEqualPasswords = bcrypt.compareSync(password, user.password);
 
     if (!user || !isEqualPasswords) {
+      this.logger.log(`User unauthorized`);
       throw new UnauthorizedException();
     }
 
@@ -38,5 +39,14 @@ export class SignInService {
     ]);
 
     return { accessToken, refreshToken };
+  }
+
+  private getUser(email: string) {
+    return this.prismaService.user.findUniqueOrThrow({
+      where: { email },
+      include: {
+        role: true,
+      },
+    });
   }
 }

@@ -1,12 +1,19 @@
 import { IAuthorizedUser } from '@/common/interfaces';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class GenerateTokenService {
+  private readonly logger = new Logger(`@service/${GenerateTokenService.name}`);
+
   constructor(private jwtService: JwtService) {}
 
-  run(payload: IAuthorizedUser) {
-    return this.jwtService.signAsync(payload);
+  async run(payload: IAuthorizedUser) {
+    this.logger.log('run GenerateTokenService');
+
+    const accessToken = await this.jwtService.signAsync(payload);
+    this.logger.log(`Generated access token`);
+
+    return accessToken;
   }
 }

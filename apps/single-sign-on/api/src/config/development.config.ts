@@ -2,11 +2,11 @@ function developmentConfig() {
   return {
     authToken: {
       secret: process.env.ACCESS_TOKEN_SECRET,
-      expiration: Number(process.env.ACCESS_TOKEN_TTL) || 60 * 15,
+      expiration: Number(process.env.ACCESS_TOKEN_TTL) || 60,
     },
     refreshToken: {
       secret: process.env.REFRESH_TOKEN_SECRET,
-      expiration: Number(process.env.REFRESH_TOKEN_TTL) || 60 * 60 * 24,
+      expiration: Number(process.env.REFRESH_TOKEN_TTL) || 60 * 2,
     },
   };
 }

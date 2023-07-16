@@ -1,24 +1,37 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { addSeconds, getUnixTime } from 'date-fns';
 
 @Injectable()
 export class GenerateRefreshTokenService {
+  private readonly logger = new Logger(
+    `@service/${GenerateRefreshTokenService.name}`,
+  );
+
   constructor(
     private readonly prismaService: PrismaService,
     private readonly configService: ConfigService,
   ) {}
 
   async run(userId: string) {
-    await this.deleteOldsRefreshToken(userId);
-    const expiresIn = this.getExpiresIn();
+    this.logger.log('Run GenerateRefreshTokenService');
 
-    return this.createRefreshToken(userId, expiresIn);
+    await this.deleteOldsRefreshToken(userId);
+    this.logger.log(`Delete all refresh tokens from userId ${userId}`);
+
+    const expiresIn = this.getExpiresIn();
+    const refreshToken = await this.createRefreshToken(userId, expiresIn);
+    this.logger.log(
+      `New refresh token generated with expires in: ${expiresIn}`,
+    );
+
+    return refreshToken;
   }
 
   private getExpiresIn() {
     const refreshTokenTTL = this.getRefreshTokenTTL();
+
     return getUnixTime(addSeconds(new Date(), refreshTokenTTL));
   }
 
