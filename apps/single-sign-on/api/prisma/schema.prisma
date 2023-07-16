@@ -19,6 +19,8 @@ model User {
   roleId String
   role   Role   @relation(fields: [roleId], references: [id])
 
+  RefreshToken RefreshToken?
+
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
@@ -29,10 +31,22 @@ model Role {
   id   String @id @default(uuid())
   name String @unique
 
-  User User[]
+  user User[]
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   @@map("roles")
+}
+
+model RefreshToken {
+  id        String @id @default(uuid())
+  expiresIn Int    @map("expires_in")
+
+  userId String @unique() @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@map("refresh_token")
 }

@@ -81,6 +81,7 @@ describe('ChangeRoleUserService', () => {
     expect(error).toBeInstanceOf(NotFoundException);
     expect(error.message).toBe('Usuário não encontrado.');
   });
+
   it('should throw NotFoundException when role not exists', async () => {
     mockPrismaService.role.findUnique.mockResolvedValue(null);
 

@@ -6,11 +6,19 @@ import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './services/auth.service';
 import { GenerateTokenService } from './services/generate-token/generate-token.service';
 import { SignInService } from './services/sign-in/sign-in.service';
+import { GenerateRefreshTokenService } from './services/generate-refresh-token/generate-refresh-token.service';
+import { RefreshTokenService } from './services/refresh-token/refresh-token.service';
 
 @Module({
   imports: [PrismaModule, UsersModule, jwtModuleConfigs()],
   controllers: [AuthController],
-  providers: [AuthService, GenerateTokenService, SignInService],
+  providers: [
+    AuthService,
+    GenerateTokenService,
+    SignInService,
+    GenerateRefreshTokenService,
+    RefreshTokenService,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}
