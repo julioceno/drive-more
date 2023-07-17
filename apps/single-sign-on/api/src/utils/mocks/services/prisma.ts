@@ -5,10 +5,14 @@ export const mockPrismaService = {
     create: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
+    deleteMany: jest.fn(),
     count: jest.fn(),
   },
   role: {
     findUnique: jest.fn(),
     findUniqueOrThrow: jest.fn(),
+  },
+  refreshToken: {
+    deleteMany: jest.fn(),
   },
 };
