@@ -7,16 +7,6 @@ import { UpdatePasswordUserService } from '@/users/services/update-password-user
 import { UpdateUserService } from '@/users/services/update-user/update-user.service';
 import { UsersService } from '@/users/services/users.service';
 
-export const mockUsersService = {
-  create: jest.fn(),
-  findAll: jest.fn(),
-  findOne: jest.fn(),
-  update: jest.fn(),
-  updatePassword: jest.fn(),
-  delete: jest.fn(),
-  changeRole: jest.fn(),
-};
-
 export const mockCreateUserService = {
   run: jest.fn(),
 };
@@ -46,10 +36,6 @@ export const mockChangeRoleUserService = {
 };
 
 export const usersMocks = [
-  {
-    provide: UsersService,
-    useValue: mockUsersService,
-  },
   {
     provide: CreateUserService,
     useValue: mockCreateUserService,
