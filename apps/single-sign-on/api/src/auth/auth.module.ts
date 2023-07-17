@@ -8,6 +8,7 @@ import { GenerateTokenService } from './services/generate-token/generate-token.s
 import { SignInService } from './services/sign-in/sign-in.service';
 import { GenerateRefreshTokenService } from './services/generate-refresh-token/generate-refresh-token.service';
 import { RefreshTokenService } from './services/refresh-token/refresh-token.service';
+import { LogoutService } from './services/logout/logout.service';
 
 @Module({
   imports: [PrismaModule, UsersModule, jwtModuleConfigs()],
@@ -18,6 +19,7 @@ import { RefreshTokenService } from './services/refresh-token/refresh-token.serv
     SignInService,
     GenerateRefreshTokenService,
     RefreshTokenService,
+    LogoutService,
   ],
   exports: [AuthService],
 })
