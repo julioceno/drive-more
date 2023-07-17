@@ -1,5 +1,5 @@
 import { Messages } from '@/common';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class SignInDto {
   @IsNotEmpty({ message: Messages.required('email') })
@@ -7,6 +7,10 @@ export class SignInDto {
   email: string;
 
   @IsNotEmpty({ message: Messages.required('password') })
-  @IsNotEmpty({ message: Messages.required('password') })
+  @IsString({ message: Messages.required('password') })
   password: string;
+
+  @IsNotEmpty({ message: Messages.required('clientId') })
+  @IsUUID(4, { message: Messages.uuid('clientId') })
+  clientId: string;
 }

@@ -5,20 +5,35 @@ import { SignInDto } from './dto/sign-in.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Public, RoleEnum } from '@/common';
 import { GenerateRefreshTokenService } from '../generate-refresh-token/generate-refresh-token.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 @Public()
 export class SignInService {
   private readonly logger = new Logger(`@service/${SignInService.name}`);
 
+  private readonly possibleAuthenticate: Map<RoleEnum, string[]> = new Map([
+    [
+      RoleEnum.ADMIN,
+      [
+        this.getAuthClientId(),
+        this.getLogsClientId(),
+        this.getSchedulingClientId(),
+      ],
+    ],
+    [RoleEnum.USER, [this.getAuthClientId(), this.getSchedulingClientId()]],
+  ]);
+
   constructor(
     private readonly prismaService: PrismaService,
     private readonly generateTokenService: GenerateTokenService,
     private readonly refreshTokenService: GenerateRefreshTokenService,
+    private readonly configService: ConfigService,
   ) {}
 
-  async run({ email, password }: SignInDto) {
+  async run(dto: SignInDto) {
     this.logger.log('run SignInService');
+    const { email, password, clientId } = dto;
 
     const user = await this.getUser(email);
     this.logger.log(`Get user with id ${user.id}`);
@@ -28,6 +43,23 @@ export class SignInService {
     if (!user || !isEqualPasswords) {
       this.logger.log(`User unauthorized`);
       throw new UnauthorizedException();
+    }
+
+    const canAuthenticate = this.verifyCanAuthenticate(
+      user.role.name as RoleEnum,
+      clientId,
+    );
+
+    this.logger.log(
+      `User is ${
+        canAuthenticate ? 'authorized' : 'not authorized'
+      } to access this system with client id ${clientId}`,
+    );
+
+    if (!canAuthenticate) {
+      throw new UnauthorizedException(
+        'User not authorized to access this system.',
+      );
     }
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -48,5 +80,21 @@ export class SignInService {
         role: true,
       },
     });
+  }
+
+  private verifyCanAuthenticate(role: RoleEnum, clientId: string) {
+    return this.possibleAuthenticate.get(role).includes(clientId);
+  }
+
+  private getAuthClientId() {
+    return this.configService.get<string>('clientsIds.authClientId');
+  }
+
+  private getLogsClientId() {
+    return this.configService.get<string>('clientsIds.logsClientId');
+  }
+
+  private getSchedulingClientId() {
+    return this.configService.get<string>('clientsIds.schedulingClientId');
   }
 }
