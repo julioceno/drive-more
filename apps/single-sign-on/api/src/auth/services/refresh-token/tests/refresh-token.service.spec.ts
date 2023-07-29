@@ -6,7 +6,7 @@ import { RefreshTokenDto } from '../dto/refresh-token.dto';
 import { UnauthorizedException } from '@nestjs/common';
 import {
   mockGenerateTokenService,
-  mockRefreshTokenService,
+  mockGenerateRefreshTokenService,
 } from '@/utils/mocks/services/auth';
 import { addMinutes, getUnixTime } from 'date-fns';
 
@@ -42,7 +42,7 @@ describe('RefreshTokenService', () => {
     mockerRefreshTokenValue(getUnixTime(addMinutes(new Date(), 100)));
 
     mockGenerateTokenService.run.mockResolvedValue('mock.accessToken');
-    mockRefreshTokenService.run.mockResolvedValue('mock.refreshToken');
+    mockGenerateRefreshTokenService.run.mockResolvedValue('mock.refreshToken');
   });
 
   afterEach(() => {

@@ -1,9 +1,14 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { GenerateTokenService } from '../generate-token/generate-token.service';
 import * as bcrypt from 'bcrypt';
 import { SignInDto } from './dto/sign-in.dto';
 import { PrismaService } from '@/prisma/prisma.service';
-import { Public, RoleEnum } from '@/common';
+import { Messages, Public, RoleEnum } from '@/common';
 import { GenerateRefreshTokenService } from '../generate-refresh-token/generate-refresh-token.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -16,12 +21,12 @@ export class SignInService {
     [
       RoleEnum.ADMIN,
       [
-        this.getAuthClientId(),
+        this.getSSOClientId(),
         this.getLogsClientId(),
         this.getSchedulingClientId(),
       ],
     ],
-    [RoleEnum.USER, [this.getAuthClientId(), this.getSchedulingClientId()]],
+    [RoleEnum.USER, [this.getSSOClientId(), this.getSchedulingClientId()]],
   ]);
 
   constructor(
@@ -36,13 +41,16 @@ export class SignInService {
     const { email, password, clientId } = dto;
 
     const user = await this.getUser(email);
+    if (!user) {
+      this.unauthorized();
+    }
+
     this.logger.log(`Get user with id ${user.id}`);
 
     const isEqualPasswords = bcrypt.compareSync(password, user.password);
 
-    if (!user || !isEqualPasswords) {
-      this.logger.log(`User unauthorized`);
-      throw new UnauthorizedException();
+    if (!isEqualPasswords) {
+      this.unauthorized();
     }
 
     const canAuthenticate = this.verifyCanAuthenticate(
@@ -57,9 +65,7 @@ export class SignInService {
     );
 
     if (!canAuthenticate) {
-      throw new UnauthorizedException(
-        'User not authorized to access this system.',
-      );
+      this.unauthorized('User not authorized to access this system.');
     }
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -73,8 +79,8 @@ export class SignInService {
     return { accessToken, refreshToken };
   }
 
-  private getUser(email: string) {
-    return this.prismaService.user.findUniqueOrThrow({
+  private async getUser(email: string) {
+    return this.prismaService.user.findUnique({
       where: { email },
       include: {
         role: true,
@@ -86,7 +92,7 @@ export class SignInService {
     return this.possibleAuthenticate.get(role).includes(clientId);
   }
 
-  private getAuthClientId() {
+  private getSSOClientId() {
     return this.configService.get<string>('clientsIds.authClientId');
   }
 
@@ -96,5 +102,11 @@ export class SignInService {
 
   private getSchedulingClientId() {
     return this.configService.get<string>('clientsIds.schedulingClientId');
+  }
+
+  private unauthorized(message?: string) {
+    this.logger.log(message ?? 'User unauthorized');
+
+    throw new UnauthorizedException(message);
   }
 }
