@@ -5,8 +5,14 @@ import { usersMocks } from './users';
 import { mockJwtService } from './jwt';
 import { ConfigService } from '@nestjs/config';
 import { mockConfigService } from './config';
+import { auth } from './auth';
 
-const servicesMocks: { provide: any; useValue: any }[] = [
+export interface IServiceMock {
+  provide: any;
+  useValue: any;
+}
+
+const servicesMocks: IServiceMock[] = [
   {
     provide: PrismaService,
     useValue: mockPrismaService,
@@ -21,6 +27,7 @@ const servicesMocks: { provide: any; useValue: any }[] = [
   },
 
   ...usersMocks,
+  ...auth,
 ];
 
 export { servicesMocks };
