@@ -1,11 +1,12 @@
 import { PrismaClient } from '@prisma/client';
-import { roles, users } from './resources';
+import { refreshTokens, roles, users } from './resources';
 
 export const prisma = new PrismaClient();
 
 async function main() {
   await roles();
   await users();
+  await refreshTokens();
 }
 
 main()
