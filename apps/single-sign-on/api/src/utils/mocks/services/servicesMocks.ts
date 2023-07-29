@@ -3,6 +3,8 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { mockPrismaService } from './prisma';
 import { usersMocks } from './users';
 import { mockJwtService } from './jwt';
+import { ConfigService } from '@nestjs/config';
+import { mockConfigService } from './config';
 
 const servicesMocks: { provide: any; useValue: any }[] = [
   {
@@ -12,6 +14,10 @@ const servicesMocks: { provide: any; useValue: any }[] = [
   {
     provide: JwtService,
     useValue: mockJwtService,
+  },
+  {
+    provide: ConfigService,
+    useValue: mockConfigService,
   },
 
   ...usersMocks,

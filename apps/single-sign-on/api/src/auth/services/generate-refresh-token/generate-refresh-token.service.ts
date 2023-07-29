@@ -31,7 +31,6 @@ export class GenerateRefreshTokenService {
 
   private getExpiresIn() {
     const refreshTokenTTL = this.getRefreshTokenTTL();
-
     return getUnixTime(addSeconds(new Date(), refreshTokenTTL));
   }
 

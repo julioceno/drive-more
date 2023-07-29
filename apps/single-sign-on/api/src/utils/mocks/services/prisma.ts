@@ -13,6 +13,7 @@ export const mockPrismaService = {
     findUniqueOrThrow: jest.fn(),
   },
   refreshToken: {
+    create: jest.fn(),
     deleteMany: jest.fn(),
   },
 };
