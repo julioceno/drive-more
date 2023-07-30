@@ -3,6 +3,7 @@ import { Body, Controller, HttpStatus, Post, HttpCode } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { RefreshTokenDto } from '../services/refresh-token/dto/refresh-token.dto';
 import { SignInDto } from '../services/sign-in/dto/sign-in.dto';
+import { VerifyTokenDto } from '../services/verify-token/dto/verify-token.dto';
 
 @Controller('auth')
 @Public()
@@ -25,5 +26,12 @@ export class AuthController {
   @Post('logout')
   logout(@AuthorizedUser('id') userId: string) {
     return this.authService.logout(userId);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('verify-token')
+  verifyToken(@Body() dto: VerifyTokenDto) {
+    return this.authService.verifyToken(dto);
   }
 }

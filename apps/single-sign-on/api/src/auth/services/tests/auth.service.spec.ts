@@ -6,8 +6,10 @@ import {
   mockLogoutService,
   mockRefreshTokenService,
   mockSignInService,
+  mockVerifyTokenService,
 } from '@/utils/mocks/services/auth';
 import { RefreshTokenDto } from '../refresh-token/dto/refresh-token.dto';
+import { VerifyTokenDto } from '../verify-token/dto/verify-token.dto';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -64,5 +66,12 @@ describe('AuthService', () => {
   it('should invoke logout method', async () => {
     await service.logout(userId);
     expect(mockLogoutService.run).toHaveBeenLastCalledWith(userId);
+  });
+
+  it('should invoke verifyToken method', async () => {
+    const dto: VerifyTokenDto = { token: 'mock.token' };
+
+    await service.verifyToken(dto);
+    expect(mockVerifyTokenService.run).toHaveBeenLastCalledWith(dto);
   });
 });

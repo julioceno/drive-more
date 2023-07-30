@@ -15,8 +15,8 @@ export class AuthGuard implements CanActivate {
   private readonly logger = new Logger(`@guard/${AuthGuard.name}`);
 
   constructor(
-    private jwtService: JwtService,
-    private reflector: Reflector,
+    private readonly jwtService: JwtService,
+    private readonly reflector: Reflector,
     private readonly configService: ConfigService,
   ) {}
 

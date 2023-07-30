@@ -4,6 +4,7 @@ import { IServiceMock } from './servicesMocks';
 import { SignInService } from '@/auth/services/sign-in/sign-in.service';
 import { RefreshTokenService } from '@/auth/services/refresh-token/refresh-token.service';
 import { LogoutService } from '@/auth/services/logout/logout.service';
+import { VerifyTokenService } from '@/auth/services/verify-token/verify-token.service';
 
 export const mockGenerateTokenService = {
   run: jest.fn(),
@@ -22,6 +23,10 @@ export const mockRefreshTokenService = {
 };
 
 export const mockLogoutService = {
+  run: jest.fn(),
+};
+
+export const mockVerifyTokenService = {
   run: jest.fn(),
 };
 
@@ -45,5 +50,9 @@ export const auth: IServiceMock[] = [
   {
     provide: LogoutService,
     useValue: mockLogoutService,
+  },
+  {
+    provide: VerifyTokenService,
+    useValue: mockVerifyTokenService,
   },
 ];
