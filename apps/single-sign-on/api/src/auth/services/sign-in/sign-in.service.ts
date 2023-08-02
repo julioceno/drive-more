@@ -72,6 +72,7 @@ export class SignInService {
       this.generateTokenService.run({
         id: user.id,
         role: user.role.name as RoleEnum,
+        clientId: dto.clientId,
       }),
       this.refreshTokenService.run(user.id),
     ]);

@@ -1,7 +1,13 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { VerifyTokenDto } from './dto/verify-token.dto';
+import { IAuthorizedUser } from '@/common/interfaces';
 
 @Injectable()
 export class VerifyTokenService {
@@ -18,17 +24,20 @@ export class VerifyTokenService {
 
     try {
       this.logger.log('Starting verify token');
-      const payload = await this.jwtService.verifyAsync(token, {
+      const payload = (await this.jwtService.verifyAsync(token, {
         secret: this.getSecret(),
-      });
+      })) as IAuthorizedUser;
 
       this.logger.log('Token verifyed');
+
+      if (dto.clientId !== payload.clientId) {
+        throw new ForbiddenException();
+      }
 
       return { ok: true, payload };
     } catch (err) {
       this.logger.error(`An error has occurred: ${err.message}`);
-
-      return { ok: false, message: err.message };
+      throw new UnauthorizedException();
     }
   }
 
