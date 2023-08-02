@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": [
     "apps/single-sign-on/*",
+    "apps/logs/*",
     "apps/*"
   ],
   "scripts": {
