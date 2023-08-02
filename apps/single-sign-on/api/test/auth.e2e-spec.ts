@@ -163,7 +163,7 @@ describe('AuthController (e2e)', () => {
     expect(response.body.message).toBe('Unauthorized');
   });
 
-  it('/verify-token (POST -> )', async () => {
+  it('/verify-token (POST -> 401 Unauthorized when client Id is not valid)', async () => {
     const authenticate = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
@@ -183,8 +183,6 @@ describe('AuthController (e2e)', () => {
         clientId: 'client id not valid',
         token: accessToken,
       });
-
-    console.log(response.body);
 
     expect(response).toBeDefined();
     expect(response.status).toBe(401);

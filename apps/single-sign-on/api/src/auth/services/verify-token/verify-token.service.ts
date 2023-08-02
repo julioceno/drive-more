@@ -28,17 +28,13 @@ export class VerifyTokenService {
         secret: this.getSecret(),
       })) as IAuthorizedUser;
 
-      this.logger.log('Token verifyed');
-
       if (dto.clientId !== payload.clientId) {
-        console.log('forbidden');
         throw new ForbiddenException();
       }
 
       return { payload };
     } catch (err) {
       this.logger.error(`An error has occurred: ${err.message}`);
-      console.log('oi');
       throw new UnauthorizedException();
     }
   }
