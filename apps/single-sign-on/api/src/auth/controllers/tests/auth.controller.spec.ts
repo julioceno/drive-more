@@ -16,6 +16,7 @@ describe('AuthController', () => {
   let controller: AuthController;
 
   const userId = 'mock.id';
+  const clientId = 'mock.clientId';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,16 +39,16 @@ describe('AuthController', () => {
 
   it('should invoke signIn method from AuthController', async () => {
     const dto: SignInDto = {
-      email: 'email.mock',
-      password: 'password.mock',
-      clientId: 'clientId.mock',
+      email: 'mock.email',
+      password: 'mock.password',
+      clientId,
     };
 
     await controller.signIn(dto);
     expect(mockSignInService.run).toHaveBeenLastCalledWith({
-      clientId: 'clientId.mock',
-      email: 'email.mock',
-      password: 'password.mock',
+      email: 'mock.email',
+      password: 'mock.password',
+      clientId,
     });
   });
 
@@ -56,12 +57,14 @@ describe('AuthController', () => {
 
     const dto: RefreshTokenDto = {
       refreshTokenId,
+      clientId,
     };
 
     await controller.refreshToken(dto);
 
     expect(mockRefreshTokenService.run).toHaveBeenLastCalledWith({
       refreshTokenId,
+      clientId,
     });
   });
 
@@ -71,7 +74,7 @@ describe('AuthController', () => {
   });
 
   it('should invoke verifyToken method from AuthController', async () => {
-    const dto: VerifyTokenDto = { token: 'mock.token' };
+    const dto: VerifyTokenDto = { token: 'mock.token', clientId };
 
     await controller.verifyToken(dto);
     expect(mockVerifyTokenService.run).toHaveBeenLastCalledWith(dto);

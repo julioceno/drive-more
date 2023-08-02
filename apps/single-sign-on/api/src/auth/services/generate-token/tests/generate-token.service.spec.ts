@@ -11,6 +11,7 @@ describe('GenerateTokenService', () => {
   const payload: IAuthorizedUser = {
     id: 'mock.id',
     role: RoleEnum.ADMIN,
+    clientId: 'mock.clientId',
   };
 
   beforeEach(async () => {

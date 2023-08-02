@@ -11,7 +11,7 @@ import { IAuthorizedUser } from '@/common/interfaces';
 
 @Injectable()
 export class VerifyTokenService {
-  private readonly logger = new Logger(`@guard/${VerifyTokenService.name}`);
+  private readonly logger = new Logger(`@service/${VerifyTokenService.name}`);
 
   constructor(
     private readonly jwtService: JwtService,
@@ -31,12 +31,14 @@ export class VerifyTokenService {
       this.logger.log('Token verifyed');
 
       if (dto.clientId !== payload.clientId) {
+        console.log('forbidden');
         throw new ForbiddenException();
       }
 
-      return { ok: true, payload };
+      return { payload };
     } catch (err) {
       this.logger.error(`An error has occurred: ${err.message}`);
+      console.log('oi');
       throw new UnauthorizedException();
     }
   }

@@ -106,7 +106,7 @@ describe('AuthController (e2e)', () => {
     });
   });
 
-  it('/refresh-token (POST -> Unauthorized when refreshToken not exists)', async () => {
+  it('/refresh-token (POST -> 401 Unauthorized when refreshToken not exists)', async () => {
     const response = await request(app.getHttpServer())
       .post('/auth/refresh-token')
       .send({
@@ -123,5 +123,71 @@ describe('AuthController (e2e)', () => {
 
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
+  });
+
+  it('/verify-token (POST)', async () => {
+    const authenticate = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email: 'admin@dirigir.more.com',
+        password: 'admin',
+        clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
+      });
+
+    expect(authenticate).toBeDefined();
+    expect(authenticate.status).toBe(200);
+
+    const { accessToken } = authenticate.body;
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/verify-token')
+      .send({
+        clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
+        token: accessToken,
+      });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+  });
+
+  it('/verify-token (POST -> 401 Unauthorized when token is not valid)', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/auth/verify-token')
+      .send({
+        clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
+        token: 'not valid',
+      });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('Unauthorized');
+  });
+
+  it('/verify-token (POST -> )', async () => {
+    const authenticate = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email: 'admin@dirigir.more.com',
+        password: 'admin',
+        clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
+      });
+
+    expect(authenticate).toBeDefined();
+    expect(authenticate.status).toBe(200);
+
+    const { accessToken } = authenticate.body;
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/verify-token')
+      .send({
+        clientId: 'client id not valid',
+        token: accessToken,
+      });
+
+    console.log(response.body);
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('Unauthorized');
   });
 });

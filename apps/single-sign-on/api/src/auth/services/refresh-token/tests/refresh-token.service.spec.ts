@@ -28,6 +28,7 @@ describe('RefreshTokenService', () => {
 
   const dto: RefreshTokenDto = {
     refreshTokenId: 'a4cfd5e4-e13f-436f-bd0e-cab92055829d',
+    clientId: 'mock.clientId',
   };
 
   beforeEach(async () => {

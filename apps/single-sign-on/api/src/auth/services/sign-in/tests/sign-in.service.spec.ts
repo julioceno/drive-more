@@ -121,6 +121,7 @@ describe('SignInService', () => {
     expect(mockGenerateTokenService.run).toHaveBeenCalledWith({
       id: userId,
       role: RoleEnum.USER,
+      clientId: ssoClientId,
     });
   });
   it('should call refreshTokenService and invoke run method', async () => {

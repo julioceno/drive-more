@@ -5,14 +5,16 @@ import { VerifyTokenService } from '../verify-token.service';
 import { VerifyTokenDto } from '../dto/verify-token.dto';
 import { mockJwtService } from '@/utils/mocks/services/jwt';
 import { RoleEnum } from '@/common';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('VerifyTokenService', () => {
   let service: VerifyTokenService;
 
   const token = 'mock.token';
+  const clientId = 'mock.client';
   const secret = 'mock.secret';
 
-  const dto: VerifyTokenDto = { token };
+  const dto: VerifyTokenDto = { token, clientId };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,6 +31,7 @@ describe('VerifyTokenService', () => {
       role: RoleEnum.ADMIN,
       iat: 1690727566,
       exp: 1690728466,
+      clientId,
     });
   });
 
@@ -55,25 +58,29 @@ describe('VerifyTokenService', () => {
 
     expect(response).toBeDefined();
     expect(response).toStrictEqual({
-      ok: true,
       payload: {
         exp: 1690728466,
         iat: 1690727566,
         id: 'fdbe66f2-f31d-4302-bb97-0ff888045292',
         role: RoleEnum.ADMIN,
+        clientId,
       },
     });
   });
 
-  it('should return response ok false with message', async () => {
+  it('should throw UnauthorizedException when token is not valid', async () => {
     mockJwtService.verifyAsync.mockRejectedValue({ message: 'token expired' });
 
-    const response = await service.run(dto);
+    let error = null;
 
-    expect(response).toBeDefined();
-    expect(response).toStrictEqual({
-      ok: false,
-      message: 'token expired',
-    });
+    try {
+      await service.run(dto);
+    } catch (err) {
+      error = err;
+    }
+
+    expect(error).toBeDefined();
+    expect(error).toBeInstanceOf(UnauthorizedException);
+    expect(error.message).toBe('Unauthorized');
   });
 });
