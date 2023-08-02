@@ -53,7 +53,7 @@ describe('VerifyTokenService', () => {
     expect(mockConfigService.get).toHaveBeenLastCalledWith('authToken.secret');
   });
 
-  it('should return response ok true with payload', async () => {
+  it('should return response ok with payload', async () => {
     const response = await service.run(dto);
 
     expect(response).toBeDefined();
@@ -75,6 +75,20 @@ describe('VerifyTokenService', () => {
 
     try {
       await service.run(dto);
+    } catch (err) {
+      error = err;
+    }
+
+    expect(error).toBeDefined();
+    expect(error).toBeInstanceOf(UnauthorizedException);
+    expect(error.message).toBe('Unauthorized');
+  });
+
+  it('should throw UnauthorizedException when clientId is not valid', async () => {
+    let error = null;
+
+    try {
+      await service.run({ ...dto, clientId: 'client id not valid' });
     } catch (err) {
       error = err;
     }
