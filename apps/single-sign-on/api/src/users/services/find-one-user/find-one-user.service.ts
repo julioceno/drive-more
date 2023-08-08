@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UserEntity } from '../../entities/user.entity';
-import { Messages } from '.././../../common/messages';
+import { Messages } from 'dirigir-more-utils';
 
 @Injectable()
 export class FindOneUserService {

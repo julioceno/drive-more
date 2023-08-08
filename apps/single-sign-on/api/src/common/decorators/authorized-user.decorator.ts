@@ -1,5 +1,5 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
-import { IAuthorizedUserRequest } from '../interfaces';
+import { IAuthorizedUserRequest } from 'dirigir-more-utils';
 
 export const AuthorizedUser = createParamDecorator(
   async (prop: string, ctx: ExecutionContext) => {

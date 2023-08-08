@@ -1,7 +1,6 @@
 import { Transform, Type } from 'class-transformer';
 import { IsInt, IsObject, IsOptional } from 'class-validator';
-import { Messages } from '../messages';
-import { mapValues } from '../functions';
+import { Messages, mapValues } from 'dirigir-more-utils';
 
 export function getPaginationQueryData<T>(
   paginationQueryDto: PaginationQueryDto<T>,

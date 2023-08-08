@@ -1,16 +1,12 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { GenerateTokenService } from '../generate-token/generate-token.service';
-import * as bcrypt from 'bcrypt';
-import { SignInDto } from './dto/sign-in.dto';
+import { Public } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { Messages, Public, RoleEnum } from '@/common';
-import { GenerateRefreshTokenService } from '../generate-refresh-token/generate-refresh-token.service';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
+import { GenerateRefreshTokenService } from '../generate-refresh-token/generate-refresh-token.service';
+import { GenerateTokenService } from '../generate-token/generate-token.service';
+import { SignInDto } from './dto/sign-in.dto';
+import { RoleEnum } from 'dirigir-more-utils';
 
 @Injectable()
 @Public()

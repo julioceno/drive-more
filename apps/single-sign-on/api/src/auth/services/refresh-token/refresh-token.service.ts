@@ -2,9 +2,9 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { GenerateRefreshTokenService } from '../generate-refresh-token/generate-refresh-token.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { GenerateTokenService } from '../generate-token/generate-token.service';
-import { RoleEnum } from '@/common';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { isAfter, fromUnixTime } from 'date-fns';
+import { RoleEnum } from 'dirigir-more-utils';
 
 @Injectable()
 export class RefreshTokenService {

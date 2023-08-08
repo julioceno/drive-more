@@ -2,7 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { ChangeRoleUserDto } from './dto/change-role-user.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserEntity } from '@/users/entities/user.entity';
-import { RoleEnum } from '@/common';
+import { RoleEnum } from 'dirigir-more-utils';
 
 @Injectable()
 export class ChangeRoleUserService {

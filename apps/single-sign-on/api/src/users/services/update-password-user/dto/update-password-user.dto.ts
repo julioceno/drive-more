@@ -1,5 +1,5 @@
-import { Messages } from '@/common';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { Messages } from 'dirigir-more-utils';
 
 export class UpdatePasswordUserDto {
   @IsNotEmpty({ message: Messages.required('currentPassword') })

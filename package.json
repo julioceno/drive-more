@@ -5,7 +5,8 @@
   "workspaces": [
     "apps/single-sign-on/*",
     "apps/logs/*",
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "dev": "turbo run dev --parallel"

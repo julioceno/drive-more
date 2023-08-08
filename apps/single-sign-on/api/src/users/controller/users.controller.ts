@@ -13,9 +13,10 @@ import { CreateUserDto } from '../services/create-user/dto/create-user.dto';
 import { UpdateUserDto } from '../services/update-user/dto/update-user.dto';
 import { UsersService } from '../services/users.service';
 import { FindAllUsersDto } from '../services/find-all-users/dto/find-all-users.dto';
-import { AuthorizedUser, Role, RoleEnum } from '@/common';
+import { AuthorizedUser, Role } from '@/common';
 import { UpdatePasswordUserDto } from '../services/update-password-user/dto/update-password-user.dto';
 import { ChangeRoleUserDto } from '../services/change-role-user/dto/change-role-user.dto';
+import { RoleEnum } from 'dirigir-more-utils';
 
 @Role(RoleEnum.ADMIN)
 @Controller('users')

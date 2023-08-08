@@ -1,6 +1,7 @@
-import { Messages, PaginationQueryDto } from '@/common';
+import { PaginationQueryDto } from '@/common';
 import { Prisma } from '@prisma/client';
 import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { Messages } from 'dirigir-more-utils';
 
 export class FindAllUsersDto extends PaginationQueryDto<Prisma.UserOrderByWithAggregationInput> {
   @IsOptional()

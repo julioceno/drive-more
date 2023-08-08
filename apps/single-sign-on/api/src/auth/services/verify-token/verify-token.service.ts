@@ -7,7 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { VerifyTokenDto } from './dto/verify-token.dto';
-import { IAuthorizedUser } from '@/common/interfaces';
+import type { IAuthorizedUser } from 'dirigir-more-utils';
 
 @Injectable()
 export class VerifyTokenService {

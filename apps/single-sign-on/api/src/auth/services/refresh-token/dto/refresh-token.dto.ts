@@ -1,5 +1,5 @@
-import { Messages } from '@/common';
 import { IsNotEmpty, IsUUID } from 'class-validator';
+import { Messages } from 'dirigir-more-utils';
 
 export class RefreshTokenDto {
   @IsNotEmpty({ message: Messages.required('refreshTokenId') })

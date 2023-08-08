@@ -1,5 +1,5 @@
-import { Request } from 'express';
-import { RoleEnum } from '../enums';
+import { Request } from "express";
+import { RoleEnum } from "../enums";
 
 export interface IAuthorizedUser {
   id: string;

@@ -1,6 +1,6 @@
-import { IAuthorizedUser } from '@/common/interfaces';
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import type { IAuthorizedUser } from 'dirigir-more-utils';
 
 @Injectable()
 export class GenerateTokenService {
