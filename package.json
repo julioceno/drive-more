@@ -9,6 +9,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "turbo run build",
     "dev": "turbo run dev --parallel"
   },
   "author": "julioceno <julioreplay@gmail.com>",
