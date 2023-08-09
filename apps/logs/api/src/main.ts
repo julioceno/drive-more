@@ -1,8 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
+import { TypeErrorExceptionFilter } from './common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3031);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
+  app.use(cookieParser());
+
+  app.useGlobalFilters(new TypeErrorExceptionFilter());
+
+  await app.listen(process.env.PORT || 3031);
 }
 bootstrap();
