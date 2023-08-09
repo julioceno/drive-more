@@ -1,0 +1,17 @@
+version: '3'
+services:
+  dirigir-more-logs-test-db:
+    container_name: dirigir-more-logs-test-db
+    image: postgres:15-alpine
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_DB=dirigir_more_logs_test'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready', '-d', 'dirigir_more_logs_test']
+      interval: 2s
+      timeout: 60s
+      retries: 5
+      start_period: 3s
+    ports:
+      - 5442:5432
