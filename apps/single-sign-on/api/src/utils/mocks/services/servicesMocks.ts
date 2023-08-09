@@ -6,11 +6,7 @@ import { mockJwtService } from './jwt';
 import { ConfigService } from '@nestjs/config';
 import { mockConfigService } from './config';
 import { auth } from './auth';
-
-export interface IServiceMock {
-  provide: any;
-  useValue: any;
-}
+import { IServiceMock } from 'dirigir-more-utils';
 
 const servicesMocks: IServiceMock[] = [
   {
