@@ -3,12 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SignInService } from '../sign-in.service';
 import { SignInDto } from '../dto/sign-in.dto';
 import { mockConfigService } from '@/utils/mocks/services/config';
-import { RoleEnum } from '@/common';
 import { UnauthorizedException } from '@nestjs/common';
 import {
   mockGenerateTokenService,
   mockGenerateRefreshTokenService,
 } from '@/utils/mocks/services/auth';
+import { RoleEnum } from 'dirigir-more-utils';
 
 describe('SignInService', () => {
   let service: SignInService;

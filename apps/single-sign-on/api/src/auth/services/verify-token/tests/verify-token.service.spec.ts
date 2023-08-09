@@ -4,8 +4,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { VerifyTokenService } from '../verify-token.service';
 import { VerifyTokenDto } from '../dto/verify-token.dto';
 import { mockJwtService } from '@/utils/mocks/services/jwt';
-import { RoleEnum } from '@/common';
 import { UnauthorizedException } from '@nestjs/common';
+import { RoleEnum } from 'dirigir-more-utils';
 
 describe('VerifyTokenService', () => {
   let service: VerifyTokenService;

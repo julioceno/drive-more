@@ -4,8 +4,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserEntity } from '@/users/entities/user.entity';
 import { NotFoundException } from '@nestjs/common';
 import { ChangeRoleUserService } from '../change-role-user.service';
-import { RoleEnum } from '@/common';
 import { ChangeRoleUserDto } from '../dto/change-role-user.dto';
+import { RoleEnum } from 'dirigir-more-utils';
 
 describe('ChangeRoleUserService', () => {
   let service: ChangeRoleUserService;

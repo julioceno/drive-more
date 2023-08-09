@@ -1,7 +1,6 @@
 import { handleModuleDependencies, mockPrismaService } from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RefreshTokenService } from '../refresh-token.service';
-import { RoleEnum } from '@/common';
 import { RefreshTokenDto } from '../dto/refresh-token.dto';
 import { UnauthorizedException } from '@nestjs/common';
 import {
@@ -9,6 +8,7 @@ import {
   mockGenerateRefreshTokenService,
 } from '@/utils/mocks/services/auth';
 import { addMinutes, getUnixTime } from 'date-fns';
+import { RoleEnum } from 'dirigir-more-utils';
 
 describe('RefreshTokenService', () => {
   let service: RefreshTokenService;

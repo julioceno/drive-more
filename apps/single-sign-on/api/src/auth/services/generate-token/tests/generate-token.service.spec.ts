@@ -1,9 +1,8 @@
 import { handleModuleDependencies } from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GenerateTokenService } from '../generate-token.service';
-import { IAuthorizedUser } from '@/common/interfaces';
-import { RoleEnum } from '@/common';
 import { mockJwtService } from '@/utils/mocks/services/jwt';
+import { IAuthorizedUser, RoleEnum } from 'dirigir-more-utils';
 
 describe('GenerateTokenService', () => {
   let service: GenerateTokenService;
