@@ -6,6 +6,7 @@ import { RefreshTokenDto } from './refresh-token/dto/refresh-token.dto';
 import { LogoutService } from './logout/logout.service';
 import { VerifyTokenService } from './verify-token/verify-token.service';
 import { VerifyTokenDto } from './verify-token/dto/verify-token.dto';
+import { GrpcMethod } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {

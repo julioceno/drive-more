@@ -1,10 +1,10 @@
 import { GenerateRefreshTokenService } from '@/auth/services/generate-refresh-token/generate-refresh-token.service';
 import { GenerateTokenService } from '@/auth/services/generate-token/generate-token.service';
-import { IServiceMock } from './servicesMocks';
 import { SignInService } from '@/auth/services/sign-in/sign-in.service';
 import { RefreshTokenService } from '@/auth/services/refresh-token/refresh-token.service';
 import { LogoutService } from '@/auth/services/logout/logout.service';
 import { VerifyTokenService } from '@/auth/services/verify-token/verify-token.service';
+import { IServiceMock } from 'dirigir-more-utils';
 
 export const mockGenerateTokenService = {
   run: jest.fn(),

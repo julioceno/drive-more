@@ -6,28 +6,11 @@ import { SignInDto } from '../services/sign-in/dto/sign-in.dto';
 import { VerifyTokenDto } from '../services/verify-token/dto/verify-token.dto';
 import { GrpcMethod } from '@nestjs/microservices';
 
-@Controller('auth')
+@Controller()
 @Public()
+// TODO: create unitary and e2e tests
 export class AuthController {
   constructor(private authService: AuthService) {}
-
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() dto: SignInDto) {
-    return this.authService.signIn(dto);
-  }
-
-  @HttpCode(HttpStatus.OK)
-  @Post('refresh-token')
-  refreshToken(@Body() dto: RefreshTokenDto) {
-    return this.authService.refreshToken(dto);
-  }
-
-  @HttpCode(HttpStatus.OK)
-  @Post('logout')
-  logout(@AuthorizedUser('id') userId: string) {
-    return this.authService.logout(userId);
-  }
 
   @Public()
   @HttpCode(HttpStatus.OK)
