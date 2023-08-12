@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/client';
 import { addMinutes, getUnixTime } from 'date-fns';
 import { prisma } from '../seed';
+import { Prisma } from 'prisma/types/client';
 
 const data: Prisma.RefreshTokenCreateManyInput[] = [
   {

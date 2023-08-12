@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from 'prisma/types/client';
 import { refreshTokens, roles, users } from './resources';
 
 export const prisma = new PrismaClient();

@@ -2,9 +2,9 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
 import { getPaginationQueryData } from '@/common';
-import { Prisma } from '@prisma/client';
 import { UserEntity } from '@/users/entities/user.entity';
 import { FindListEntity } from '@/common/entities/find-list.entity';
+import { Prisma } from 'prisma/types/client';
 
 @Injectable()
 export class FindAllUsersService {
