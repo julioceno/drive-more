@@ -1,3 +1,3 @@
-import { IServiceMock } from 'dirigir-more-utils';
+import { IServiceMock } from '@/common';
 
 export const servicesMocks: IServiceMock[] = [];
