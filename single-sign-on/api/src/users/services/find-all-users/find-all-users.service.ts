@@ -4,7 +4,7 @@ import { FindAllUsersDto } from './dto/find-all-users.dto';
 import { getPaginationQueryData } from '@/common';
 import { UserEntity } from '@/users/entities/user.entity';
 import { FindListEntity } from '@/common/entities/find-list.entity';
-import { Prisma } from 'prisma/types/client';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class FindAllUsersService {

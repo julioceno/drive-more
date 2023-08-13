@@ -1,4 +1,4 @@
-import { Role, User } from 'prisma/types/client';
+import { Role, User } from '@prisma/client';
 
 interface UserConstructorProps extends User {
   role?: Role;

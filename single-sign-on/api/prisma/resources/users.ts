@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/types/client';
+import { Prisma } from '@prisma/client';
 import { prisma } from '../seed';
 
 const data: Prisma.UserCreateManyInput[] = [

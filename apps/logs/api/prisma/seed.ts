@@ -1,5 +1,5 @@
 import { logs } from './resources';
-import { PrismaClient } from './types/client';
+import { Prisma } from '@prisma/client';
 
 export const prisma = new PrismaClient();
 
