@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '../seed';
-import { RoleEnum } from '@/common';
+import { RoleEnum } from '../../src/common';
 
 const data: Prisma.RoleCreateManyInput[] = [
   {
