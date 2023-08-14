@@ -1,11 +1,8 @@
 import { InjectionToken } from '@nestjs/common';
 import { getMockByFunction } from './get-mock-by-function';
-import { IServiceMock } from '@/common';
+import { servicesMocks } from '../services';
 
-export function handleModuleDependenciesGlobal(
-  servicesMocks: IServiceMock[],
-  token: InjectionToken,
-) {
+export function handleModuleDependencies(token: InjectionToken) {
   const mock = servicesMocks.find((service) => service.provide === token);
 
   if (mock) return mock.useValue;

@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '../users.controller';
 import { UsersService } from '@/users/services/users.service';
-import { handleModuleDependencies } from '@/utils';
 import { CreateUserDto } from '@/users/services/create-user/dto/create-user.dto';
 import { FindAllUsersDto } from '@/users/services/find-all-users/dto/find-all-users.dto';
 import { UpdateUserDto } from '@/users/services/update-user/dto/update-user.dto';
@@ -11,6 +10,7 @@ import {
   mockFindOneUserService,
   mockUpdateUserService,
 } from '@/utils/mocks/services/users';
+import { handleModuleDependencies } from '@/utils';
 
 describe('UsersController', () => {
   let controller: UsersController;

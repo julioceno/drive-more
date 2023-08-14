@@ -1,6 +1,6 @@
 import { ArgumentsHost, Catch, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { capitalizeFirstLetter } from '@/common';
+import { capitalizeFirstLetter } from '../../functions';
 import { Response } from 'express';
 import { Prisma } from '@prisma/client';
 
