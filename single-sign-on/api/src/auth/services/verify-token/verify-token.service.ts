@@ -24,6 +24,7 @@ export class VerifyTokenService {
 
     try {
       this.logger.log('Starting verify token');
+      console.log({ token, secret: this.getSecret() });
       const payload = (await this.jwtService.verifyAsync(token, {
         secret: this.getSecret(),
       })) as IAuthorizedUser;

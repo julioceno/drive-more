@@ -19,5 +19,5 @@ message VerifyTokenParams {
 message AuthorizedUser {
     string id = 1;
     Role role = 2;
-    string clientId = 3
+    string clientId = 3;
 };
