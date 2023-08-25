@@ -1,14 +1,10 @@
+import { SsoService } from '@/sso/services/sso.service';
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { ROLE_KEY } from '../decorators';
-import { IAuthorizedUserRequest, RoleEnum } from '@/common';
-import { VerifyTokenService } from '@/sso/services/verify-token/verify-token.service';
-import { SsoService } from '@/sso/services/sso.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

@@ -6,7 +6,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common';
 import { VerifyTokenService } from './sso/services/verify-token/verify-token.service';
 import { ssoClientConfigs } from './config/sso-client.configs';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule } from './config/config.module';
 
 @Module({
   imports: [SsoModule, ssoClientConfigs(), ConfigModule],

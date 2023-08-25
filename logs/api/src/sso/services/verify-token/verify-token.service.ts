@@ -34,7 +34,6 @@ export class VerifyTokenService implements OnModuleInit {
     this.logger.log(`Getting auth status from params token=${token}`);
 
     try {
-      console.log(this.getClientId());
       const user = await retry(
         async () =>
           await firstValueFrom(
@@ -48,16 +47,15 @@ export class VerifyTokenService implements OnModuleInit {
 
       this.logger.log('Verify is successful');
 
+      console.log({ user });
       return user;
     } catch (err) {
-      console.log({ err });
       this.logger.error('There was an error');
       throw new BadGatewayException();
     }
   }
 
   private getClientId() {
-    console.log(process.env.CLIENT_ID);
     return this.configService.get('auth.clientId');
   }
 }
