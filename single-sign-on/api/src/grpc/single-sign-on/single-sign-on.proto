@@ -2,11 +2,6 @@ syntax = "proto3";
 
 package single_sign_on;
 
-enum Role {
-    ADMIN = 0;
-    USER = 1;
-};
-
 service AuthService {
     rpc VerifyToken (VerifyTokenParams) returns (AuthorizedUser);
 };
@@ -18,6 +13,6 @@ message VerifyTokenParams {
 
 message AuthorizedUser {
     string id = 1;
-    Role role = 2;
+    string role = 2;
     string clientId = 3;
 };
