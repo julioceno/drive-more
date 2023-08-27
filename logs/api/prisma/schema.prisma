@@ -10,10 +10,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Module {
+  id   String @id @default(uuid())
+  name String @unique
+
+  resources Resource[]
+
+  @@map("modules")
+}
+
+model Resource {
+  id   String @id @default(uuid())
+  name String
+
+  moduleId String @map("module_id")
+  Module   Module @relation(fields: [moduleId], references: [id])
+
+  logs Log[]
+
+  @@unique([name, moduleId])
+  @@map("resources")
+}
+
 model Log {
   id String @id @default(uuid())
 
+  creatorEmail String @map("creator_email")
+  action       Action
+  entityId     String @map("entity_id")
+  payload      Json
+
   createdAt DateTime @default(now()) @map("created_at")
 
+  resourceId String   @map("resource_id")
+  Resource   Resource @relation(fields: [resourceId], references: [id])
+
   @@map("logs")
+}
+
+enum Action {
+  CREATE
+  UPDATE
+  DELETE
+  OTHER
 }

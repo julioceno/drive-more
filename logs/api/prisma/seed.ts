@@ -1,9 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import { logs } from './resources';
+import { logs, modules } from './resources';
 
 export const prisma = new PrismaClient();
 
 async function main() {
+  await modules();
   await logs();
 }
 
