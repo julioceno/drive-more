@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package single_sign_on;
 
-
-
 service AuthService {
     rpc VerifyToken (VerifyTokenParams) returns (AuthorizedUser);
 };

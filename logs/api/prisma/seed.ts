@@ -8,7 +8,7 @@ async function main() {
   await logs();
 }
 
-main()
+/* main()
   .then(async () => {
     await prisma.$disconnect();
   })
@@ -17,3 +17,4 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+ */

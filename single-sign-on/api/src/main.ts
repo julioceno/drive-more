@@ -11,6 +11,7 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -18,10 +19,13 @@ async function bootstrap() {
     }),
   );
 
+  console.log(`${process.env.GRPC_SSO_HOST}:${process.env.GRPC_SSO_PORT}`);
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'single_sign_on',
+      url: `${process.env.GRPC_SSO_HOST}:${process.env.GRPC_SSO_PORT}`,
       protoPath: join(__dirname, '../grpc/single-sign-on/single-sign-on.proto'),
       loader: { arrays: true, objects: true },
     },

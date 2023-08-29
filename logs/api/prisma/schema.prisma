@@ -11,8 +11,9 @@ datasource db {
 }
 
 model Module {
-  id   String @id @default(uuid())
-  name String @unique
+  id     String @id @default(uuid())
+  codigo Int    @default(autoincrement())
+  name   String @unique
 
   resources Resource[]
 
@@ -20,8 +21,9 @@ model Module {
 }
 
 model Resource {
-  id   String @id @default(uuid())
-  name String
+  id     String @id @default(uuid())
+  codigo Int    @default(autoincrement())
+  name   String
 
   moduleId String @map("module_id")
   Module   Module @relation(fields: [moduleId], references: [id])
@@ -33,7 +35,8 @@ model Resource {
 }
 
 model Log {
-  id String @id @default(uuid())
+  id     String @id @default(uuid())
+  codigo Int    @default(autoincrement())
 
   creatorEmail String @map("creator_email")
   action       Action

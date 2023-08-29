@@ -12,12 +12,12 @@ export class CreateLogDto {
   action: Action;
 
   @IsNotEmpty({ message: Messages.required('payload') })
-  @IsJSON({ message: Messages.json('payload') })
+  /* @IsJSON({ message: Messages.json('payload') }) */
   payload: Prisma.JsonObject;
 
-  @IsNotEmpty({ message: Messages.required('resourceId') })
-  @IsString({ message: Messages.string('resourceId') })
-  resourceId: string;
+  @IsNotEmpty({ message: Messages.required('entityId') })
+  @IsString({ message: Messages.string('entityId') })
+  entityId: string;
 
   @IsNotEmpty({ message: Messages.required('modelName') })
   @IsString({ message: Messages.string('modelName') })

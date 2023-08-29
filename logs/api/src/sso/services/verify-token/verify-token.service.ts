@@ -47,7 +47,6 @@ export class VerifyTokenService implements OnModuleInit {
 
       this.logger.log('Verify is successful');
 
-      console.log({ user });
       return user;
     } catch (err) {
       this.logger.error('There was an error');

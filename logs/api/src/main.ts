@@ -1,7 +1,7 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
+import { AppModule } from './app.module';
 import {
   PrismaClientExceptionFilter,
   TypeErrorExceptionFilter,
@@ -11,6 +11,7 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -18,12 +19,23 @@ async function bootstrap() {
     }),
   );
 
+  console.log(`${process.env.GRPC_LOGS_HOST}:${process.env.GRPC_LOGS_PORT}`);
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.GRPC,
+    options: {
+      package: 'logs',
+      url: `${process.env.GRPC_LOGS_HOST}:${process.env.GRPC_LOGS_PORT}`,
+      protoPath: join(__dirname, '../grpc/logs/logs.proto'),
+      loader: { arrays: true, objects: true },
+    },
+  });
+
   app.use(cookieParser());
 
   app.useGlobalFilters(new PrismaClientExceptionFilter());
   app.useGlobalFilters(new TypeErrorExceptionFilter());
 
-  await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3031);
 }
+
 bootstrap();
