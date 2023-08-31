@@ -23,7 +23,7 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
-      package: 'logs',
+      package: 'system_history',
       url: `${process.env.GRPC_LOGS_HOST}:${process.env.GRPC_LOGS_PORT}`,
       protoPath: join(__dirname, '../grpc/logs/logs.proto'),
       loader: { arrays: true, objects: true },

@@ -8,9 +8,16 @@ import { RolesGuard } from './common';
 import { jwtModuleConfigs } from './config/jwt-module.configs';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
+import { SystemHistoryModule } from './system-history/system-history.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, PrismaModule, jwtModuleConfigs()],
+  imports: [
+    AuthModule,
+    UsersModule,
+    PrismaModule,
+    jwtModuleConfigs(),
+    SystemHistoryModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

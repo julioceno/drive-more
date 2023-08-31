@@ -19,8 +19,6 @@ async function bootstrap() {
     }),
   );
 
-  console.log(`${process.env.GRPC_SSO_HOST}:${process.env.GRPC_SSO_PORT}`);
-
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {

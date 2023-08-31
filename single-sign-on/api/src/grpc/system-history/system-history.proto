@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package system_history;
+
+service SystemHistoryService {
+    rpc Create (CreateParams) returns (SystemHistory);
+};
+
+message CreateParams {
+    string createEmail = 1;
+    string action = 2;
+    string payload = 3;
+    string entityId = 4;
+    string modelName = 5;
+    string resourceName = 6;
+}
+
+message SystemHistory {
+    string id = 1;
+    string codigo = 2;
+    string creatorEmail = 3;
+    string action = 4;
+    string entityId = 5;
+    string createdAt = 6;
+    string resourceId = 7;
+}

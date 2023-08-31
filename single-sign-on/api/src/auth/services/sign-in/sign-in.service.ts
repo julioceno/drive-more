@@ -1,4 +1,4 @@
-import { Public } from '@/common';
+import { Public, Resources } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -7,6 +7,10 @@ import { GenerateRefreshTokenService } from '../generate-refresh-token/generate-
 import { GenerateTokenService } from '../generate-token/generate-token.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { RoleEnum } from '@/common';
+import { CreateRecordService } from '@/system-history/services/create-record/create-record.service';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 @Public()
@@ -30,6 +34,7 @@ export class SignInService {
     private readonly generateTokenService: GenerateTokenService,
     private readonly refreshTokenService: GenerateRefreshTokenService,
     private readonly configService: ConfigService,
+    private readonly systemHistoryProxyService: SystemHistoryProxyService,
   ) {}
 
   async run(dto: SignInDto) {
@@ -73,6 +78,8 @@ export class SignInService {
       this.refreshTokenService.run(user.id),
     ]);
 
+    this.createRecord(user);
+
     return { accessToken, refreshToken };
   }
 
@@ -105,5 +112,17 @@ export class SignInService {
     this.logger.log(message ?? 'User unauthorized');
 
     throw new UnauthorizedException(message);
+  }
+
+  private createRecord(user: User) {
+    const message = `User ${user.email} is authenticate`;
+
+    return this.systemHistoryProxyService.createRecordCustom({
+      action: ActionEnum.OTHER,
+      creatorEmail: user.email,
+      entityId: user.codigo,
+      payload: message,
+      resourceName: Resources.AUTH,
+    });
   }
 }

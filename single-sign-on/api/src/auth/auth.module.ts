@@ -10,9 +10,11 @@ import { GenerateRefreshTokenService } from './services/generate-refresh-token/g
 import { RefreshTokenService } from './services/refresh-token/refresh-token.service';
 import { LogoutService } from './services/logout/logout.service';
 import { VerifyTokenService } from './services/verify-token/verify-token.service';
+import { SystemHistoryModule } from '@/system-history/system-history.module';
+import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
 
 @Module({
-  imports: [PrismaModule, UsersModule, jwtModuleConfigs()],
+  imports: [PrismaModule, UsersModule, jwtModuleConfigs(), SystemHistoryModule],
   controllers: [AuthController],
   providers: [
     AuthService,
