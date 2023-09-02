@@ -117,12 +117,14 @@ export class SignInService {
   private createRecord(user: User) {
     const message = `User ${user.email} is authenticate`;
 
-    return this.systemHistoryProxyService.createRecordCustom({
-      action: ActionEnum.OTHER,
-      creatorEmail: user.email,
-      entityId: user.codigo,
-      payload: message,
-      resourceName: Resources.AUTH,
-    });
+    return this.systemHistoryProxyService
+      .createRecordCustom({
+        action: ActionEnum.OTHER,
+        creatorEmail: user.email,
+        entityId: user.codigo,
+        payload: message,
+        resourceName: Resources.AUTH,
+      })
+      .catch((err) => this.logger.error(`There was as error ${err}`));
   }
 }

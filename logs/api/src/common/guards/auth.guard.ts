@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
   constructor(private readonly ssoService: SsoService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    return true;
     const request = context.switchToHttp().getRequest();
     const token = request.cookies.token;
 

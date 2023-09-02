@@ -22,7 +22,7 @@ export class SystemHistoryProxyService {
   async createRecordCustom(dto: Omit<ICreateRecordParams, 'modelName'>) {
     this.logger.log('Creating log with payload custom');
 
-    return this.createRecordService.run({
+    return await this.createRecordService.run({
       action: dto.action,
       creatorEmail: dto.creatorEmail,
       entityId: dto.entityId,

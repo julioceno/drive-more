@@ -18,8 +18,10 @@ export class CreateLogService {
       module.id,
     );
 
-    const log = await this.createLog(dto, resource.id);
-    return new LogEntity(log);
+    const record = await this.createLog(dto, resource.id);
+
+    this.logger.log(`Record with code ${record.codigo} created`);
+    return new LogEntity(record);
   }
 
   private async createOrRetriveModule(moduleName: string) {
@@ -67,15 +69,12 @@ export class CreateLogService {
   }
 
   private createLog(dto: CreateLogDto, resourceId: string) {
-    this.logger.log(`Creating log from user ${dto.creatorEmail}`);
-
     return prisma.log.create({
       data: {
         action: dto.action,
         creatorEmail: dto.creatorEmail,
         entityId: dto.entityId,
         payload: dto.payload,
-
         resourceId,
       },
     });

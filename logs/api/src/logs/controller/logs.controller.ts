@@ -8,7 +8,7 @@ export class LogsController {
   constructor(private readonly logsService: LogsService) {}
 
   @Post()
-  @GrpcMethod('LogsService', 'Create')
+  @GrpcMethod('SystemHistoryService', 'Create')
   create(@Body() createLogDto: CreateLogDto) {
     return this.logsService.create(createLogDto);
   }

@@ -3,11 +3,11 @@ syntax = "proto3";
 package system_history;
 
 service SystemHistoryService {
-    rpc CreateRecord (CreateParams) returns (SystemHistory);
+    rpc Create (CreateParams) returns (SystemHistory);
 };
 
 message CreateParams {
-    string createEmail = 1;
+    string creatorEmail = 1;
     string action = 2;
     string payload = 3;
     string entityId = 4;

@@ -7,7 +7,7 @@ service SystemHistoryService {
 };
 
 message CreateParams {
-    string createEmail = 1;
+    string creatorEmail = 1;
     string action = 2;
     string payload = 3;
     string entityId = 4;

@@ -19,13 +19,12 @@ async function bootstrap() {
     }),
   );
 
-  console.log(`${process.env.GRPC_LOGS_HOST}:${process.env.GRPC_LOGS_PORT}`);
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'system_history',
-      url: `${process.env.GRPC_LOGS_HOST}:${process.env.GRPC_LOGS_PORT}`,
-      protoPath: join(__dirname, '../grpc/logs/logs.proto'),
+      url: `${process.env.GRPC_SYSTEM_HISTORY_HOST}:${process.env.GRPC_SYSTEM_HISTORY_PORT}`,
+      protoPath: join(__dirname, '../grpc/system-history/system-history.proto'),
       loader: { arrays: true, objects: true },
     },
   });
@@ -35,6 +34,7 @@ async function bootstrap() {
   app.useGlobalFilters(new PrismaClientExceptionFilter());
   app.useGlobalFilters(new TypeErrorExceptionFilter());
 
+  await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3031);
 }
 

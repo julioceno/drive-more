@@ -23,6 +23,7 @@ export class VerifyTokenService {
     const { token } = dto;
 
     try {
+      console.log({ secret: this.getSecret() });
       this.logger.log('Starting verify token');
       const payload = (await this.jwtService.verifyAsync(token, {
         secret: this.getSecret(),
@@ -34,6 +35,7 @@ export class VerifyTokenService {
 
       return payload;
     } catch (err) {
+      console.log({ err });
       this.logger.error(`An error has occurred: ${err.message}`);
       throw new UnauthorizedException();
     }

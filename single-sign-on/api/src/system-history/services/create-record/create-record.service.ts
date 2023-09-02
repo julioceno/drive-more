@@ -1,9 +1,8 @@
 import {
-  ActionEnum,
   ICreateRecordParams,
   IGRPCSystemHistoryService,
 } from '@/system-history/interface/system-history.interface';
-import { retry } from '@/utils';
+import { retry } from '@/utils/retry';
 import {
   BadGatewayException,
   Inject,
@@ -32,18 +31,13 @@ export class CreateRecordService implements OnModuleInit {
     this.logger.log(`Create log from user=${data.creatorEmail}`);
 
     try {
-      /*     const record = await retry(
+      const record = await retry(
         async () => await firstValueFrom(this.createRecord(data)),
         this.logger,
-      ); */
-
-      console.log({ data });
-
-      const record = await firstValueFrom(this.createRecord(data));
+      );
 
       this.logger.log('Record Created');
 
-      console.log({ record });
       return record;
     } catch (err) {
       this.logger.error('There was an error');
@@ -52,7 +46,7 @@ export class CreateRecordService implements OnModuleInit {
   }
 
   private createRecord(data: Omit<ICreateRecordParams, 'modelName'>) {
-    return this.systemHistoryService.createRecord({
+    return this.systemHistoryService.create({
       action: data.action,
       creatorEmail: data.creatorEmail,
       entityId: data.entityId,

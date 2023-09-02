@@ -7,8 +7,8 @@ import { AuthGuard } from './auth/guards';
 import { RolesGuard } from './common';
 import { jwtModuleConfigs } from './config/jwt-module.configs';
 import { PrismaModule } from './prisma/prisma.module';
-import { UsersModule } from './users/users.module';
 import { SystemHistoryModule } from './system-history/system-history.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
