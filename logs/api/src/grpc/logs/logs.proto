@@ -11,7 +11,7 @@ message CreateParams {
     string action = 2;
     string payload = 3;
     string entityId = 4;
-    string modelName = 5;
+    string moduleName = 5;
     string resourceName = 6;
 }
 

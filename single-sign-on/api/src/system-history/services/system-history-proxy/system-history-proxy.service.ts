@@ -19,7 +19,7 @@ export class SystemHistoryProxyService {
     private readonly findEntityDatabaseService: FindEntityDatabaseService,
   ) {}
 
-  async createRecordCustom(dto: Omit<ICreateRecordParams, 'modelName'>) {
+  async createRecordCustom(dto: Omit<ICreateRecordParams, 'moduleName'>) {
     this.logger.log('Creating log with payload custom');
 
     return await this.createRecordService.run({

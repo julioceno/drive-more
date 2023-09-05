@@ -1,17 +1,23 @@
 import { PrismaService } from '@/prisma/prisma.service';
 import { GenerateRefreshTokenService } from '../generate-refresh-token/generate-refresh-token.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { GenerateTokenService } from '../generate-token/generate-token.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { isAfter, fromUnixTime } from 'date-fns';
-import { RoleEnum } from '@/common';
+import { Resources, RoleEnum } from '@/common';
+import { User } from '@prisma/client';
+import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
 
 @Injectable()
 export class RefreshTokenService {
+  private readonly logger = new Logger(`@service/${RefreshTokenService.name}`);
+
   constructor(
     private readonly prismaService: PrismaService,
     private readonly generateRefreshTokenService: GenerateRefreshTokenService,
     private readonly generateTokenService: GenerateTokenService,
+    private readonly systemHistoryProxyService: SystemHistoryProxyService,
   ) {}
 
   async run(dto: RefreshTokenDto) {
@@ -37,8 +43,13 @@ export class RefreshTokenService {
       const newRefreshToken = await this.generateRefreshTokenService.run(
         user.id,
       );
+
+      this.createRecordHistory(user);
+
       return { accessToken, refreshToken: newRefreshToken };
     }
+
+    this.createRecordHistory(user);
 
     return { accessToken };
   }
@@ -70,5 +81,19 @@ export class RefreshTokenService {
       role: role as RoleEnum,
       clientId,
     });
+  }
+
+  private async createRecordHistory(user: User) {
+    const message = `Refresh token from user ${user.email} is concluded`;
+
+    return this.systemHistoryProxyService
+      .createRecordCustom({
+        action: ActionEnum.OTHER,
+        creatorEmail: user.email,
+        entityId: user.codigo,
+        payload: message,
+        resourceName: Resources.AUTH,
+      })
+      .catch((err) => this.logger.error(`There was as error ${err}`));
   }
 }

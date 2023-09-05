@@ -11,7 +11,7 @@ export class CreateLogService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async run(dto: CreateLogDto) {
-    const module = await this.createOrRetriveModule(dto.modelName);
+    const module = await this.createOrRetriveModule(dto.moduleName);
 
     const resource = await this.createOrRetriveResource(
       dto.resourceName,

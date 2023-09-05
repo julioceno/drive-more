@@ -27,7 +27,7 @@ export class CreateRecordService implements OnModuleInit {
       this.client.getService<IGRPCSystemHistoryService>('SystemHistoryService');
   }
 
-  async run(data: Omit<ICreateRecordParams, 'modelName'>) {
+  async run(data: Omit<ICreateRecordParams, 'moduleName'>) {
     this.logger.log(`Create log from user=${data.creatorEmail}`);
 
     try {
@@ -45,14 +45,14 @@ export class CreateRecordService implements OnModuleInit {
     }
   }
 
-  private createRecord(data: Omit<ICreateRecordParams, 'modelName'>) {
+  private createRecord(data: Omit<ICreateRecordParams, 'moduleName'>) {
     return this.systemHistoryService.create({
       action: data.action,
       creatorEmail: data.creatorEmail,
       entityId: data.entityId,
       resourceName: data.resourceName,
       payload: data.payload,
-      modelName: this.MODULE_NAME,
+      moduleName: this.MODULE_NAME,
     });
   }
 }

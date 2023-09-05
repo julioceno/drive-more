@@ -78,7 +78,7 @@ export class SignInService {
       this.refreshTokenService.run(user.id),
     ]);
 
-    this.createRecord(user);
+    this.createRecordHistory(user);
 
     return { accessToken, refreshToken };
   }
@@ -114,7 +114,7 @@ export class SignInService {
     throw new UnauthorizedException(message);
   }
 
-  private createRecord(user: User) {
+  private async createRecordHistory(user: User) {
     const message = `User ${user.email} is authenticate`;
 
     return this.systemHistoryProxyService

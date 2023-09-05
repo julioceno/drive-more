@@ -16,6 +16,6 @@ export interface ICreateRecordParams {
   action: ActionEnum;
   payload: unknown;
   entityId: string | number;
-  modelName: string;
+  moduleName: string;
   resourceName: string;
 }

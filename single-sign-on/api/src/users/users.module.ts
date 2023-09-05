@@ -11,9 +11,10 @@ import { UpdatePasswordUserService } from './services/update-password-user/updat
 import { JwtModule } from '@nestjs/jwt';
 import { DeleteUserService } from './services/delete-user/delete-user.service';
 import { ChangeRoleUserService } from './services/change-role-user/change-role-user.service';
+import { SystemHistoryModule } from '@/system-history/system-history.module';
 
 @Module({
-  imports: [PrismaModule, JwtModule],
+  imports: [PrismaModule, JwtModule, SystemHistoryModule],
   providers: [
     UsersService,
     CreateUserService,

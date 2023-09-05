@@ -23,7 +23,6 @@ export class VerifyTokenService {
     const { token } = dto;
 
     try {
-      console.log({ secret: this.getSecret() });
       this.logger.log('Starting verify token');
       const payload = (await this.jwtService.verifyAsync(token, {
         secret: this.getSecret(),
