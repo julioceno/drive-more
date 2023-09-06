@@ -1,9 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
 import { CreateUserService } from '../create-user.service';
-import { handleModuleDependencies, mockPrismaService } from '@/utils';
+import {
+  handleModuleDependencies,
+  mockPrismaService,
+  mockSystemHistoryervice,
+} from '@/utils';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { CreatedUserEntity } from '@/users/entities/created-user.entity';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { Resources } from '@/common';
 
 describe('CreateUserService', () => {
   let service: CreateUserService;
@@ -103,5 +109,31 @@ describe('CreateUserService', () => {
 
     expect(error).toBeInstanceOf(BadRequestException);
     expect(error.message).toBe('Usuário já existe.');
+  });
+
+  it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
+    const dto: CreateUserDto = {
+      email: 'julio@dirigirmore.com',
+      name: 'julio',
+    };
+
+    const user = {
+      id: 'a9f598b9-5008-4cfa-a58e-e469d925ee6a',
+      email: 'julio@dirigirmore.com',
+      name: 'julio',
+    };
+
+    mockPrismaService.user.create.mockResolvedValueOnce(user);
+
+    await service.run(dto);
+
+    expect(
+      mockSystemHistoryervice.createRecordStandard,
+    ).toHaveBeenLastCalledWith(
+      dto.email,
+      ActionEnum.CREATE,
+      user,
+      Resources.USER,
+    );
   });
 });

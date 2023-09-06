@@ -74,9 +74,17 @@ export class CreateLogService {
         action: dto.action,
         creatorEmail: dto.creatorEmail,
         entityId: dto.entityId,
-        payload: dto.payload,
+        payload: this.getPayloadToSave(dto.payload),
         resourceId,
       },
     });
+  }
+
+  private getPayloadToSave(value: string) {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
   }
 }

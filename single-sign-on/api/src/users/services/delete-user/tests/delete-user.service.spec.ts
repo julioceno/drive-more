@@ -1,12 +1,19 @@
-import { handleModuleDependencies, mockPrismaService } from '@/utils';
+import {
+  handleModuleDependencies,
+  mockPrismaService,
+  mockSystemHistoryervice,
+} from '@/utils';
 import { DeleteUserService } from '../delete-user.service';
 import { TestingModule, Test } from '@nestjs/testing';
 import { UserEntity } from '@/users/entities/user.entity';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { Resources } from '@/common';
 
 describe('DeleteUserService', () => {
   let service: DeleteUserService;
 
   const id = 'mock.id';
+  const email = 'mock.email';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -16,9 +23,15 @@ describe('DeleteUserService', () => {
       .compile();
 
     service = module.get<DeleteUserService>(DeleteUserService);
+
+    mockPrismaService.user.delete.mockResolvedValue({
+      email,
+    });
   });
 
-  mockPrismaService.user.delete.mockResolvedValue({});
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
@@ -39,5 +52,18 @@ describe('DeleteUserService', () => {
 
     expect(response).toBeDefined();
     expect(response).toBeInstanceOf(UserEntity);
+  });
+
+  it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
+    await service.run(id);
+
+    expect(
+      mockSystemHistoryervice.createRecordStandard,
+    ).toHaveBeenLastCalledWith(
+      email,
+      ActionEnum.DELETE,
+      { email },
+      Resources.USER,
+    );
   });
 });

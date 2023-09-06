@@ -13,7 +13,7 @@ export class CreateLogDto {
 
   @IsNotEmpty({ message: Messages.required('payload') })
   @IsString({ message: Messages.string('payload') })
-  payload: Prisma.JsonObject;
+  payload: string;
 
   @IsNotEmpty({ message: Messages.required('entityId') })
   @IsString({ message: Messages.string('entityId') })

@@ -1,16 +1,22 @@
-import { handleModuleDependencies, mockPrismaService } from '@/utils';
+import {
+  handleModuleDependencies,
+  mockPrismaService,
+  mockSystemHistoryervice,
+} from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { UserEntity } from '@/users/entities/user.entity';
 import { NotFoundException } from '@nestjs/common';
 import { ChangeRoleUserService } from '../change-role-user.service';
 import { ChangeRoleUserDto } from '../dto/change-role-user.dto';
-import { RoleEnum } from '@/common';
+import { Resources, RoleEnum } from '@/common';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
 
 describe('ChangeRoleUserService', () => {
   let service: ChangeRoleUserService;
 
   const userId = 'mock.userId';
+  const email = 'mock.email';
 
   const dto: ChangeRoleUserDto = { userId, role: RoleEnum.USER };
 
@@ -22,15 +28,20 @@ describe('ChangeRoleUserService', () => {
       .compile();
 
     service = module.get<ChangeRoleUserService>(ChangeRoleUserService);
+
+    mockPrismaService.user.findUnique.mockResolvedValue({ id: userId });
+
+    mockPrismaService.role.findUnique.mockResolvedValue({ id: 'mock.roleId' });
+
+    mockPrismaService.user.update.mockResolvedValue({
+      id: userId,
+      email,
+      role: { name: RoleEnum.USER },
+    });
   });
 
-  mockPrismaService.user.findUnique.mockResolvedValue({ id: userId });
-
-  mockPrismaService.role.findUnique.mockResolvedValue({ id: 'mock.roleId' });
-
-  mockPrismaService.user.update.mockResolvedValue({
-    id: userId,
-    role: { name: RoleEnum.USER },
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -102,5 +113,24 @@ describe('ChangeRoleUserService', () => {
     expect(error).toBeDefined();
     expect(error).toBeInstanceOf(NotFoundException);
     expect(error.message).toBe('Role não encontrada.');
+  });
+
+  it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
+    await service.run(dto);
+
+    expect(
+      mockSystemHistoryervice.createRecordStandard,
+    ).toHaveBeenLastCalledWith(
+      email,
+      ActionEnum.UPDATE,
+      {
+        id: userId,
+        email,
+        role: {
+          name: RoleEnum.USER,
+        },
+      },
+      Resources.USER,
+    );
   });
 });

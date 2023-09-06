@@ -1,12 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateUserService } from '../update-user.service';
-import { handleModuleDependencies, mockPrismaService } from '@/utils';
+import {
+  handleModuleDependencies,
+  mockPrismaService,
+  mockSystemHistoryervice,
+} from '@/utils';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '@/users/entities/user.entity';
 import { NotFoundException } from '@nestjs/common';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { Resources } from '@/common';
 
 describe('UpdateUserService', () => {
   let service: UpdateUserService;
+
+  const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
+  const email = 'mock.email';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,7 +35,6 @@ describe('UpdateUserService', () => {
 
   it('should return updated user instance of UserEntity', async () => {
     const dto = {} as UpdateUserDto;
-    const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
 
     mockPrismaService.user.findUnique.mockResolvedValueOnce({ id });
     mockPrismaService.user.update.mockResolvedValueOnce({ id });
@@ -39,7 +47,6 @@ describe('UpdateUserService', () => {
 
   it('should invoke prismaService and call findUnique and update from user', async () => {
     const dto = {} as UpdateUserDto;
-    const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
 
     mockPrismaService.user.findUnique.mockResolvedValueOnce({ id });
     mockPrismaService.user.update.mockResolvedValueOnce({ id });
@@ -64,7 +71,6 @@ describe('UpdateUserService', () => {
 
   it('should throw NotFoundException when user not exists', async () => {
     const dto = {} as UpdateUserDto;
-    const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
 
     mockPrismaService.user.findUnique.mockResolvedValueOnce(null);
 
@@ -78,5 +84,20 @@ describe('UpdateUserService', () => {
     expect(error).toBeDefined();
     expect(error).toBeInstanceOf(NotFoundException);
     expect(error.message).toBe('Usuário não existe.');
+  });
+
+  it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
+    const dto = {} as UpdateUserDto;
+
+    const user = { id, email };
+
+    mockPrismaService.user.findUnique.mockResolvedValueOnce({ id });
+    mockPrismaService.user.update.mockResolvedValueOnce(user);
+
+    await service.run(id, dto);
+
+    expect(
+      mockSystemHistoryervice.createRecordStandard,
+    ).toHaveBeenLastCalledWith(email, ActionEnum.UPDATE, user, Resources.USER);
   });
 });

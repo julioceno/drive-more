@@ -1,9 +1,15 @@
-import { handleModuleDependencies, mockPrismaService } from '@/utils';
+import {
+  handleModuleDependencies,
+  mockPrismaService,
+  mockSystemHistoryervice,
+} from '@/utils';
 import { UpdatePasswordUserService } from '../update-password-user.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdatePasswordUserDto } from '../dto/update-password-user.dto';
 import { UserEntity } from '@/users/entities/user.entity';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { Resources } from '@/common';
 
 describe('UpdatePasswordUserService', () => {
   let service: UpdatePasswordUserService;
@@ -18,9 +24,14 @@ describe('UpdatePasswordUserService', () => {
     service = module.get<UpdatePasswordUserService>(UpdatePasswordUserService);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   const id = '4a5c04ea-afc6-4faa-9782-b59a0e148b57';
   const passwordHashed =
     '$2b$08$3NsRYLYqr1e4.N8WyFpswecXKzzLgRFKjUUgKbENvcb7BJ/xBZdo6';
+  const email = 'mock.email';
 
   it('should be defined', () => {
     expect(service).toBeDefined();
@@ -113,5 +124,30 @@ describe('UpdatePasswordUserService', () => {
 
     expect(error).toBeDefined();
     expect(error).toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
+    const dto: UpdatePasswordUserDto = {
+      currentPassword: 'oldPass',
+      password: 'pass',
+    };
+
+    mockPrismaService.user.findUnique.mockResolvedValueOnce({
+      id,
+      password: passwordHashed,
+    });
+    mockPrismaService.user.update.mockResolvedValueOnce({ id, email });
+
+    await service.run(id, dto);
+
+    expect(mockSystemHistoryervice.createRecordCustom).toHaveBeenLastCalledWith(
+      {
+        action: ActionEnum.UPDATE,
+        creatorEmail: email,
+        entityId: undefined,
+        payload: 'Password from user mock.email is modified',
+        resourceName: Resources.USER,
+      },
+    );
   });
 });
