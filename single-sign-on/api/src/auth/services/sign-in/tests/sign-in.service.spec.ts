@@ -1,19 +1,25 @@
-import { handleModuleDependencies, mockPrismaService } from '@/utils';
+import {
+  handleModuleDependencies,
+  mockPrismaService,
+  mockSystemHistoryervice,
+} from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignInService } from '../sign-in.service';
 import { SignInDto } from '../dto/sign-in.dto';
 import { mockConfigService } from '@/utils/mocks/services/config';
-import { UnauthorizedException } from '@nestjs/common';
+import { Res, UnauthorizedException } from '@nestjs/common';
 import {
   mockGenerateTokenService,
   mockGenerateRefreshTokenService,
 } from '@/utils/mocks/services/auth';
-import { RoleEnum } from '@/common';
+import { Resources, RoleEnum } from '@/common';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
 
 describe('SignInService', () => {
   let service: SignInService;
 
   const userId = 'mock.id';
+  const email = 'mock.email';
   const ssoClientId = 'e8ef6516-66b3-4fad-8ec6-dfd53d75a34c';
 
   const userPassword =
@@ -38,7 +44,9 @@ describe('SignInService', () => {
 
     mockPrismaService.user.findUnique.mockResolvedValue({
       id: 'mock.id',
+      email,
       password: userPassword,
+      codigo: 1,
       role: {
         name: RoleEnum.USER,
       },
@@ -137,5 +145,19 @@ describe('SignInService', () => {
       accessToken: 'mock.accessToken',
       refreshToken: 'mock.refreshToken',
     });
+  });
+
+  it('should invoke SystemHistoryProxyService and call createRecordCustom method', async () => {
+    await service.run(dto);
+
+    expect(mockSystemHistoryervice.createRecordCustom).toHaveBeenLastCalledWith(
+      {
+        action: ActionEnum.OTHER,
+        creatorEmail: email,
+        entityId: 1,
+        payload: 'User mock.email is authenticate',
+        resourceName: Resources.AUTH,
+      },
+    );
   });
 });

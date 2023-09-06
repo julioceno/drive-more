@@ -126,7 +126,7 @@ describe('UpdatePasswordUserService', () => {
     expect(error).toBeInstanceOf(UnauthorizedException);
   });
 
-  it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
+  it('should invoke SystemHistoryProxyService and call createRecordCustom method', async () => {
     const dto: UpdatePasswordUserDto = {
       currentPassword: 'oldPass',
       password: 'pass',
