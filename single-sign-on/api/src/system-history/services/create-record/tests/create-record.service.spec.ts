@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateRecordService } from '../create-record.service';
+import { handleModuleDependencies } from '@/utils';
 
 // TODO: create this test
 describe('CreateRecordService', () => {
@@ -8,7 +9,9 @@ describe('CreateRecordService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [CreateRecordService],
-    }).compile();
+    })
+      .useMocker(handleModuleDependencies)
+      .compile();
 
     service = module.get<CreateRecordService>(CreateRecordService);
   });

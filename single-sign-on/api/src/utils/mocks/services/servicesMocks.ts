@@ -8,7 +8,7 @@ import { mockConfigService } from './config';
 import { auth } from './auth';
 import { IServiceMock } from '@/common';
 import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
-import { mockSystemHistorService } from './system-history';
+import { systemHistoryMocks } from './system-history';
 
 const servicesMocks: IServiceMock[] = [
   {
@@ -23,13 +23,10 @@ const servicesMocks: IServiceMock[] = [
     provide: ConfigService,
     useValue: mockConfigService,
   },
-  {
-    provide: SystemHistoryProxyService,
-    useValue: mockSystemHistorService,
-  },
 
   ...usersMocks,
   ...auth,
+  ...systemHistoryMocks,
 ];
 
 export { servicesMocks };
