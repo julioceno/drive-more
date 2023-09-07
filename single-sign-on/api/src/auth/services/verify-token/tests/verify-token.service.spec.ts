@@ -58,13 +58,11 @@ describe('VerifyTokenService', () => {
 
     expect(response).toBeDefined();
     expect(response).toStrictEqual({
-      payload: {
-        exp: 1690728466,
-        iat: 1690727566,
-        id: 'fdbe66f2-f31d-4302-bb97-0ff888045292',
-        role: RoleEnum.ADMIN,
-        clientId,
-      },
+      exp: 1690728466,
+      iat: 1690727566,
+      id: 'fdbe66f2-f31d-4302-bb97-0ff888045292',
+      role: RoleEnum.ADMIN,
+      clientId,
     });
   });
 

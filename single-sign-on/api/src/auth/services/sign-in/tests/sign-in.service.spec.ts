@@ -1,7 +1,7 @@
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistoryervice,
+  mockSystemHistorService,
 } from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignInService } from '../sign-in.service';
@@ -150,7 +150,7 @@ describe('SignInService', () => {
   it('should invoke SystemHistoryProxyService and call createRecordCustom method', async () => {
     await service.run(dto);
 
-    expect(mockSystemHistoryervice.createRecordCustom).toHaveBeenLastCalledWith(
+    expect(mockSystemHistorService.createRecordCustom).toHaveBeenLastCalledWith(
       {
         action: ActionEnum.OTHER,
         creatorEmail: email,

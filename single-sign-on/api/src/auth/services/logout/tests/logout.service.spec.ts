@@ -1,7 +1,7 @@
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistoryervice,
+  mockSystemHistorService,
 } from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LogoutService } from '../logout.service';
@@ -53,7 +53,7 @@ describe('LogoutService', () => {
       where: { id: userId },
     });
 
-    expect(mockSystemHistoryervice.createRecordCustom).toHaveBeenLastCalledWith(
+    expect(mockSystemHistorService.createRecordCustom).toHaveBeenLastCalledWith(
       {
         action: ActionEnum.OTHER,
         creatorEmail: email,

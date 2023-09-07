@@ -1,7 +1,7 @@
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistoryervice,
+  mockSystemHistorService,
 } from '@/utils';
 import { UpdatePasswordUserService } from '../update-password-user.service';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -140,7 +140,7 @@ describe('UpdatePasswordUserService', () => {
 
     await service.run(id, dto);
 
-    expect(mockSystemHistoryervice.createRecordCustom).toHaveBeenLastCalledWith(
+    expect(mockSystemHistorService.createRecordCustom).toHaveBeenLastCalledWith(
       {
         action: ActionEnum.UPDATE,
         creatorEmail: email,
