@@ -1,16 +1,16 @@
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateLogDto } from './dto/create-log.dto';
+import { CreateRecordDto } from './dto/create-record.dto';
 import { prisma } from 'prisma/seed';
-import { LogEntity } from '@/logs/entities/log.entity';
+import { RecordEntity } from '@/records/entities/record.entity';
 
 @Injectable()
-export class CreateLogService {
-  private readonly logger = new Logger(`@services/${CreateLogService.name}`);
+export class CreateRecordService {
+  private readonly logger = new Logger(`@services/${CreateRecordService.name}`);
 
   constructor(private readonly prismaService: PrismaService) {}
 
-  async run(dto: CreateLogDto) {
+  async run(dto: CreateRecordDto) {
     const module = await this.createOrRetriveModule(dto.moduleName);
 
     const resource = await this.createOrRetriveResource(
@@ -18,10 +18,10 @@ export class CreateLogService {
       module.id,
     );
 
-    const record = await this.createLog(dto, resource.id);
+    const record = await this.createRecord(dto, resource.id);
 
     this.logger.log(`Record with code ${record.codigo} created`);
-    return new LogEntity(record);
+    return new RecordEntity(record);
   }
 
   private async createOrRetriveModule(moduleName: string) {
@@ -68,7 +68,7 @@ export class CreateLogService {
     });
   }
 
-  private createLog(dto: CreateLogDto, resourceId: string) {
+  private createRecord(dto: CreateRecordDto, resourceId: string) {
     return prisma.log.create({
       data: {
         action: dto.action,

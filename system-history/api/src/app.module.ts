@@ -7,10 +7,10 @@ import { AuthGuard } from './common';
 import { VerifyTokenService } from './sso/services/verify-token/verify-token.service';
 import { ssoClientConfigs } from './config/sso-client.configs';
 import { ConfigModule } from './config/config.module';
-import { LogsModule } from './logs/logs.module';
+import { RecordsModule } from './records/records.module';
 
 @Module({
-  imports: [SsoModule, ssoClientConfigs(), ConfigModule, LogsModule],
+  imports: [SsoModule, ssoClientConfigs(), ConfigModule, RecordsModule],
   controllers: [AppController],
   providers: [
     AppService,

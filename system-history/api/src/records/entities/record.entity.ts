@@ -2,7 +2,7 @@ import { Action, Log as LogType, Prisma } from '@prisma/client';
 
 interface ConstructorProps extends LogType {}
 
-export class LogEntity {
+export class RecordEntity {
   id: string;
   codigo: number;
 

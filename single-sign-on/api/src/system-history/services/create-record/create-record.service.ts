@@ -28,7 +28,7 @@ export class CreateRecordService implements OnModuleInit {
   }
 
   async run(data: Omit<ICreateRecordParams, 'moduleName'>) {
-    this.logger.log(`Create log from user=${data.creatorEmail}`);
+    this.logger.log(`Create record from user=${data.creatorEmail}`);
 
     try {
       const record = await retry(
