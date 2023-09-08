@@ -1,3 +1,2 @@
-import { IServiceMock } from '@/common';
-
-export const servicesMocks: IServiceMock[] = [];
+export * from './services-mocks';
+export * from './single-sign-on';
