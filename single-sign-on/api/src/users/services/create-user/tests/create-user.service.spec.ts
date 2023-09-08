@@ -4,7 +4,7 @@ import { CreateUserService } from '../create-user.service';
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistorService,
+  mockSystemHistoryProxyService,
 } from '@/utils';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { CreatedUserEntity } from '@/users/entities/created-user.entity';
@@ -128,7 +128,7 @@ describe('CreateUserService', () => {
     await service.run(dto);
 
     expect(
-      mockSystemHistorService.createRecordStandard,
+      mockSystemHistoryProxyService.createRecordStandard,
     ).toHaveBeenLastCalledWith(
       dto.email,
       ActionEnum.CREATE,

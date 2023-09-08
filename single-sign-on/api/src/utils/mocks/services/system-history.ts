@@ -2,7 +2,7 @@ import { CreateRecordService } from '@/system-history/services/create-record/cre
 import { FindEntityDatabaseService } from '@/system-history/services/find-entity-database/find-entity-database.service';
 import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
 
-export const mockSystemHistorService = {
+export const mockSystemHistoryProxyService = {
   createRecordStandard: jest.fn().mockResolvedValue({}),
   createRecordCustom: jest.fn().mockResolvedValue({}),
 };
@@ -18,7 +18,7 @@ export const mockFindEntityDatabaseService = {
 export const systemHistoryMocks = [
   {
     provide: SystemHistoryProxyService,
-    useValue: mockSystemHistorService,
+    useValue: mockSystemHistoryProxyService,
   },
   {
     provide: CreateRecordService,

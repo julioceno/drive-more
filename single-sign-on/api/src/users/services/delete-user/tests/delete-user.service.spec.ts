@@ -1,7 +1,7 @@
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistorService,
+  mockSystemHistoryProxyService,
 } from '@/utils';
 import { DeleteUserService } from '../delete-user.service';
 import { TestingModule, Test } from '@nestjs/testing';
@@ -58,7 +58,7 @@ describe('DeleteUserService', () => {
     await service.run(id);
 
     expect(
-      mockSystemHistorService.createRecordStandard,
+      mockSystemHistoryProxyService.createRecordStandard,
     ).toHaveBeenLastCalledWith(
       email,
       ActionEnum.DELETE,

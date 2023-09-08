@@ -34,7 +34,6 @@ export class VerifyTokenService {
 
       return payload;
     } catch (err) {
-      console.log({ err });
       this.logger.error(`An error has occurred: ${err.message}`);
       throw new UnauthorizedException();
     }

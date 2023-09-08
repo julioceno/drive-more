@@ -5,6 +5,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { MockAuthGuard } from './mocks';
 import { PrismaClientExceptionFilter } from '@/common';
+import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
+import { mockSystemHistoryProxyService } from '@/utils';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
@@ -21,8 +23,12 @@ describe('UsersController (e2e)', () => {
           provide: APP_FILTER,
           useClass: PrismaClientExceptionFilter,
         },
+        SystemHistoryProxyService,
       ],
-    }).compile();
+    })
+      .overrideProvider(SystemHistoryProxyService)
+      .useValue(mockSystemHistoryProxyService)
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();

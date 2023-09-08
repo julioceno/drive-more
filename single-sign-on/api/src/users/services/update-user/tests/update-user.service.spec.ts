@@ -3,7 +3,7 @@ import { UpdateUserService } from '../update-user.service';
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistorService,
+  mockSystemHistoryProxyService,
 } from '@/utils';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '@/users/entities/user.entity';
@@ -97,7 +97,7 @@ describe('UpdateUserService', () => {
     await service.run(id, dto);
 
     expect(
-      mockSystemHistorService.createRecordStandard,
+      mockSystemHistoryProxyService.createRecordStandard,
     ).toHaveBeenLastCalledWith(email, ActionEnum.UPDATE, user, Resources.USER);
   });
 });

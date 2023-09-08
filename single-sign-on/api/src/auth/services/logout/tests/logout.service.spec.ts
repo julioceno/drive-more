@@ -1,7 +1,7 @@
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistorService,
+  mockSystemHistoryProxyService,
 } from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LogoutService } from '../logout.service';
@@ -53,14 +53,14 @@ describe('LogoutService', () => {
       where: { id: userId },
     });
 
-    expect(mockSystemHistorService.createRecordCustom).toHaveBeenLastCalledWith(
-      {
-        action: ActionEnum.OTHER,
-        creatorEmail: email,
-        entityId: 1,
-        payload: 'User mock.email is deauthenticated',
-        resourceName: Resources.AUTH,
-      },
-    );
+    expect(
+      mockSystemHistoryProxyService.createRecordCustom,
+    ).toHaveBeenLastCalledWith({
+      action: ActionEnum.OTHER,
+      creatorEmail: email,
+      entityId: 1,
+      payload: 'User mock.email is deauthenticated',
+      resourceName: Resources.AUTH,
+    });
   });
 });

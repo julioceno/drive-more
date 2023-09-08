@@ -1,19 +1,19 @@
+import { Resources, RoleEnum } from '@/common';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistorService,
+  mockSystemHistoryProxyService,
 } from '@/utils';
-import { Test, TestingModule } from '@nestjs/testing';
-import { SignInService } from '../sign-in.service';
-import { SignInDto } from '../dto/sign-in.dto';
-import { mockConfigService } from '@/utils/mocks/services/config';
-import { Res, UnauthorizedException } from '@nestjs/common';
 import {
-  mockGenerateTokenService,
   mockGenerateRefreshTokenService,
+  mockGenerateTokenService,
 } from '@/utils/mocks/services/auth';
-import { Resources, RoleEnum } from '@/common';
-import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { mockConfigService } from '@/utils/mocks/services/config';
+import { UnauthorizedException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { SignInDto } from '../dto/sign-in.dto';
+import { SignInService } from '../sign-in.service';
 
 describe('SignInService', () => {
   let service: SignInService;
@@ -150,14 +150,14 @@ describe('SignInService', () => {
   it('should invoke SystemHistoryProxyService and call createRecordCustom method', async () => {
     await service.run(dto);
 
-    expect(mockSystemHistorService.createRecordCustom).toHaveBeenLastCalledWith(
-      {
-        action: ActionEnum.OTHER,
-        creatorEmail: email,
-        entityId: 1,
-        payload: 'User mock.email is authenticate',
-        resourceName: Resources.AUTH,
-      },
-    );
+    expect(
+      mockSystemHistoryProxyService.createRecordCustom,
+    ).toHaveBeenLastCalledWith({
+      action: ActionEnum.OTHER,
+      creatorEmail: email,
+      entityId: 1,
+      payload: 'User mock.email is authenticate',
+      resourceName: Resources.AUTH,
+    });
   });
 });

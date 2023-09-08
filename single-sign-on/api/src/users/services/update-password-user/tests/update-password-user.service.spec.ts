@@ -1,7 +1,7 @@
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistorService,
+  mockSystemHistoryProxyService,
 } from '@/utils';
 import { UpdatePasswordUserService } from '../update-password-user.service';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -140,14 +140,14 @@ describe('UpdatePasswordUserService', () => {
 
     await service.run(id, dto);
 
-    expect(mockSystemHistorService.createRecordCustom).toHaveBeenLastCalledWith(
-      {
-        action: ActionEnum.UPDATE,
-        creatorEmail: email,
-        entityId: undefined,
-        payload: 'Password from user mock.email is modified',
-        resourceName: Resources.USER,
-      },
-    );
+    expect(
+      mockSystemHistoryProxyService.createRecordCustom,
+    ).toHaveBeenLastCalledWith({
+      action: ActionEnum.UPDATE,
+      creatorEmail: email,
+      entityId: undefined,
+      payload: 'Password from user mock.email is modified',
+      resourceName: Resources.USER,
+    });
   });
 });

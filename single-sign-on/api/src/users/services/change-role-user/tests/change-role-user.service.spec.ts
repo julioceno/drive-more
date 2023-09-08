@@ -1,7 +1,7 @@
 import {
   handleModuleDependencies,
   mockPrismaService,
-  mockSystemHistorService,
+  mockSystemHistoryProxyService,
 } from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
 
@@ -119,7 +119,7 @@ describe('ChangeRoleUserService', () => {
     await service.run(dto);
 
     expect(
-      mockSystemHistorService.createRecordStandard,
+      mockSystemHistoryProxyService.createRecordStandard,
     ).toHaveBeenLastCalledWith(
       email,
       ActionEnum.UPDATE,
