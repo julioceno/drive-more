@@ -1,6 +1,6 @@
-import { Action, Log as LogType, Prisma } from '@prisma/client';
+import { Action, Prisma, Record } from '@prisma/client';
 
-interface ConstructorProps extends LogType {}
+interface ConstructorProps extends Record {}
 
 export class RecordEntity {
   id: string;

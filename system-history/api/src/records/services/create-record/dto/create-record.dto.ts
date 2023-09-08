@@ -1,5 +1,6 @@
 import { Messages } from '@/common';
 import { Action } from '@prisma/client';
+import { Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateRecordDto {
@@ -17,6 +18,7 @@ export class CreateRecordDto {
 
   @IsNotEmpty({ message: Messages.required('entityId') })
   @IsString({ message: Messages.string('entityId') })
+  @Type(() => String)
   entityId: string;
 
   @IsNotEmpty({ message: Messages.required('moduleName') })

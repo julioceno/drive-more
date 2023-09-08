@@ -1,14 +1,14 @@
 import { PrismaClient } from '@prisma/client';
-import { logs, modules } from './resources';
+import { records, modules } from './resources';
 
 export const prisma = new PrismaClient();
 
 async function main() {
   await modules();
-  await logs();
+  await records();
 }
 
-/* main()
+main()
   .then(async () => {
     await prisma.$disconnect();
   })
@@ -17,4 +17,3 @@ async function main() {
     await prisma.$disconnect();
     process.exit(1);
   });
- */

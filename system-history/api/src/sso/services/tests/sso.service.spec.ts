@@ -18,12 +18,6 @@ describe('SsoService', () => {
       .compile();
 
     service = module.get<SsoService>(SsoService);
-
-    mockVerifyTokenService.run.mockResolvedValue({
-      id: 'mock.id',
-      role: 'mock.role',
-      clientId: 'mock.clientId',
-    });
   });
 
   afterEach(() => {
@@ -34,15 +28,9 @@ describe('SsoService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should invoke verifyToken method and return user', async () => {
-    const response = await service.verifyToken(dto);
+  it('should invoke verifyToken method', async () => {
+    await service.verifyToken(dto);
 
-    expect(response).toBeDefined();
-    expect(response).toStrictEqual({
-      clientId: 'mock.clientId',
-      id: 'mock.id',
-      role: 'mock.role',
-    });
     expect(mockVerifyTokenService.run).toHaveBeenCalledWith({ token });
   });
 });

@@ -1,7 +1,7 @@
 import { Action, Prisma } from '@prisma/client';
 import { prisma } from '../seed';
 
-const data: Prisma.LogCreateManyInput[] = [
+const data: Prisma.ResourceCreateManyInput[] = [
   /*  {
     id: '9218d387-01af-4755-8a13-a7f13b79a753',
     action: Action.CREATE,
@@ -12,11 +12,11 @@ const data: Prisma.LogCreateManyInput[] = [
   }, */
 ];
 
-export async function logs() {
-  const { count } = await prisma.log.createMany({
+export async function records() {
+  const { count } = await prisma.resource.createMany({
     data,
     skipDuplicates: true,
   });
 
-  console.log(`${count} logs createds 🚀`);
+  console.log(`${count} records createds 🚀`);
 }

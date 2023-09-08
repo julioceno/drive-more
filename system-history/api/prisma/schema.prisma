@@ -28,13 +28,13 @@ model Resource {
   moduleId String @map("module_id")
   Module   Module @relation(fields: [moduleId], references: [id])
 
-  logs Log[]
+  records Record[]
 
   @@unique([name, moduleId])
   @@map("resources")
 }
 
-model Log {
+model Record {
   id     String @id @default(uuid())
   codigo Int    @default(autoincrement())
 
@@ -48,7 +48,7 @@ model Log {
   resourceId String   @map("resource_id")
   Resource   Resource @relation(fields: [resourceId], references: [id])
 
-  @@map("logs")
+  @@map("records")
 }
 
 enum Action {

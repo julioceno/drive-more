@@ -1,8 +1,7 @@
 import { PrismaService } from '@/prisma/prisma.service';
+import { RecordEntity } from '@/records/entities/record.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateRecordDto } from './dto/create-record.dto';
-import { prisma } from 'prisma/seed';
-import { RecordEntity } from '@/records/entities/record.entity';
 
 @Injectable()
 export class CreateRecordService {
@@ -69,7 +68,7 @@ export class CreateRecordService {
   }
 
   private createRecord(dto: CreateRecordDto, resourceId: string) {
-    return prisma.log.create({
+    return this.prismaService.record.create({
       data: {
         action: dto.action,
         creatorEmail: dto.creatorEmail,

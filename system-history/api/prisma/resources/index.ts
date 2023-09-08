@@ -1,2 +1,2 @@
 export * from './modules';
-export * from './logs';
+export * from './records';
