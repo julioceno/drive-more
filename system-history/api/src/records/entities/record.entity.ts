@@ -9,7 +9,7 @@ export class RecordEntity {
   creatorEmail: string;
   action: Action;
   entityId: string;
-  payload: Prisma.JsonObject;
+  payload: Prisma.JsonValue;
 
   createdAt: Date;
 
@@ -21,6 +21,7 @@ export class RecordEntity {
     this.creatorEmail = props.creatorEmail;
     this.action = props.action;
     this.entityId = props.entityId;
+    this.payload = props.payload;
     this.createdAt = props.createdAt;
     this.resourceId = props.resourceId;
   }

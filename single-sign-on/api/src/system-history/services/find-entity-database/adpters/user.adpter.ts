@@ -1,3 +1,4 @@
+import { RoleEnum } from '@/common';
 import { Role, User } from '@prisma/client';
 
 interface AdaptProps extends User {
@@ -6,15 +7,28 @@ interface AdaptProps extends User {
 
 export class UserAdpter {
   adapt(user: AdaptProps) {
-    const values: any = user;
-
-    delete values.role;
-    delete values.password;
+    const roleEnum = user.role.name;
+    let role = undefined;
 
     if (user.role?.id) {
-      values.role = `${user.role.name}`;
+      role =
+        roleEnum === RoleEnum.USER
+          ? 'Usuário'
+          : roleEnum === RoleEnum.ADMIN
+          ? 'Administrador'
+          : undefined;
     }
 
-    return values;
+    const response = {
+      'Identificador Técnico': user.id,
+      Código: user.codigo,
+      Nome: user.name,
+      Email: user.email,
+      Papel: role,
+      'Data de Criação': user.createdAt,
+      'Data de Atualização': user.updatedAt,
+    };
+
+    return response;
   }
 }

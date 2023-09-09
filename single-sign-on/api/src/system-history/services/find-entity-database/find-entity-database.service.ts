@@ -31,7 +31,10 @@ export class FindEntityDatabaseService {
   }
 
   private async findUser(id: string) {
-    const entity = await this.prismaService.user.findUnique({ where: { id } });
+    const entity = await this.prismaService.user.findUnique({
+      where: { id },
+      include: { role: true },
+    });
 
     const adapter = new UserAdpter();
     const adptedData = adapter.adapt(entity);
