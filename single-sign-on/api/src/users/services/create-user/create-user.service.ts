@@ -40,7 +40,7 @@ export class CreateUserService {
     });
 
     if (userAlreadyExists) {
-      throw new BadRequestException('Usuário já existe.');
+      throw new BadRequestException('User already exists.');
     }
   }
 

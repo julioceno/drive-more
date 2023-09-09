@@ -3,8 +3,9 @@ import { prisma } from '../seed';
 
 const data: Prisma.ModuleCreateManyInput[] = [
   {
-    id: '0d181ee0-08b2-4aa6-affd-39282b4ad7c4',
-    name: 'Single Sign On',
+    id: '4808b940-ce13-4c34-9202-6e1d275184d2',
+    codigo: 1,
+    name: 'SINGLE SING ON',
   },
 ];
 
