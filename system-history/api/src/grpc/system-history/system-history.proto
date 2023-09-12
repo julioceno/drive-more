@@ -17,7 +17,7 @@ message CreateParams {
 
 message SystemHistory {
     string id = 1;
-    string codigo = 2;
+    string code = 2;
     string creatorEmail = 3;
     string action = 4;
     string entityId = 5;

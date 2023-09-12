@@ -46,7 +46,7 @@ describe('SignInService', () => {
       id: 'mock.id',
       email,
       password: userPassword,
-      codigo: 1,
+      code: 1,
       role: {
         name: RoleEnum.USER,
       },

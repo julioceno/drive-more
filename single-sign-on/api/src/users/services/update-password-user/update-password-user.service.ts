@@ -70,7 +70,7 @@ export class UpdatePasswordUserService {
       .createRecordCustom({
         action: ActionEnum.UPDATE,
         creatorEmail: user.email,
-        entityId: user.codigo,
+        entityId: user.code,
         payload: message,
         resourceName: Resources.USER,
       })

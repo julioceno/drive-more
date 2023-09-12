@@ -90,7 +90,7 @@ export class RefreshTokenService {
       .createRecordCustom({
         action: ActionEnum.OTHER,
         creatorEmail: user.email,
-        entityId: user.codigo,
+        entityId: user.code,
         payload: message,
         resourceName: Resources.AUTH,
       })

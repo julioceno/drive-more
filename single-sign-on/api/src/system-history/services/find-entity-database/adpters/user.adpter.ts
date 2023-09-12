@@ -21,7 +21,7 @@ export class UserAdpter {
 
     const response = {
       'Identificador Técnico': user.id,
-      Código: user.codigo,
+      Código: user.code,
       Nome: user.name,
       Email: user.email,
       Papel: role,

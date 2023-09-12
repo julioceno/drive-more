@@ -31,7 +31,7 @@ export class SystemHistoryProxyService {
     });
   }
 
-  async createRecordStandard<T extends { id: string; codigo: number }>(
+  async createRecordStandard<T extends { id: string; code: number }>(
     creatorEmail: string,
     action: ActionEnum,
     entity: T,
@@ -56,9 +56,11 @@ export class SystemHistoryProxyService {
     }
   }
 
-  private async createEntityToDispatch<
-    T extends { id: string; codigo: number },
-  >(action: ActionEnum, entity: T, resource: Resources) {
+  private async createEntityToDispatch<T extends { id: string; code: number }>(
+    action: ActionEnum,
+    entity: T,
+    resource: Resources,
+  ) {
     this.logger.log(`Search data in database: ${resource}.${entity.id}`);
 
     const entityFromDB = await this.findEntityDatabaseService.run(
@@ -71,7 +73,7 @@ export class SystemHistoryProxyService {
     );
 
     return {
-      id: entity?.codigo ?? entity.id,
+      id: entity?.code ?? entity.id,
       payload: typeof payload === 'object' ? JSON.stringify(payload) : payload,
     };
   }

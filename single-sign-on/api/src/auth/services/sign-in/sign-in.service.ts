@@ -42,6 +42,8 @@ export class SignInService {
     const { email, password, clientId } = dto;
 
     const user = await this.getUser(email);
+
+    console.log(user);
     if (!user) {
       this.unauthorized();
     }
@@ -121,7 +123,7 @@ export class SignInService {
       .createRecordCustom({
         action: ActionEnum.OTHER,
         creatorEmail: user.email,
-        entityId: user.codigo,
+        entityId: user.code,
         payload: message,
         resourceName: Resources.AUTH,
       })

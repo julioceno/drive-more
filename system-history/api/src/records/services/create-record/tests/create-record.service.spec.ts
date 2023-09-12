@@ -9,7 +9,7 @@ describe('CreateRecordService', () => {
   let service: CreateRecordService;
 
   const id = 'mock.id';
-  const codigo = 1;
+  const code = 1;
   const creatorEmail = 'mock.creatorEmail';
   const payload = 'mock.payload';
 
@@ -28,7 +28,7 @@ describe('CreateRecordService', () => {
   function createMockModule(method: 'create' | 'findUnique') {
     mockPrismaService.module[method].mockResolvedValue({
       id,
-      codigo,
+      code,
       name: moduleName,
     });
   }
@@ -36,7 +36,7 @@ describe('CreateRecordService', () => {
   function createMockResource(method: 'create' | 'findFirst') {
     mockPrismaService.resource[method].mockResolvedValue({
       id,
-      codigo,
+      code,
       name: moduleName,
     });
   }
@@ -54,14 +54,14 @@ describe('CreateRecordService', () => {
 
     mockPrismaService.resource.create.mockResolvedValue({
       id,
-      codigo,
+      code,
       name: resourceName,
       moduleId: id,
     });
 
     mockPrismaService.record.create.mockResolvedValue({
       id,
-      codigo,
+      code,
       creatorEmail,
       action: Action.CREATE,
       entityId: id,

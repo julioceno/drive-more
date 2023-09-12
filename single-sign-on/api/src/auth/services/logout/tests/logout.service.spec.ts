@@ -25,7 +25,7 @@ describe('LogoutService', () => {
 
     mockPrismaService.user.findUnique.mockResolvedValue({
       id: userId,
-      codigo: 1,
+      code: 1,
       email,
     });
   });

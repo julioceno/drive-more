@@ -2,6 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { RecordEntity } from '@/records/entities/record.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateRecordDto } from './dto/create-record.dto';
+import { getPayload } from '@/records/utils';
 
 @Injectable()
 export class CreateRecordService {
@@ -19,7 +20,7 @@ export class CreateRecordService {
 
     const record = await this.createRecord(dto, resource.id);
 
-    this.logger.log(`Record with code ${record.codigo} created`);
+    this.logger.log(`Record with code ${record.code} created`);
     return new RecordEntity(record);
   }
 
@@ -50,6 +51,7 @@ export class CreateRecordService {
     const resource = await this.prismaService.resource.findFirst({
       where: {
         name: resourceName,
+        moduleId,
       },
     });
 
@@ -73,17 +75,9 @@ export class CreateRecordService {
         action: dto.action,
         creatorEmail: dto.creatorEmail,
         entityId: dto.entityId,
-        payload: this.getPayloadToSave(dto.payload),
+        payload: getPayload(dto.payload),
         resourceId,
       },
     });
-  }
-
-  private getPayloadToSave(value: string) {
-    try {
-      return JSON.parse(value);
-    } catch {
-      return value;
-    }
   }
 }

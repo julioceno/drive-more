@@ -19,7 +19,7 @@ describe('SystemHistoryProxyService', () => {
   const mockId = 'mock.id';
   const creatorEmail = 'mock.creatorEmail';
   const payload = 'mock.payload';
-  const codigo = 1;
+  const code = 1;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -55,7 +55,7 @@ describe('SystemHistoryProxyService', () => {
   it('should call createRecordStandard after invoke findEntityDatabaseService and call run method and after again invoke createRecordService and call run method', async () => {
     const user = {
       id: mockId,
-      codigo,
+      code,
     };
 
     mockFindEntityDatabaseService.run.mockResolvedValue(user);
@@ -65,7 +65,7 @@ describe('SystemHistoryProxyService', () => {
       ActionEnum.CREATE,
       {
         id: mockId,
-        codigo,
+        code,
       },
       Resources.USER,
     );
@@ -78,7 +78,7 @@ describe('SystemHistoryProxyService', () => {
     expect(mockCreateRecordService.run).toHaveBeenLastCalledWith({
       action: ActionEnum.CREATE,
       creatorEmail,
-      entityId: codigo,
+      entityId: code,
       payload: JSON.stringify(formatToPrismaJsonObject(user)),
       resourceName: Resources.USER,
     });

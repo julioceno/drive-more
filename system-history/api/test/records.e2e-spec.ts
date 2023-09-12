@@ -55,7 +55,7 @@ describe('RecordsController (e2e)', () => {
     expect(response.status).toBe(201);
     expect(response.body).toStrictEqual({
       action: Action.CREATE,
-      codigo: expect.any(Number),
+      code: expect.any(Number),
       createdAt: expect.any(String),
       creatorEmail: 'user@dirigir.more.com',
       entityId: '1',
@@ -79,7 +79,7 @@ describe('RecordsController (e2e)', () => {
     expect(response.status).toBe(201);
     expect(response.body).toStrictEqual({
       action: Action.CREATE,
-      codigo: expect.any(Number),
+      code: expect.any(Number),
       createdAt: expect.any(String),
       creatorEmail: 'user@dirigir.more.com',
       entityId: '1',

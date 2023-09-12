@@ -4,7 +4,7 @@ import { prisma } from '../seed';
 const data: Prisma.RecordCreateManyInput[] = [
   {
     id: '73e9a386-0cf8-4de1-8dd2-5cd40983cc70',
-    codigo: 1,
+    code: 1,
     action: Action.CREATE,
     creatorEmail: 'user@dirigir.more.com',
     entityId: '1',
