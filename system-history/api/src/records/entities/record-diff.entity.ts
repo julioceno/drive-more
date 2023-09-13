@@ -1,7 +1,8 @@
-import { Action, Prisma, Record } from '@prisma/client';
+import { Action, Record } from '@prisma/client';
+import { Diff } from '../types';
 
 interface ConstructorProps extends Record {
-  diffs: any[]; // TODO: corrige
+  diffs: Diff[];
   module: string;
   resource: string;
 }
@@ -13,8 +14,7 @@ export class RecordDiffEntity {
   creatorEmail: string;
   action: Action;
   entityId: string;
-  payload?: Prisma.JsonValue;
-  diffs?: any;
+  diffs: Diff[];
 
   module: string;
   resource: string;
@@ -27,7 +27,7 @@ export class RecordDiffEntity {
     this.creatorEmail = props.creatorEmail;
     this.action = props.action;
     this.entityId = props.entityId;
-    this.payload = props.payload;
+    this.diffs = props.diffs;
 
     this.module = props.module;
     this.resource = props.resource;

@@ -3,14 +3,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { FindAllDiffsRecordsDto } from './dto/find-all-diffs-records.dto';
 import { Action, Prisma, Record } from '@prisma/client';
 import { Messages, getPaginationQueryData } from '@/common';
-import { getPayload } from '@/records/utils';
+import { RecordDiffEntity } from '@/records/entities/record-diff.entity';
+import { FindListEntity } from '@/common/entities';
 
 @Injectable()
 export class FindAllDiffsRecordsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async run(dto: FindAllDiffsRecordsDto) {
-    const records = await this.getRecords(dto);
+    const where = this.buildWhere(dto);
+
+    const records = await this.getRecords(dto, where);
 
     const promises = [];
 
@@ -18,12 +21,22 @@ export class FindAllDiffsRecordsService {
       promises.push(this.formatRecord(record));
     }
 
-    return Promise.all(promises);
+    const [recordsFormatted, totalCount] = await Promise.all([
+      Promise.all(promises),
+      this.getTotalCount(where),
+    ]);
+
+    const entities = recordsFormatted.map(
+      (record) => new RecordDiffEntity(record),
+    );
+
+    return new FindListEntity(totalCount, entities);
   }
 
-  private getRecords(dto: FindAllDiffsRecordsDto) {
-    const where = this.buildWhere(dto);
-
+  private getRecords(
+    dto: FindAllDiffsRecordsDto,
+    where: Prisma.RecordWhereInput,
+  ) {
     return this.prismaService.record.findMany({
       ...getPaginationQueryData(dto),
       orderBy: dto.sort ?? { createdAt: 'desc' },
@@ -31,10 +44,12 @@ export class FindAllDiffsRecordsService {
     });
   }
 
+  private getTotalCount(where: Prisma.RecordWhereInput) {
+    return this.prismaService.record.count({ where });
+  }
+
   private buildWhere(dto: FindAllDiffsRecordsDto): Prisma.RecordWhereInput {
-    const data = Prisma.validator<Prisma.RecordWhereInput>()({
-      entityId: '3',
-    });
+    const data = Prisma.validator<Prisma.RecordWhereInput>()({});
 
     return data;
   }
@@ -44,7 +59,7 @@ export class FindAllDiffsRecordsService {
       record.resourceId,
     );
 
-    const diff = await this.createDiff(
+    const diffs = await this.createDiff(
       record.payload,
       record.entityId,
       record.createdAt,
@@ -52,7 +67,7 @@ export class FindAllDiffsRecordsService {
     );
 
     delete record.payload;
-    return { ...record, diff, module, resource };
+    return { ...record, diffs, module, resource };
   }
 
   private async getResourceNameAndModuleName(resourceId: string) {
@@ -88,38 +103,39 @@ export class FindAllDiffsRecordsService {
 
     if (!isObject) return payload;
 
-    // TODO: improving this name
-    const bla = () => {
-      const entries = Object.entries(payload);
-
-      const diffs = entries.map(([key, value]) =>
-        this.createDiffField({ field: key, newValue: value }),
-      );
-
-      return diffs;
-    };
-
-    if (action !== Action.UPDATE) return bla();
+    if (action !== Action.UPDATE)
+      return this.createDiffFieldWithoutOldalue(payload);
 
     const recordOld = await this.getRecordOld(entityId, createdAt);
 
-    if (!recordOld || typeof recordOld?.payload !== 'object') return bla();
+    if (!recordOld || typeof recordOld?.payload !== 'object')
+      return this.createDiffFieldWithoutOldalue(payload);
+
     const oldPayload = recordOld.payload;
 
     const entries = Object.entries(payload);
     const oldEntries = Object.entries(oldPayload);
 
     const diffs = entries.map(([key, value]) => {
-      const oldValue = oldEntries.find(([oldKey]) => {
-        return key === oldKey;
-      })[1];
-
+      const oldValue = oldEntries.find(([oldKey]) => key === oldKey)[1];
       return this.createDiffField({ field: key, oldValue, newValue: value });
     });
 
-    const dropDiffs = diffs.filter((item) => item.newValue !== item.oldValue);
+    const dispatchDiffs = diffs.filter(
+      (item) => item.newValue !== item.oldValue,
+    );
 
-    return dropDiffs;
+    return dispatchDiffs;
+  }
+
+  private createDiffFieldWithoutOldalue(payload: Prisma.JsonValue) {
+    const entries = Object.entries(payload);
+
+    const diffs = entries.map(([key, value]) =>
+      this.createDiffField({ field: key, newValue: value }),
+    );
+
+    return diffs;
   }
 
   private createDiffField({
