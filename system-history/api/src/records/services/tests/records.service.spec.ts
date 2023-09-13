@@ -3,7 +3,11 @@ import { handleModuleDependencies } from '@/utils';
 import { RecordsService } from '../records.service';
 import { CreateRecordDto } from '../create-record/dto/create-record.dto';
 import { Action } from '@prisma/client';
-import { mockCreateRecordService } from '@/utils/mocks/services/records';
+import {
+  mockCreateRecordService,
+  mockFindAllDiffsRecordsService,
+} from '@/utils/mocks/services/records';
+import { FindAllDiffsRecordsDto } from '../find-all-diffs-records/dto/find-all-diffs-records.dto';
 
 describe('RecordsService', () => {
   let service: RecordsService;
@@ -34,5 +38,11 @@ describe('RecordsService', () => {
   it('should invoke create method', async () => {
     await service.create(dto);
     expect(mockCreateRecordService.run).toHaveBeenCalledWith(dto);
+  });
+
+  it('should invoke findAllDiffs method', async () => {
+    const dto = {} as FindAllDiffsRecordsDto;
+    await service.findAllDiffs(dto);
+    expect(mockFindAllDiffsRecordsService.run).toHaveBeenCalledWith(dto);
   });
 });
