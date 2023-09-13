@@ -1,5 +1,10 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadGatewayException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { FindAllDiffsRecordsDto } from './dto/find-all-diffs-records.dto';
 import { Action, Prisma, Record } from '@prisma/client';
 import { Messages, getPaginationQueryData } from '@/common';
@@ -8,18 +13,25 @@ import { FindListEntity } from '@/common/entities';
 
 @Injectable()
 export class FindAllDiffsRecordsService {
+  private readonly logger = new Logger(
+    `@service/${FindAllDiffsRecordsDto.name}`,
+  );
+
   constructor(private readonly prismaService: PrismaService) {}
 
   async run(dto: FindAllDiffsRecordsDto) {
     const where = this.buildWhere(dto);
 
+    this.logger.log('Getting records to format...');
     const records = await this.getRecords(dto, where);
 
     const promises = [];
 
+    this.logger.log('Preparing the records to format');
     for (const record of records) {
       promises.push(this.formatRecord(record));
     }
+    this.logger.log('Records formatteds');
 
     const [recordsFormatted, totalCount] = await Promise.all([
       Promise.all(promises),
@@ -29,6 +41,8 @@ export class FindAllDiffsRecordsService {
     const entities = recordsFormatted.map(
       (record) => new RecordDiffEntity(record),
     );
+
+    this.logger.log('Instantiating records to return');
 
     return new FindListEntity(totalCount, entities);
   }
@@ -99,33 +113,40 @@ export class FindAllDiffsRecordsService {
     createdAt: Date,
     action: Action,
   ) {
-    const isObject = typeof payload === 'object';
+    try {
+      const isObject = typeof payload === 'object';
 
-    if (!isObject) return payload;
+      if (!isObject) return payload;
 
-    if (action !== Action.UPDATE)
-      return this.createDiffFieldWithoutOldalue(payload);
+      if (action !== Action.UPDATE)
+        return this.createDiffFieldWithoutOldalue(payload);
 
-    const recordOld = await this.getRecordOld(entityId, createdAt);
+      const recordOld = await this.getRecordOld(entityId, createdAt);
 
-    if (!recordOld || typeof recordOld?.payload !== 'object')
-      return this.createDiffFieldWithoutOldalue(payload);
+      if (!recordOld || typeof recordOld?.payload !== 'object')
+        return this.createDiffFieldWithoutOldalue(payload);
 
-    const oldPayload = recordOld.payload;
+      const oldPayload = recordOld.payload;
 
-    const entries = Object.entries(payload);
-    const oldEntries = Object.entries(oldPayload);
+      const entries = Object.entries(payload);
+      const oldEntries = Object.entries(oldPayload);
 
-    const diffs = entries.map(([key, value]) => {
-      const oldValue = oldEntries.find(([oldKey]) => key === oldKey)[1];
-      return this.createDiffField({ field: key, oldValue, newValue: value });
-    });
+      const diffs = entries.map(([key, value]) => {
+        const oldValue = oldEntries.find(([oldKey]) => key === oldKey)[1];
+        return this.createDiffField({ field: key, oldValue, newValue: value });
+      });
 
-    const dispatchDiffs = diffs.filter(
-      (item) => item.newValue !== item.oldValue,
-    );
+      const dispatchDiffs = diffs.filter(
+        (item) => item.newValue !== item.oldValue,
+      );
 
-    return dispatchDiffs;
+      return dispatchDiffs;
+    } catch (error) {
+      const message = 'Ocurred an error in create diff';
+
+      this.logger.error(`${message}, error: ${error}`);
+      throw new BadGatewayException(`${message}.`);
+    }
   }
 
   private createDiffFieldWithoutOldalue(payload: Prisma.JsonValue) {
