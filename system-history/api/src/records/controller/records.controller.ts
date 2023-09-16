@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateRecordDto } from '../services/create-record/dto/create-record.dto';
 import { GrpcMethod } from '@nestjs/microservices';
 import { RecordsService } from '../services/records.service';
@@ -15,7 +15,7 @@ export class RecordsController {
   }
 
   @Get('/diffs')
-  findAllDiffs(@Body() dto: FindAllDiffsRecordsDto) {
+  findAllDiffs(@Query() dto: FindAllDiffsRecordsDto) {
     return this.recordsService.findAllDiffs(dto);
   }
 }

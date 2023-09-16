@@ -123,6 +123,7 @@ describe('CreateRecordService', () => {
 
     expect(mockPrismaService.resource.findFirst).toHaveBeenLastCalledWith({
       where: {
+        moduleId: id,
         name: resourceName,
       },
     });

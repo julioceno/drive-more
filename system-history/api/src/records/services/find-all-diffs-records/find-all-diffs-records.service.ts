@@ -14,7 +14,7 @@ import { FindListEntity } from '@/common/entities';
 @Injectable()
 export class FindAllDiffsRecordsService {
   private readonly logger = new Logger(
-    `@service/${FindAllDiffsRecordsDto.name}`,
+    `@service/${FindAllDiffsRecordsService.name}`,
   );
 
   constructor(private readonly prismaService: PrismaService) {}
@@ -63,7 +63,10 @@ export class FindAllDiffsRecordsService {
   }
 
   private buildWhere(dto: FindAllDiffsRecordsDto): Prisma.RecordWhereInput {
-    const data = Prisma.validator<Prisma.RecordWhereInput>()({});
+    const data = Prisma.validator<Prisma.RecordWhereInput>()({
+      entityId: dto.entityId,
+      code: dto.code,
+    });
 
     return data;
   }
@@ -80,7 +83,6 @@ export class FindAllDiffsRecordsService {
       record.action,
     );
 
-    delete record.payload;
     return { ...record, diffs, module, resource };
   }
 
@@ -113,40 +115,33 @@ export class FindAllDiffsRecordsService {
     createdAt: Date,
     action: Action,
   ) {
-    try {
-      const isObject = typeof payload === 'object';
+    const isObject = typeof payload === 'object';
 
-      if (!isObject) return payload;
+    if (!isObject) return payload;
 
-      if (action !== Action.UPDATE)
-        return this.createDiffFieldWithoutOldalue(payload);
+    if (action !== Action.UPDATE)
+      return this.createDiffFieldWithoutOldalue(payload);
 
-      const recordOld = await this.getRecordOld(entityId, createdAt);
+    const recordOld = await this.getRecordOld(entityId, createdAt);
 
-      if (!recordOld || typeof recordOld?.payload !== 'object')
-        return this.createDiffFieldWithoutOldalue(payload);
+    if (!recordOld || typeof recordOld?.payload !== 'object')
+      return this.createDiffFieldWithoutOldalue(payload);
 
-      const oldPayload = recordOld.payload;
+    const oldPayload = recordOld.payload;
 
-      const entries = Object.entries(payload);
-      const oldEntries = Object.entries(oldPayload);
+    const entries = Object.entries(payload);
+    const oldEntries = Object.entries(oldPayload);
 
-      const diffs = entries.map(([key, value]) => {
-        const oldValue = oldEntries.find(([oldKey]) => key === oldKey)[1];
-        return this.createDiffField({ field: key, oldValue, newValue: value });
-      });
+    const diffs = entries.map(([key, value]) => {
+      const oldValue = oldEntries.find(([oldKey]) => key === oldKey)[1];
+      return this.createDiffField({ field: key, oldValue, newValue: value });
+    });
 
-      const dispatchDiffs = diffs.filter(
-        (item) => item.newValue !== item.oldValue,
-      );
+    const dispatchDiffs = diffs.filter(
+      (item) => item.newValue !== item.oldValue,
+    );
 
-      return dispatchDiffs;
-    } catch (error) {
-      const message = 'Ocurred an error in create diff';
-
-      this.logger.error(`${message}, error: ${error}`);
-      throw new BadGatewayException(`${message}.`);
-    }
+    return dispatchDiffs;
   }
 
   private createDiffFieldWithoutOldalue(payload: Prisma.JsonValue) {
