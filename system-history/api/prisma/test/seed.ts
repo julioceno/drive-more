@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { records, resources } from './resources';
-import { modules } from './resources/modules';
+import { records, resources, modules } from './resources';
 
 export const prisma = new PrismaClient();
 

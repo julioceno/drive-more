@@ -133,7 +133,8 @@ export class FindAllDiffsRecordsService {
     const oldEntries = Object.entries(oldPayload);
 
     const diffs = entries.map(([key, value]) => {
-      const oldValue = oldEntries.find(([oldKey]) => key === oldKey)[1];
+      const oldValue =
+        oldEntries.find(([oldKey]) => key === oldKey)?.[1] || null;
       return this.createDiffField({ field: key, oldValue, newValue: value });
     });
 
