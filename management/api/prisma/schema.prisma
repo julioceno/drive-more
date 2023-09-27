@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Instructor {
+  id   String @id @default(uuid())
+  code Int    @unique @default(autoincrement())
+  name String
+  cpf  String @unique
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  students  Student[]
+  categorys Category[]
+
+  @@map("instructors")
+}
+
+model Student {
+  id   String @id @default(uuid())
+  code Int    @unique @default(autoincrement())
+  name String
+  cpf  String @unique
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  instructors Instructor[]
+  categorys   Category[]
+  classes     Class[]
+
+  @@map("students")
+}
+
+model Category {
+  id   String @id @default(uuid())
+  code Int    @unique @default(autoincrement())
+
+  acronym String @unique
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  instructors Instructor[]
+  students    Student[]
+  classes     Class[]
+
+  @@map("Categorys")
+}
+
+model Class {
+  id   String @id @default(uuid())
+  code Int    @unique @default(autoincrement())
+
+  classDate DateTime @map("class_date")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  studentId String
+  Student   Student @relation(fields: [studentId], references: [id])
+
+  categoryId String
+  Category   Category @relation(fields: [categoryId], references: [id])
+
+  @@map("classes")
+}

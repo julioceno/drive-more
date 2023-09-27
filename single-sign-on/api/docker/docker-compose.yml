@@ -9,4 +9,3 @@ services:
       - 'POSTGRES_DB=dirigir_more_single_sign_on'
     ports:
       - 5441:5432
- 
