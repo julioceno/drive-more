@@ -54,7 +54,7 @@ model Category {
   students    Student[]
   classes     Class[]
 
-  @@map("categorys")
+  @@map("categories")
 }
 
 model Class {
