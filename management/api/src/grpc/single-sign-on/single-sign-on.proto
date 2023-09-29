@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package single_sign_on;
+
+service AuthService {
+    rpc VerifyToken (VerifyTokenParams) returns (AuthorizedUser);
+};
+
+message VerifyTokenParams {
+    string token = 1;
+    string clientId = 2;
+}
+
+message AuthorizedUser {
+    string id = 1;
+    string role = 2;
+    string clientId = 3;
+};

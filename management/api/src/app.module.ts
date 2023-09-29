@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ssoClientConfigs } from './config/sso-client.configs';
 
 @Module({
-  imports: [],
+  imports: [ssoClientConfigs()],
   controllers: [AppController],
   providers: [AppService],
 })
