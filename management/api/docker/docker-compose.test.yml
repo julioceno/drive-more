@@ -1,17 +1,17 @@
 version: '3'
 services:
-  drive-more-management-db:
-    container_name: drive-more-management-db
+  drive-more-management-test-db:
+    container_name: drive-more-management-test-db
     image: postgres:15-alpine
     environment:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=postgres'
-      - 'POSTGRES_DB=drive_more_management'
+      - 'POSTGRES_DB=drive_more_management_test'
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready', '-d', 'drive_more_management']
+      test: ['CMD-SHELL', 'pg_isready', '-d', 'drive_more_management_test']
       interval: 2s
       timeout: 60s
       retries: 5
       start_period: 3s
     ports:
-      - 5445:5432
+      - 5444:5432
