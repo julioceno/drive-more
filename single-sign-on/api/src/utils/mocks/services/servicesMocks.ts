@@ -7,7 +7,6 @@ import { ConfigService } from '@nestjs/config';
 import { mockConfigService } from './config';
 import { auth } from './auth';
 import { IServiceMock } from '@/common';
-import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
 import { systemHistoryMocks } from './system-history';
 
 const servicesMocks: IServiceMock[] = [
