@@ -5,9 +5,10 @@ import { ssoClientConfigs } from './config/sso-client.configs';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/guards';
 import { SsoModule } from './sso/sso.module';
+import { InstructorsModule } from './instructors/instructors.module';
 
 @Module({
-  imports: [SsoModule, ssoClientConfigs()],
+  imports: [SsoModule, ssoClientConfigs(), InstructorsModule],
   controllers: [AppController],
   providers: [
     AppService,
