@@ -28,10 +28,11 @@ export class AuthGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
+
     const token = request.cookies.token;
 
     if (!token) {
-      this.logger.log('Not has token');
+      this.logger.error('Not has token');
       throw new UnauthorizedException();
     }
 
@@ -44,7 +45,7 @@ export class AuthGuard implements CanActivate {
       request['user'] = payload;
       this.logger.log('Token verifyed');
     } catch (err) {
-      this.logger.log('An error has occurred');
+      this.logger.error('An error has occurred');
       throw new UnauthorizedException();
     }
 

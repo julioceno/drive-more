@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CreateInstructorDto } from '../dto/create-instructor.dto';
+import { CreateInstructorService } from './create-instructor/create-instructor.service';
+import { CreateInstructorDto } from './create-instructor/dto/create-instructor.dto';
 
 @Injectable()
 export class InstructorsService {
-  create(dto: CreateInstructorDto) {
-    return 'This action adds a new instructor';
+  constructor(
+    private readonly createInstructorService: CreateInstructorService,
+  ) {}
+
+  create(creatorEmail: string, dto: CreateInstructorDto) {
+    return this.createInstructorService.run(creatorEmail, dto);
   }
 }

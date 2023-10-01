@@ -12,4 +12,6 @@ export const dto = {
   },
   uuid: (field: string) => `O campo "${field}" deve ser um uuid.`,
   json: (field: string) => `O campo "${field}" deve ser um json.`,
+  document: (field: string, nameDocument: string) =>
+    `O campo ${field} deve ser um ${nameDocument} valido.`,
 };

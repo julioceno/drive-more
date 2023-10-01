@@ -11,7 +11,7 @@ import { ActionEnum } from '@/system-history/interface/system-history.interface'
 
 @Injectable()
 export class CreateUserService {
-  private readonly logger = new Logger(`@service/${CreateUserService.name}`);
+  private readonly logger = new Logger(`@services/${CreateUserService.name}`);
 
   constructor(
     private readonly prismaService: PrismaService,
@@ -69,7 +69,12 @@ export class CreateUserService {
 
   private async createRecordHistory(user: User) {
     return this.systemHistoryProxyService
-      .createRecordStandard(user.email, ActionEnum.CREATE, user, Resources.USER)
+      .createRecordStandard(
+        user.email /** TODO: creator emails is incorrect */,
+        ActionEnum.CREATE,
+        user,
+        Resources.USER,
+      )
       .catch((err) => this.logger.error(`There was as error ${err}`));
   }
 }

@@ -1,13 +1,14 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateInstructorDto } from '../dto/create-instructor.dto';
 import { InstructorsService } from '../services/instructors.service';
+import { CreateInstructorDto } from '../services/create-instructor/dto/create-instructor.dto';
+import { AuthorizedUser } from '@/common';
 
 @Controller('instructors')
 export class InstructorsController {
   constructor(private readonly instructorsService: InstructorsService) {}
 
   @Post()
-  create(@Body() dto: CreateInstructorDto) {
-    return this.instructorsService.create(dto);
+  create(@AuthorizedUser() user: string, @Body() dto: CreateInstructorDto) {
+    return this.instructorsService.create('julio', dto);
   }
 }

@@ -20,20 +20,10 @@ async function bootstrap() {
     }),
   );
 
-  /*   app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.GRPC,
-    options: {
-      package: 'single_sign_on',
-      url: `${process.env.GRPC_SSO_HOST}:${process.env.GRPC_SSO_PORT}`,
-      protoPath: join(__dirname, '../grpc/single-sign-on/single-sign-on.proto'),
-      loader: { arrays: true, objects: true },
-    },
-  });
- */
   app.use(cookieParser());
 
   app.useGlobalFilters(new PrismaClientExceptionFilter());
-  app.useGlobalFilters(new TypeErrorExceptionFilter());
+  //app.useGlobalFilters(new TypeErrorExceptionFilter());
 
   await Promise.all([
     app.startAllMicroservices(),

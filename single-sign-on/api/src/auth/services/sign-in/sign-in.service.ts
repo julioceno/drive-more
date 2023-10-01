@@ -43,7 +43,6 @@ export class SignInService {
 
     const user = await this.getUser(email);
 
-    console.log(user);
     if (!user) {
       this.unauthorized();
     }
