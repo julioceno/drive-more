@@ -7,16 +7,17 @@ import { VerifyTokenDto } from '../services/verify-token/dto/verify-token.dto';
 import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller('auth')
-@Public()
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() dto: SignInDto) {
     return this.authService.signIn(dto);
   }
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('refresh-token')
   refreshToken(@Body() dto: RefreshTokenDto) {

@@ -28,9 +28,11 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = request.cookies.token;
 
-    const response = await this.ssoService.verifyToken({ token });
+    const user = await this.ssoService.verifyToken({ token });
 
-    if (response) {
+    if (user) {
+      request['user'] = user;
+
       this.logger.log('Token validated, auth complete');
 
       return true;

@@ -8,7 +8,10 @@ export class InstructorsController {
   constructor(private readonly instructorsService: InstructorsService) {}
 
   @Post()
-  create(@AuthorizedUser() user: string, @Body() dto: CreateInstructorDto) {
-    return this.instructorsService.create('julio', dto);
+  create(
+    @AuthorizedUser('email') creatorEmail: string,
+    @Body() dto: CreateInstructorDto,
+  ) {
+    return this.instructorsService.create(creatorEmail, dto);
   }
 }

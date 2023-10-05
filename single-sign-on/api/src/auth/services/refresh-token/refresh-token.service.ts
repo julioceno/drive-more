@@ -29,11 +29,13 @@ export class RefreshTokenService {
 
     const { user } = refreshToken;
 
-    const accessToken = await this.generateAccessToken(
-      user.id,
-      user.role.name,
-      dto.clientId,
-    );
+    const accessToken = await this.generateAccessToken({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      clientId: dto.clientId,
+      role: user.role.name as RoleEnum,
+    });
 
     const refreshTokenExpired = this.getRefreshTokenExpired(
       refreshToken.expiresIn,
@@ -75,10 +77,24 @@ export class RefreshTokenService {
     return isAfter(currentDate, unitToDate);
   }
 
-  private generateAccessToken(userId: string, role: string, clientId: string) {
+  private generateAccessToken({
+    id,
+    clientId,
+    email,
+    name,
+    role,
+  }: {
+    id: string;
+    name: string;
+    email: string;
+    role: RoleEnum;
+    clientId: string;
+  }) {
     return this.generateTokenService.run({
-      id: userId,
-      role: role as RoleEnum,
+      id,
+      name,
+      email,
+      role,
       clientId,
     });
   }

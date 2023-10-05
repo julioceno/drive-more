@@ -73,6 +73,8 @@ export class SignInService {
     const [accessToken, refreshToken] = await Promise.all([
       this.generateTokenService.run({
         id: user.id,
+        name: user.name,
+        email,
         role: user.role.name as RoleEnum,
         clientId: dto.clientId,
       }),
