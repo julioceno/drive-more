@@ -26,9 +26,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('logout')
-  logout(@AuthorizedUser('id') userId: string, @AuthorizedUser() user: string) {
-    console.log({ user });
-
+  logout(@AuthorizedUser('id') userId: string) {
     return this.authService.logout(userId);
   }
 

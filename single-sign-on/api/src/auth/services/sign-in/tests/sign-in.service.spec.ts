@@ -19,7 +19,8 @@ describe('SignInService', () => {
   let service: SignInService;
 
   const userId = 'mock.id';
-  const email = 'mock.email';
+  const email = 'mock@dirigir.more.com';
+  const name = 'mock.name';
   const ssoClientId = 'e8ef6516-66b3-4fad-8ec6-dfd53d75a34c';
 
   const userPassword =
@@ -45,6 +46,7 @@ describe('SignInService', () => {
     mockPrismaService.user.findUnique.mockResolvedValue({
       id: 'mock.id',
       email,
+      name,
       password: userPassword,
       code: 1,
       role: {
@@ -128,6 +130,8 @@ describe('SignInService', () => {
 
     expect(mockGenerateTokenService.run).toHaveBeenCalledWith({
       id: userId,
+      name,
+      email,
       role: RoleEnum.USER,
       clientId: ssoClientId,
     });
@@ -156,7 +160,7 @@ describe('SignInService', () => {
       action: ActionEnum.OTHER,
       creatorEmail: email,
       entityId: 1,
-      payload: 'User mock.email is authenticate',
+      payload: 'User mock@dirigir.more.com is authenticate',
       resourceName: Resources.AUTH,
     });
   });

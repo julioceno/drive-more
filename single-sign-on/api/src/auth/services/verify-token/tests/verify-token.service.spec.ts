@@ -11,7 +11,7 @@ describe('VerifyTokenService', () => {
   let service: VerifyTokenService;
 
   const token = 'mock.token';
-  const clientId = 'mock.client';
+  const clientId = 'mock.clientId';
   const secret = 'mock.secret';
 
   const dto: VerifyTokenDto = { token, clientId };
@@ -25,7 +25,8 @@ describe('VerifyTokenService', () => {
 
     service = module.get<VerifyTokenService>(VerifyTokenService);
 
-    mockConfigService.get.mockReturnValue(secret);
+    mockConfigService.get.mockReturnValue(clientId);
+
     mockJwtService.verifyAsync.mockResolvedValue({
       id: 'fdbe66f2-f31d-4302-bb97-0ff888045292',
       role: RoleEnum.ADMIN,
@@ -44,6 +45,8 @@ describe('VerifyTokenService', () => {
   });
 
   it('should invoke jwtService and invoke verifyAsync method', async () => {
+    mockConfigService.get.mockReturnValueOnce(secret);
+
     await service.run(dto);
     expect(mockJwtService.verifyAsync).toHaveBeenCalledWith(token, { secret });
   });

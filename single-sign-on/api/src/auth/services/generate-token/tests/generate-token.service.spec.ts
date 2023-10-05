@@ -9,6 +9,8 @@ describe('GenerateTokenService', () => {
 
   const payload: IAuthorizedUser = {
     id: 'mock.id',
+    name: 'mock.name',
+    email: 'mock.email',
     role: RoleEnum.ADMIN,
     clientId: 'mock.clientId',
   };

@@ -36,6 +36,9 @@ describe('FindEntityDatabaseService', () => {
 
     expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
       where: { id: mockId },
+      include: {
+        role: true,
+      },
     });
   });
 });
