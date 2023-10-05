@@ -22,7 +22,6 @@ export class CreateInstructorService {
   async run(creatorEmail: string, dto: CreateInstructorDto) {
     const instructor = await this.createInstrcutor(dto);
 
-    // TODO: save register in history
     this.createRecordHistory(creatorEmail, instructor);
 
     const entity = new InstructorEntity(instructor);

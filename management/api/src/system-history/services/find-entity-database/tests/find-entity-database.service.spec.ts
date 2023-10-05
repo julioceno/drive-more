@@ -25,4 +25,17 @@ describe('FindEntityDatabaseService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should invoke prismaService and call findUnique from instructor when resource is INSTRUCTOR', async () => {
+    mockPrismaService.instructor.findUnique.mockResolvedValue({
+      id: mockId,
+      role: RoleEnum.ADMIN,
+    });
+
+    await service.run(mockId, Resources.INSTRUCTOR);
+
+    expect(mockPrismaService.instructor.findUnique).toHaveBeenCalledWith({
+      where: { id: mockId },
+    });
+  });
 });
