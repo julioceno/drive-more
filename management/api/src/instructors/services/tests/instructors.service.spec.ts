@@ -3,6 +3,7 @@ import { InstructorsService } from '../instructors.service';
 import { CreateInstructorDto } from '../create-instructor/dto/create-instructor.dto';
 import {
   mockCreateInstructorService,
+  mockDeleteInstructorService,
   mockFindAllInstructorsService,
   mockUpdateInstructorService,
 } from '@/utils/mocks/services/instructors';
@@ -53,6 +54,14 @@ describe('InstructorsService', () => {
       id,
       creatorEmail,
       {},
+    );
+  });
+
+  it('should invoke delete method', async () => {
+    await service.delete(id, creatorEmail);
+    expect(mockDeleteInstructorService.run).toHaveBeenLastCalledWith(
+      id,
+      creatorEmail,
     );
   });
 });

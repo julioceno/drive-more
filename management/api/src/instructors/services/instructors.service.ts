@@ -5,6 +5,7 @@ import { FindAllInstructorsDto } from './find-all-instructors/dto/find-all-instr
 import { FindAllInstructorsService } from './find-all-instructors/find-all-instructors.service';
 import { UpdateInstructorService } from './update-instructor/update-instructor.service';
 import { UpdateInstructorDto } from './update-instructor/dto/update-instructor.dto';
+import { DeleteInstructorService } from './delete-instructor/delete-instructor.service';
 
 @Injectable()
 export class InstructorsService {
@@ -12,6 +13,7 @@ export class InstructorsService {
     private readonly createInstructorService: CreateInstructorService,
     private readonly findAllInstructorsService: FindAllInstructorsService,
     private readonly updateInstructorService: UpdateInstructorService,
+    private readonly deleteInstructorService: DeleteInstructorService,
   ) {}
 
   create(creatorEmail: string, dto: CreateInstructorDto) {
@@ -24,5 +26,9 @@ export class InstructorsService {
 
   update(id: string, creatorEmail: string, dto: UpdateInstructorDto) {
     return this.updateInstructorService.run(id, creatorEmail, dto);
+  }
+
+  delete(id: string, creatorEmail: string) {
+    return this.deleteInstructorService.run(id, creatorEmail);
   }
 }

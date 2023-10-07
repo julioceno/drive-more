@@ -5,6 +5,7 @@ import { handleModuleDependencies } from '@/utils';
 import { CreateInstructorDto } from '@/instructors/services/create-instructor/dto/create-instructor.dto';
 import {
   mockCreateInstructorService,
+  mockDeleteInstructorService,
   mockFindAllInstructorsService,
   mockUpdateInstructorService,
 } from '@/utils/mocks/services/instructors';
@@ -54,6 +55,14 @@ describe('InstructorsController', () => {
       id,
       creatorEmail,
       {},
+    );
+  });
+
+  it('should invoke delete method from InstructorsController', async () => {
+    await controller.delete(id, creatorEmail);
+    expect(mockDeleteInstructorService.run).toHaveBeenLastCalledWith(
+      id,
+      creatorEmail,
     );
   });
 });

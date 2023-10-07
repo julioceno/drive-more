@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { InstructorsService } from '../services/instructors.service';
 import { CreateInstructorDto } from '../services/create-instructor/dto/create-instructor.dto';
 import { AuthorizedUser } from '@/common';
@@ -28,5 +37,13 @@ export class InstructorsController {
     @Body() dto: CreateInstructorDto,
   ) {
     return this.instructorsService.update(id, creatorEmail, dto);
+  }
+
+  @Delete(':id')
+  delete(
+    @Param('id') id: string,
+    @AuthorizedUser('email') creatorEmail: string,
+  ) {
+    return this.instructorsService.delete(id, creatorEmail);
   }
 }

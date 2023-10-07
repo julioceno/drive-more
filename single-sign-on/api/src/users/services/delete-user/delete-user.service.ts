@@ -8,7 +8,7 @@ import { User } from '@prisma/client';
 
 @Injectable()
 export class DeleteUserService {
-  private readonly logger = new Logger(`@service/${DeleteUserService.name}`);
+  private readonly logger = new Logger(`@services/${DeleteUserService.name}`);
 
   constructor(
     private readonly prismaService: PrismaService,
@@ -28,7 +28,7 @@ export class DeleteUserService {
 
   private async createRecordHistory(user: User) {
     return this.systemHistoryProxyService
-      .createRecordStandard(user.email, ActionEnum.DELETE, user, Resources.USER)
+      .createRecordStandard(user.email, ActionEnum.DELETE, user, Resources.USER) // TODO: email is incorrect, should is user admin
       .catch((err) => this.logger.error(`There was as error ${err}`));
   }
 }

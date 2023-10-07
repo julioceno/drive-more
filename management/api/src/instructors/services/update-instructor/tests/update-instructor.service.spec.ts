@@ -33,10 +33,7 @@ describe('UpdateInstructorService', () => {
       .useMocker(handleModuleDependencies)
       .compile();
 
-    mockPrismaService.instructor.update.mockResolvedValue({
-      id: 'mock.id',
-      ...dto,
-    });
+    mockPrismaService.instructor.update.mockResolvedValue(instructorResult);
 
     service = module.get<UpdateInstructorService>(UpdateInstructorService);
   });
