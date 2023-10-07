@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { InstructorsService } from '../services/instructors.service';
 import { CreateInstructorDto } from '../services/create-instructor/dto/create-instructor.dto';
 import { AuthorizedUser } from '@/common';
@@ -19,5 +19,14 @@ export class InstructorsController {
   @Get()
   findAll(@Query() dto: FindAllInstructorsDto) {
     return this.instructorsService.findAll(dto);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @AuthorizedUser('email') creatorEmail: string,
+    @Body() dto: CreateInstructorDto,
+  ) {
+    return this.instructorsService.update(id, creatorEmail, dto);
   }
 }

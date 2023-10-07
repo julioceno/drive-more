@@ -1,17 +1,16 @@
-import { Messages, Resources } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { IsNotEmpty, IsString } from 'class-validator';
-import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { Injectable, Logger } from '@nestjs/common';
-import { InstructorEntity } from '@/instructors/entities/instructor.entity';
+import { UpdateInstructorDto } from './dto/update-instructor.dto';
 import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
-import { ActionEnum } from '@/system-history/interface/system-history.interface';
 import { Instructor } from '@prisma/client';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { Resources } from '@/common';
+import { InstructorEntity } from '@/instructors/entities/instructor.entity';
 
 @Injectable()
-export class CreateInstructorService {
+export class UpdateInstructorService {
   private readonly logger = new Logger(
-    `@services/${CreateInstructorService.name}`,
+    `@services/${UpdateInstructorService.name}`,
   );
 
   constructor(
@@ -19,16 +18,17 @@ export class CreateInstructorService {
     private readonly systemHistoryProxyService: SystemHistoryProxyService,
   ) {}
 
-  async run(creatorEmail: string, dto: CreateInstructorDto) {
-    const instructor = await this.createInstrcutor(dto);
+  async run(id: string, creatorEmail: string, dto: UpdateInstructorDto) {
+    const instructor = await this.updateInstructor(id, dto);
 
     this.createRecordHistory(creatorEmail, instructor);
 
     return new InstructorEntity(instructor);
   }
 
-  private createInstrcutor(dto: CreateInstructorDto) {
-    return this.prismaService.instructor.create({
+  private updateInstructor(id: string, dto: UpdateInstructorDto) {
+    return this.prismaService.instructor.update({
+      where: { id },
       data: dto,
     });
   }
@@ -40,7 +40,7 @@ export class CreateInstructorService {
     return this.systemHistoryProxyService
       .createRecordStandard(
         creatorEmail,
-        ActionEnum.CREATE,
+        ActionEnum.UPDATE,
         instructor,
         Resources.INSTRUCTOR,
       )

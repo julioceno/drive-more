@@ -34,7 +34,7 @@ export class UsersController {
   }
 
   @Put()
-  @Role(RoleEnum.USER)
+  @Role(RoleEnum.USER) // TODO: verify if route should is public
   update(@AuthorizedUser('id') userId: string, @Body() dto: UpdateUserDto) {
     return this.usersService.update(userId, dto);
   }

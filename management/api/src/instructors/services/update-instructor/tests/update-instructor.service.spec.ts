@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateInstructorService } from '../create-instructor.service';
-import { CreateInstructorDto } from '../dto/create-instructor.dto';
 import {
   handleModuleDependencies,
   mockPrismaService,
@@ -9,13 +7,16 @@ import {
 import { InstructorEntity } from '@/instructors/entities/instructor.entity';
 import { ActionEnum } from '@/system-history/interface/system-history.interface';
 import { Resources } from '@/common';
+import { UpdateInstructorService } from '../update-instructor.service';
+import { UpdateInstructorDto } from '../dto/update-instructor.dto';
 
-describe('CreateInstructorService', () => {
-  let service: CreateInstructorService;
+describe('UpdateInstructorService', () => {
+  let service: UpdateInstructorService;
 
+  const id = 'mock.id';
   const creatorEmail = 'mock.creatorEmail';
 
-  const dto: CreateInstructorDto = {
+  const dto: UpdateInstructorDto = {
     cpf: 'mock.cpf',
     name: 'mock.name',
   };
@@ -27,17 +28,17 @@ describe('CreateInstructorService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CreateInstructorService],
+      providers: [UpdateInstructorService],
     })
       .useMocker(handleModuleDependencies)
       .compile();
 
-    mockPrismaService.instructor.create.mockResolvedValue({
+    mockPrismaService.instructor.update.mockResolvedValue({
       id: 'mock.id',
       ...dto,
     });
 
-    service = module.get<CreateInstructorService>(CreateInstructorService);
+    service = module.get<UpdateInstructorService>(UpdateInstructorService);
   });
 
   afterEach(() => {
@@ -48,28 +49,29 @@ describe('CreateInstructorService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should invoke prismaService and call instructor.create', async () => {
-    await service.run(creatorEmail, dto);
+  it('should invoke prismaService and call instructor.update', async () => {
+    await service.run(id, creatorEmail, dto);
 
-    expect(mockPrismaService.instructor.create).toHaveBeenCalledWith({
+    expect(mockPrismaService.instructor.update).toHaveBeenCalledWith({
       data: dto,
+      where: { id },
     });
   });
 
-  it('should create instructor and return in instance InstructorEntity', async () => {
-    const result = await service.run(creatorEmail, dto);
+  it('should update instructor and return in instance InstructorEntity', async () => {
+    const result = await service.run(id, creatorEmail, dto);
 
     expect(result).toBeInstanceOf(InstructorEntity);
   });
 
   it('should invoke systemHistoryProxyService and call createRecordStandard', async () => {
-    await service.run(creatorEmail, dto);
+    await service.run(id, creatorEmail, dto);
 
     expect(
       mockSystemHistoryProxyService.createRecordStandard,
     ).toHaveBeenCalledWith(
       creatorEmail,
-      ActionEnum.CREATE,
+      ActionEnum.UPDATE,
       instructorResult,
       Resources.INSTRUCTOR,
     );

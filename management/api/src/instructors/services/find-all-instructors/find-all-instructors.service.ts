@@ -4,6 +4,7 @@ import { FindAllInstructorsDto } from './dto/find-all-instructors.dto';
 import { Prisma } from '@prisma/client';
 import { InstructorEntity } from '@/instructors/entities/instructor.entity';
 import { FindListEntity } from '@/common/entities';
+import { getPaginationQueryData } from '@/common';
 
 @Injectable()
 export class FindAllInstructorsService {
@@ -13,7 +14,7 @@ export class FindAllInstructorsService {
     const where = this.buildWhere(dto);
 
     const [instructors, totalCount] = await Promise.all([
-      this.getInsturctors(where),
+      this.getInsturctors(dto, where),
       this.getTotalCount(where),
     ]);
 
@@ -41,8 +42,15 @@ export class FindAllInstructorsService {
     return data;
   }
 
-  private getInsturctors(where: Prisma.InstructorWhereInput) {
-    return this.prismaService.instructor.findMany({ where });
+  private getInsturctors(
+    dto: FindAllInstructorsDto,
+    where: Prisma.InstructorWhereInput,
+  ) {
+    return this.prismaService.instructor.findMany({
+      ...getPaginationQueryData(dto),
+      orderBy: dto.sort ?? { createdAt: 'desc' },
+      where,
+    });
   }
 
   private getTotalCount(where: Prisma.InstructorWhereInput) {

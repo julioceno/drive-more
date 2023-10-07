@@ -60,6 +60,9 @@ describe('FindAllInstructorsService', () => {
     };
 
     expect(mockPrismaService.instructor.findMany).toHaveBeenLastCalledWith({
+      orderBy: {
+        createdAt: 'desc',
+      },
       where,
     });
     expect(mockPrismaService.instructor.count).toHaveBeenLastCalledWith({
