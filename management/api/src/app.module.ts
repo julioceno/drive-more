@@ -1,14 +1,20 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ssoClientConfigs } from './config/sso-client.configs';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/guards';
-import { SsoModule } from './sso/sso.module';
+import { ssoClientConfigs } from './config/sso-client.configs';
 import { InstructorsModule } from './instructors/instructors.module';
+import { SsoModule } from './sso/sso.module';
+import { SystemHistoryModule } from './system-history/system-history.module';
 
 @Module({
-  imports: [SsoModule, ssoClientConfigs(), InstructorsModule],
+  imports: [
+    SsoModule,
+    ssoClientConfigs(),
+    InstructorsModule,
+    SystemHistoryModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

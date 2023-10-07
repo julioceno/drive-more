@@ -1,5 +1,5 @@
-import { CanActivate, ExecutionContext } from '@nestjs/common';
 import { IAuthorizedUser, RoleEnum } from '@/common';
+import { CanActivate, ExecutionContext } from '@nestjs/common';
 
 export const mockAuthorizedUser = (): IAuthorizedUser => ({
   id: '92ab7ca5-f68a-4723-8a5f-efad6caaf257',
@@ -15,6 +15,7 @@ export class MockAuthGuard implements CanActivate {
     request.cookies = { token: 'xpto' };
     request.user = mockAuthorizedUser();
 
-    return true;
+    console.log('passando no mock');
+    return false;
   }
 }

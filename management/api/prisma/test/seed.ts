@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import { categories } from './resources';
+import { categories, instructors } from './resources';
 
 export const prisma = new PrismaClient();
 
 async function main() {
   await categories();
+  await instructors();
 }
 
 main()

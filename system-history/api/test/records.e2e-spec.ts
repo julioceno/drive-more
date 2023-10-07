@@ -1,11 +1,11 @@
+import { PrismaClientExceptionFilter } from '@/common';
 import { RecordsModule } from '@/records/records.module';
 import { INestApplication } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Action } from '@prisma/client';
 import * as request from 'supertest';
 import { MockAuthGuard } from './mocks/guards';
-import { PrismaClientExceptionFilter } from '@/common';
-import { Action } from '@prisma/client';
 
 describe('RecordsController (e2e)', () => {
   let app: INestApplication;
