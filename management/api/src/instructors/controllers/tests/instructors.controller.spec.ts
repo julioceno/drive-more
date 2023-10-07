@@ -7,6 +7,7 @@ import {
   mockCreateInstructorService,
   mockDeleteInstructorService,
   mockFindAllInstructorsService,
+  mockFindOneInstructorService,
   mockUpdateInstructorService,
 } from '@/utils/mocks/services/instructors';
 import { UpdateInstructorDto } from '@/instructors/services/update-instructor/dto/update-instructor.dto';
@@ -64,5 +65,10 @@ describe('InstructorsController', () => {
       id,
       creatorEmail,
     );
+  });
+
+  it('should invoke findOne method from InstructorsController', async () => {
+    await controller.findOne(id);
+    expect(mockFindOneInstructorService.run).toHaveBeenLastCalledWith(id);
   });
 });

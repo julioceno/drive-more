@@ -4,4 +4,4 @@ export * from './dto';
 import { commomMessages } from './common-messages';
 export * from './common-messages';
 
-export const Messages = { ...dto, ...commomMessages };
+export const messages = { ...dto, ...commomMessages };

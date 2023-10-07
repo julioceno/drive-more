@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Messages } from '@/common';
+import { messages } from '@/common';
 
 export class VerifyTokenDto {
-  @IsNotEmpty({ message: Messages.required('token') })
-  @IsString({ message: Messages.string('token') })
+  @IsNotEmpty({ message: messages.required('token') })
+  @IsString({ message: messages.string('token') })
   token: string;
 }

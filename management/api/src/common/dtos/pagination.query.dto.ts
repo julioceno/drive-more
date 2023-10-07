@@ -1,6 +1,6 @@
 import { Transform, Type } from 'class-transformer';
 import { IsInt, IsObject, IsOptional } from 'class-validator';
-import { Messages } from '../messages';
+import { messages } from '../messages';
 import { mapValues } from '../functions';
 
 export function getPaginationQueryData<T>(
@@ -17,28 +17,28 @@ export function getPaginationQueryData<T>(
 export abstract class PaginationQueryDto<T> {
   @IsOptional()
   @IsInt({
-    message: Messages.number('skip'),
+    message: messages.number('skip'),
   })
   @Type(() => Number)
   skip?: number;
 
   @IsOptional()
   @IsInt({
-    message: Messages.number('take'),
+    message: messages.number('take'),
   })
   @Type(() => Number)
   take?: number;
 
   @IsOptional()
   @IsInt({
-    message: Messages.number('limit'),
+    message: messages.number('limit'),
   })
   @Type(() => Number)
   limit?: number;
 
   @IsOptional()
   @IsObject({
-    message: Messages.object('sort'),
+    message: messages.object('sort'),
   })
   @Transform(({ value }) => mapValues(value))
   sort?: T;

@@ -30,6 +30,11 @@ export class InstructorsController {
     return this.instructorsService.findAll(dto);
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.instructorsService.findOne(id);
+  }
+
   @Put(':id')
   update(
     @Param('id') id: string,

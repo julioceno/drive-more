@@ -5,6 +5,7 @@ import {
   mockCreateInstructorService,
   mockDeleteInstructorService,
   mockFindAllInstructorsService,
+  mockFindOneInstructorService,
   mockUpdateInstructorService,
 } from '@/utils/mocks/services/instructors';
 import { handleModuleDependencies } from '@/utils';
@@ -63,5 +64,10 @@ describe('InstructorsService', () => {
       id,
       creatorEmail,
     );
+  });
+
+  it('should invoke findOne method', async () => {
+    await service.findOne(id);
+    expect(mockFindOneInstructorService.run).toHaveBeenLastCalledWith(id);
   });
 });

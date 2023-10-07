@@ -7,6 +7,7 @@ import { SystemHistoryModule } from '@/system-history/system-history.module';
 import { FindAllInstructorsService } from './services/find-all-instructors/find-all-instructors.service';
 import { UpdateInstructorService } from './services/update-instructor/update-instructor.service';
 import { DeleteInstructorService } from './services/delete-instructor/delete-instructor.service';
+import { FindOneInstructorService } from './services/find-one-instructor/find-one-instructor.service';
 
 @Module({
   imports: [PrismaModule, SystemHistoryModule],
@@ -17,6 +18,7 @@ import { DeleteInstructorService } from './services/delete-instructor/delete-ins
     FindAllInstructorsService,
     UpdateInstructorService,
     DeleteInstructorService,
+    FindOneInstructorService,
   ],
 })
 export class InstructorsModule {}
