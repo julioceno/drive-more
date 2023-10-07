@@ -15,7 +15,6 @@ export class MockAuthGuard implements CanActivate {
     request.cookies = { token: 'xpto' };
     request.user = mockAuthorizedUser();
 
-    console.log('passando no mock');
-    return false;
+    return true;
   }
 }

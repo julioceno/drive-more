@@ -7,6 +7,7 @@ import { ssoClientConfigs } from './config/sso-client.configs';
 import { InstructorsModule } from './instructors/instructors.module';
 import { SsoModule } from './sso/sso.module';
 import { SystemHistoryModule } from './system-history/system-history.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SystemHistoryModule } from './system-history/system-history.module';
     ssoClientConfigs(),
     InstructorsModule,
     SystemHistoryModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [

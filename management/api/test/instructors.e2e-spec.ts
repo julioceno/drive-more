@@ -11,6 +11,8 @@ import { InstructorsModule } from '@/instructors/instructors.module';
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
 
+  const baseUrl = '/instructors';
+
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [InstructorsModule],
@@ -35,10 +37,129 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/ (GET)', async () => {
-    const response = await request(app.getHttpServer()).get('/');
+    const response = await request(app.getHttpServer()).get(baseUrl);
 
-    console.log(response);
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
+
+    const { totalCount, list } = response.body;
+    expect(totalCount).toBe(2);
+    expect(list).toStrictEqual([
+      {
+        id: expect.any(String),
+        code: expect.any(Number),
+        cpf: expect.any(String),
+        name: expect.any(String),
+      },
+      {
+        id: expect.any(String),
+        code: expect.any(Number),
+        cpf: expect.any(String),
+        name: expect.any(String),
+      },
+    ]);
+  });
+
+  it('/:id (GET)', async () => {
+    const response = await request(app.getHttpServer()).get(
+      `${baseUrl}/b4a0aa0a-ff61-4e72-8551-26942cea858d`,
+    );
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+    expect(response.body).toStrictEqual({
+      id: expect.any(String),
+      code: expect.any(Number),
+      cpf: expect.any(String),
+      name: expect.any(String),
+    });
+  });
+
+  it('/:id (GET -> Bad request when user not exists)', async () => {
+    const response = await request(app.getHttpServer()).get(
+      `${baseUrl}/mock.id`,
+    );
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe(
+      'Recurso buscado impossível de ser encontrado.',
+    );
+  });
+
+  it('/:id (POST)', async () => {
+    const response = await request(app.getHttpServer()).post(baseUrl).send({
+      name: 'instructor 3',
+      cpf: '812.754.585-64',
+    });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(201);
+    expect(response.body).toStrictEqual({
+      id: expect.any(String),
+      code: expect.any(Number),
+      name: 'instructor 3',
+      cpf: '812.754.585-64',
+    });
+  });
+
+  it('/:id (POST -> Bad request when cpf already exists)', async () => {
+    const response = await request(app.getHttpServer()).post(baseUrl).send({
+      name: 'instructor 3',
+      cpf: '812.754.585-64',
+    });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(409);
+    expect(response.body.message).toBe('Cpf já existe.');
+  });
+
+  it('/:id (PUT)', async () => {
+    const response = await request(app.getHttpServer())
+      .put(`${baseUrl}/04a6982e-ffa5-4040-b7bd-2400ae67a46f`)
+      .send({
+        name: 'instructor updated',
+        cpf: '185.174.817-20',
+      });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+    expect(response.body).toStrictEqual({
+      id: expect.any(String),
+      code: expect.any(Number),
+      cpf: '185.174.817-20',
+      name: 'instructor updated',
+    });
+  });
+
+  it('/:id (PUT -> Bad request when cpf already exists)', async () => {
+    const response = await request(app.getHttpServer())
+      .put(`${baseUrl}/b4a0aa0a-ff61-4e72-8551-26942cea858d`)
+      .send({
+        name: 'instructor updated',
+        cpf: '185.174.817-20',
+      });
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(409);
+    expect(response.body.message).toBe('Cpf já existe.');
+  });
+
+  it('/:id (DELETE)', async () => {
+    const response = await request(app.getHttpServer()).delete(
+      `${baseUrl}/04a6982e-ffa5-4040-b7bd-2400ae67a46f`,
+    );
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+  });
+
+  it('/:id (DELETE -> When user already deleted)', async () => {
+    const response = await request(app.getHttpServer()).delete(
+      `${baseUrl}/04a6982e-ffa5-4040-b7bd-2400ae67a46f`,
+    );
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(400);
   });
 });
