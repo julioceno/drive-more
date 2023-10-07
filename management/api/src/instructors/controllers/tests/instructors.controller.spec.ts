@@ -3,7 +3,10 @@ import { InstructorsController } from '../instructors.controller';
 import { InstructorsService } from '@/instructors/services/instructors.service';
 import { handleModuleDependencies } from '@/utils';
 import { CreateInstructorDto } from '@/instructors/services/create-instructor/dto/create-instructor.dto';
-import { mockCreateInstructorService } from '@/utils/mocks/services/instructors';
+import {
+  mockCreateInstructorService,
+  mockFindAllInstructorsService,
+} from '@/utils/mocks/services/instructors';
 
 describe('InstructorsController', () => {
   let controller: InstructorsController;
@@ -31,5 +34,10 @@ describe('InstructorsController', () => {
       creatorEmail,
       {},
     );
+  });
+
+  it('should invoke findAll method from InstructorsController', async () => {
+    await controller.findAll({});
+    expect(mockFindAllInstructorsService.run).toHaveBeenLastCalledWith({});
   });
 });

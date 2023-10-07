@@ -1,8 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InstructorsService } from '../instructors.service';
 import { CreateInstructorDto } from '../create-instructor/dto/create-instructor.dto';
-import { mockCreateInstructorService } from '@/utils/mocks/services/instructors';
+import {
+  mockCreateInstructorService,
+  mockFindAllInstructorsService,
+} from '@/utils/mocks/services/instructors';
 import { handleModuleDependencies } from '@/utils';
+import { FindAllInstructorsDto } from '../find-all-instructors/dto/find-all-instructors.dto';
 
 describe('InstructorsService', () => {
   let service: InstructorsService;
@@ -29,10 +33,14 @@ describe('InstructorsService', () => {
 
   it('should invoke create method', async () => {
     await service.create(creatorEmail, {} as CreateInstructorDto);
-
     expect(mockCreateInstructorService.run).toHaveBeenLastCalledWith(
       creatorEmail,
       {},
     );
+  });
+
+  it('should invoke findAll method', async () => {
+    await service.findAll({} as FindAllInstructorsDto);
+    expect(mockFindAllInstructorsService.run).toHaveBeenLastCalledWith({});
   });
 });
