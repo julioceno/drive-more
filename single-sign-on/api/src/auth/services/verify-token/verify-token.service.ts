@@ -31,7 +31,7 @@ export class VerifyTokenService {
 
   async run(dto: VerifyTokenDto) {
     this.logger.log('Run VerifyTokenService');
-    const { token } = dto;
+    const { token, clientId } = dto;
 
     try {
       this.logger.log('Starting verify token');
@@ -41,7 +41,7 @@ export class VerifyTokenService {
 
       const possibleAuthenticate = this.possibleAuthenticate.get(payload.role);
 
-      if (!possibleAuthenticate.includes(dto.clientId)) {
+      if (!possibleAuthenticate.includes(clientId)) {
         throw new ForbiddenException();
       }
 

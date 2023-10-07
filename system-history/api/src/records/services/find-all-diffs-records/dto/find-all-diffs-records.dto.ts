@@ -13,4 +13,12 @@ export class FindAllDiffsRecordsDto extends PaginationQueryDto<Prisma.RecordOrde
   @Type(() => Number)
   @IsInt({ message: Messages.number('code') })
   code?: number;
+
+  @IsOptional()
+  @IsString({ message: Messages.string('module') })
+  module?: string;
+
+  @IsOptional()
+  @IsString({ message: Messages.string('resource') })
+  resource?: string;
 }

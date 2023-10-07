@@ -17,7 +17,7 @@ import { firstValueFrom } from 'rxjs';
 export class CreateRecordService implements OnModuleInit {
   private readonly logger = new Logger(`@service/${CreateRecordService.name}`);
 
-  private readonly MODULE_NAME = 'SYSTEM HISTORY';
+  private readonly MODULE_NAME = 'MANAGEMENT';
   private systemHistoryService: IGRPCSystemHistoryService;
 
   constructor(@Inject('SYSTEM_HISTORY_PACKAGE') private client: ClientGrpc) {}

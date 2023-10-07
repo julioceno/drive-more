@@ -1,4 +1,4 @@
 export enum Resources {
-  USER = 'User',
-  AUTH = 'Auth',
+  USER = 'USER',
+  AUTH = 'AUTH',
 }

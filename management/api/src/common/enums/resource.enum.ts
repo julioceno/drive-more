@@ -1,3 +1,3 @@
 export enum Resources {
-  INSTRUCTOR = 'Instructor',
+  INSTRUCTOR = 'INSTRUCTOR',
 }

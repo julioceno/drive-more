@@ -66,6 +66,18 @@ export class FindAllDiffsRecordsService {
     const data = Prisma.validator<Prisma.RecordWhereInput>()({
       entityId: dto.entityId,
       code: dto.code,
+      Resource: {
+        name: {
+          contains: dto.resource,
+          mode: 'insensitive',
+        },
+        Module: {
+          name: {
+            contains: dto.module,
+            mode: 'insensitive',
+          },
+        },
+      },
     });
 
     return data;
