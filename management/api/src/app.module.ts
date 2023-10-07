@@ -8,6 +8,7 @@ import { InstructorsModule } from './instructors/instructors.module';
 import { SsoModule } from './sso/sso.module';
 import { SystemHistoryModule } from './system-history/system-history.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { StudentsModule } from './students/students.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PrismaModule } from './prisma/prisma.module';
     InstructorsModule,
     SystemHistoryModule,
     PrismaModule,
+    StudentsModule,
   ],
   controllers: [AppController],
   providers: [
