@@ -29,12 +29,23 @@ describe('FindEntityDatabaseService', () => {
   it('should invoke prismaService and call findUnique from instructor when resource is INSTRUCTOR', async () => {
     mockPrismaService.instructor.findUnique.mockResolvedValue({
       id: mockId,
-      role: RoleEnum.ADMIN,
     });
 
     await service.run(mockId, Resources.INSTRUCTOR);
 
     expect(mockPrismaService.instructor.findUnique).toHaveBeenCalledWith({
+      where: { id: mockId },
+    });
+  });
+
+  it('should invoke prismaService and call findUnique from student when resource is STUDENT', async () => {
+    mockPrismaService.student.findUnique.mockResolvedValue({
+      id: mockId,
+    });
+
+    await service.run(mockId, Resources.STUDENT);
+
+    expect(mockPrismaService.student.findUnique).toHaveBeenCalledWith({
       where: { id: mockId },
     });
   });

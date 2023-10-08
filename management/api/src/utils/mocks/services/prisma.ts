@@ -11,4 +11,5 @@ export const prismaMethods = () => ({
 
 export const mockPrismaService = {
   instructor: prismaMethods(),
+  student: prismaMethods(),
 };

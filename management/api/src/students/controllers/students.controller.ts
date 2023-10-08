@@ -8,16 +8,19 @@ import {
   Delete,
 } from '@nestjs/common';
 import { StudentsService } from '../services/students.service';
-import { CreateStudentDto } from '../dto/create-student.dto';
-import { UpdateStudentDto } from '../dto/update-student.dto';
+import { AuthorizedUser } from '@/common';
+import { CreateStudentDto } from '../services/create-student/dto/create-student.dto';
 
 @Controller('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
-  create(@Body() createStudentDto: CreateStudentDto) {
-    return this.studentsService.create(createStudentDto);
+  create(
+    @AuthorizedUser('email') creatorEmail: string,
+    @Body() createStudentDto: CreateStudentDto,
+  ) {
+    return this.studentsService.create(creatorEmail, createStudentDto);
   }
 
   @Get()
@@ -31,7 +34,7 @@ export class StudentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
+  update(@Param('id') id: string, @Body() updateStudentDto: CreateStudentDto) {
     return this.studentsService.update(+id, updateStudentDto);
   }
 

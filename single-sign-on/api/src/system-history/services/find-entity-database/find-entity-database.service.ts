@@ -20,7 +20,7 @@ export class FindEntityDatabaseService {
       this.logger.error('Entity not found');
     }
 
-    return this.findEntity(entityId, resource);
+    return entity;
   }
 
   private findEntity(entityId: string, resource: Resources) {

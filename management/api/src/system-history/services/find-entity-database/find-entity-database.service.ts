@@ -1,7 +1,8 @@
 import { Resources } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Res } from '@nestjs/common';
 import { InstructorAdpter } from './adpters';
+import { StudentAdpter } from './adpters/student.adpter';
 
 @Injectable()
 export class FindEntityDatabaseService {
@@ -12,7 +13,7 @@ export class FindEntityDatabaseService {
   constructor(private readonly prismaService: PrismaService) {}
 
   run(entityId: string, resource: Resources) {
-    const entity = this.findEntity(entityId, resource) as any; // TODO: remove any
+    const entity = this.findEntity(entityId, resource);
 
     if (entity) {
       this.logger.log('Entity found');
@@ -20,13 +21,15 @@ export class FindEntityDatabaseService {
       this.logger.error('Entity not found');
     }
 
-    return this.findEntity(entityId, resource);
+    return entity;
   }
 
   private findEntity(entityId: string, resource: Resources) {
     switch (resource) {
       case Resources.INSTRUCTOR:
         return this.findInstuctor(entityId);
+      case Resources.STUDENT:
+        return this.findStudent(entityId);
     }
   }
 
@@ -36,6 +39,17 @@ export class FindEntityDatabaseService {
     });
 
     const adapter = new InstructorAdpter();
+    const adptedData = adapter.adapt(entity);
+
+    return adptedData;
+  }
+
+  private async findStudent(id: string) {
+    const entity = await this.prismaService.student.findUnique({
+      where: { id },
+    });
+
+    const adapter = new StudentAdpter();
     const adptedData = adapter.adapt(entity);
 
     return adptedData;

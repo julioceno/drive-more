@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStudentDto } from '../dto/create-student.dto';
-import { UpdateStudentDto } from '../dto/update-student.dto';
+import { CreateStudentService } from './create-student/create-student.service';
+import { CreateStudentDto } from './create-student/dto/create-student.dto';
 
 @Injectable()
 export class StudentsService {
-  create(createStudentDto: CreateStudentDto) {
-    return 'This action adds a new student';
+  constructor(private readonly createStudentService: CreateStudentService) {}
+
+  create(creatorEmail: string, dto: CreateStudentDto) {
+    return this.createStudentService.run(creatorEmail, dto);
   }
 
   findAll() {
@@ -16,7 +18,7 @@ export class StudentsService {
     return `This action returns a #${id} student`;
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
+  update(id: number, updateStudentDto: CreateStudentDto) {
     return `This action updates a #${id} student`;
   }
 
