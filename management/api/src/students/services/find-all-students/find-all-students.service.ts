@@ -1,32 +1,32 @@
+import { getPaginationQueryData } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { FindAllInstructorsDto } from './dto/find-all-instructors.dto';
 import { Prisma } from '@prisma/client';
-import { InstructorEntity } from '@/instructors/entities/instructor.entity';
+import { FindAllStudentsDto } from './dto/find-all-students.dto';
+import { StudentEntity } from '@/students/entities/student.entity';
 import { FindListEntity } from '@/common/entities';
-import { getPaginationQueryData } from '@/common';
 
 @Injectable()
-export class FindAllInstructorsService {
+export class FindAllStudentsService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async run(dto: FindAllInstructorsDto) {
+  async run(dto: FindAllStudentsDto) {
     const where = this.buildWhere(dto);
 
     const [instructors, totalCount] = await Promise.all([
-      this.getInsturctors(dto, where),
+      this.getStudents(dto, where),
       this.getTotalCount(where),
     ]);
 
     const entities = instructors.map(
-      (instructor) => new InstructorEntity(instructor),
+      (instructor) => new StudentEntity(instructor),
     );
 
     return new FindListEntity(totalCount, entities);
   }
 
-  private buildWhere(dto: FindAllInstructorsDto) {
-    const data = Prisma.validator<Prisma.InstructorWhereInput>()({
+  private buildWhere(dto: FindAllStudentsDto) {
+    const data = Prisma.validator<Prisma.StudentWhereInput>()({
       code: dto.code,
       name: {
         contains: dto.name,
@@ -41,18 +41,18 @@ export class FindAllInstructorsService {
     return data;
   }
 
-  private getInsturctors(
-    dto: FindAllInstructorsDto,
-    where: Prisma.InstructorWhereInput,
+  private getStudents(
+    dto: FindAllStudentsDto,
+    where: Prisma.StudentWhereInput,
   ) {
-    return this.prismaService.instructor.findMany({
+    return this.prismaService.student.findMany({
       ...getPaginationQueryData(dto),
       orderBy: dto.sort ?? { createdAt: 'desc' },
       where,
     });
   }
 
-  private getTotalCount(where: Prisma.InstructorWhereInput) {
-    return this.prismaService.instructor.count({ where });
+  private getTotalCount(where: Prisma.StudentWhereInput) {
+    return this.prismaService.student.count({ where });
   }
 }

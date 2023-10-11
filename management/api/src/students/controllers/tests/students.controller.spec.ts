@@ -1,8 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StudentsController } from '../students.controller';
 import { StudentsService } from '@/students/services/students.service';
-import { handleModuleDependencies, mockCreateStudentService } from '@/utils';
+import {
+  handleModuleDependencies,
+  mockCreateStudentService,
+  mockFindAllStudentsService,
+} from '@/utils';
 import { CreateStudentDto } from '@/students/services/create-student/dto/create-student.dto';
+import { FindAllStudentsDto } from '@/students/services/find-all-students/dto/find-all-students.dto';
 
 const creatorEmail = 'mock.creatorEmail';
 
@@ -26,5 +31,10 @@ describe('StudentsController', () => {
       creatorEmail,
       {},
     );
+  });
+
+  it('should invoke findAll method from StudentsController', async () => {
+    await controller.findAll({} as FindAllStudentsDto);
+    expect(mockFindAllStudentsService.run).toHaveBeenLastCalledWith({});
   });
 });
