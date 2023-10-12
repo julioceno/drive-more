@@ -7,6 +7,7 @@ import { SystemHistoryModule } from '@/system-history/system-history.module';
 import { FindAllStudentsService } from './services/find-all-students/find-all-students.service';
 import { UpdateStudentService } from './services/update-student/update-student.service';
 import { DeleteStudentService } from './services/delete-student/delete-student.service';
+import { FindOneStudentService } from './services/find-one-student/find-one-student.service';
 
 @Module({
   imports: [PrismaModule, SystemHistoryModule],
@@ -17,6 +18,7 @@ import { DeleteStudentService } from './services/delete-student/delete-student.s
     FindAllStudentsService,
     UpdateStudentService,
     DeleteStudentService,
+    FindOneStudentService,
   ],
 })
 export class StudentsModule {}

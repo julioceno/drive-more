@@ -2,6 +2,7 @@ import { IServiceMock } from '@/common';
 import { CreateStudentService } from '@/students/services/create-student/create-student.service';
 import { DeleteStudentService } from '@/students/services/delete-student/delete-student.service';
 import { FindAllStudentsService } from '@/students/services/find-all-students/find-all-students.service';
+import { FindOneStudentService } from '@/students/services/find-one-student/find-one-student.service';
 import { UpdateStudentService } from '@/students/services/update-student/update-student.service';
 
 export const mockCreateStudentService = {
@@ -17,6 +18,10 @@ export const mockUpdateStudentService = {
 };
 
 export const mockDeleteStudentService = {
+  run: jest.fn(),
+};
+
+export const mockFindOneStudentService = {
   run: jest.fn(),
 };
 
@@ -36,5 +41,9 @@ export const studentsMocks: IServiceMock[] = [
   {
     provide: DeleteStudentService,
     useValue: mockDeleteStudentService,
+  },
+  {
+    provide: FindOneStudentService,
+    useValue: mockFindOneStudentService,
   },
 ];

@@ -7,6 +7,7 @@ import {
   mockCreateStudentService,
   mockDeleteStudentService,
   mockFindAllStudentsService,
+  mockFindOneStudentService,
   mockUpdateStudentService,
 } from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -57,5 +58,10 @@ describe('StudentsController', () => {
       id,
       creatorEmail,
     );
+  });
+
+  it('should invoke findOne method from StudentsController', async () => {
+    await controller.findOne(id);
+    expect(mockFindOneStudentService.run).toHaveBeenLastCalledWith(id);
   });
 });

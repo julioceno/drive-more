@@ -6,6 +6,7 @@ import { FindAllStudentsDto } from './find-all-students/dto/find-all-students.dt
 import { UpdateStudentDto } from './update-student/dto/update-student.dto';
 import { UpdateStudentService } from './update-student/update-student.service';
 import { DeleteStudentService } from './delete-student/delete-student.service';
+import { FindOneStudentService } from './find-one-student/find-one-student.service';
 
 @Injectable()
 export class StudentsService {
@@ -14,6 +15,7 @@ export class StudentsService {
     private readonly findAllStudentsService: FindAllStudentsService,
     private readonly updateStudentService: UpdateStudentService,
     private readonly deleteStudentService: DeleteStudentService,
+    private readonly findOneStudentService: FindOneStudentService,
   ) {}
 
   create(creatorEmail: string, dto: CreateStudentDto) {
@@ -24,8 +26,8 @@ export class StudentsService {
     return this.findAllStudentsService.run(dto);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
+  findOne(id: string) {
+    return this.findOneStudentService.run(id);
   }
 
   update(id: string, creatorEmail: string, dto: UpdateStudentDto) {

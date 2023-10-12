@@ -5,6 +5,7 @@ import {
   mockCreateStudentService,
   mockDeleteStudentService,
   mockFindAllStudentsService,
+  mockFindOneStudentService,
   mockUpdateStudentService,
 } from '@/utils';
 import { CreateStudentDto } from '../create-student/dto/create-student.dto';
@@ -59,5 +60,10 @@ describe('StudentsService', () => {
       id,
       creatorEmail,
     );
+  });
+
+  it('should invoke findOne method', async () => {
+    await service.findOne(id);
+    expect(mockFindOneStudentService.run).toHaveBeenLastCalledWith(id);
   });
 });
