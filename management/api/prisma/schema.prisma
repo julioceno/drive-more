@@ -21,6 +21,7 @@ model Instructor {
 
   students  Student[]
   categorys Category[]
+  Class     Class[]
 
   @@map("instructors")
 }
@@ -61,12 +62,16 @@ model Class {
   id   String @id @default(uuid())
   code Int    @unique @default(autoincrement())
 
-  classDate DateTime @map("class_date")
+  startAt DateTime @map("start_at")
+  endAt   DateTime @map("end_at")
 
   createdAt DateTime @default(now()) @map("created_at")
 
   studentId String
   Student   Student @relation(fields: [studentId], references: [id])
+
+  instructorId String
+  Instructor   Instructor @relation(fields: [instructorId], references: [id])
 
   categoryId String
   Category   Category @relation(fields: [categoryId], references: [id])

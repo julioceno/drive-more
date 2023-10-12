@@ -9,6 +9,7 @@ import { SsoModule } from './sso/sso.module';
 import { SystemHistoryModule } from './system-history/system-history.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StudentsModule } from './students/students.module';
+import { ClassesModule } from './classes/classes.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { StudentsModule } from './students/students.module';
     SystemHistoryModule,
     PrismaModule,
     StudentsModule,
+    ClassesModule,
   ],
   controllers: [AppController],
   providers: [

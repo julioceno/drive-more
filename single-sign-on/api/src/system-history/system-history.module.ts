@@ -3,16 +3,15 @@ import { systemHistoryConfigs } from '@/grpc/system-history/system-history-clien
 import { CreateRecordService } from './services/create-record/create-record.service';
 import { SystemHistoryProxyService } from './services/system-history-proxy/system-history-proxy.service';
 import { FindEntityDatabaseService } from './services/find-entity-database/find-entity-database.service';
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaModule } from '@/prisma/prisma.module';
 
 @Module({
   exports: [CreateRecordService, SystemHistoryProxyService],
-  imports: [systemHistoryConfigs()],
+  imports: [systemHistoryConfigs(), PrismaModule],
   providers: [
     CreateRecordService,
     SystemHistoryProxyService,
     FindEntityDatabaseService,
-    PrismaService,
   ],
 })
 export class SystemHistoryModule {}

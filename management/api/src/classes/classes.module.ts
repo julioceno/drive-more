@@ -1,0 +1,13 @@
+import { Module } from '@nestjs/common';
+import { ClassesService } from './services/classes.service';
+import { ClassesController } from './controllers/classes.controller';
+import { CreateClassService } from './services/create-class/create-class.service';
+import { SystemHistoryModule } from '@/system-history/system-history.module';
+import { PrismaModule } from '@/prisma/prisma.module';
+
+@Module({
+  controllers: [ClassesController],
+  imports: [PrismaModule, SystemHistoryModule],
+  providers: [ClassesService, CreateClassService],
+})
+export class ClassesModule {}
