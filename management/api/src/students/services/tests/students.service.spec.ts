@@ -3,6 +3,7 @@ import { StudentsService } from '../students.service';
 import {
   handleModuleDependencies,
   mockCreateStudentService,
+  mockDeleteStudentService,
   mockFindAllStudentsService,
   mockUpdateStudentService,
 } from '@/utils';
@@ -49,6 +50,14 @@ describe('StudentsService', () => {
       id,
       creatorEmail,
       {},
+    );
+  });
+
+  it('should invoke delete method', async () => {
+    await service.delete(id, creatorEmail);
+    expect(mockDeleteStudentService.run).toHaveBeenLastCalledWith(
+      id,
+      creatorEmail,
     );
   });
 });

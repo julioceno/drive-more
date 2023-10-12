@@ -32,7 +32,7 @@ export class StudentsService {
     return this.updateStudentService.run(id, creatorEmail, dto);
   }
 
-  remove(id: string, creatorEmail: string) {
+  delete(id: string, creatorEmail: string) {
     return this.deleteStudentService.run(id, creatorEmail);
   }
 }

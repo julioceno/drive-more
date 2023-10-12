@@ -13,14 +13,12 @@ export class FindAllStudentsService {
   async run(dto: FindAllStudentsDto) {
     const where = this.buildWhere(dto);
 
-    const [instructors, totalCount] = await Promise.all([
+    const [students, totalCount] = await Promise.all([
       this.getStudents(dto, where),
       this.getTotalCount(where),
     ]);
 
-    const entities = instructors.map(
-      (instructor) => new StudentEntity(instructor),
-    );
+    const entities = students.map((student) => new StudentEntity(student));
 
     return new FindListEntity(totalCount, entities);
   }
