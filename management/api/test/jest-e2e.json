@@ -5,7 +5,7 @@
   "moduleNameMapper": {
     "@/(.*)": "<rootDir>/src/$1"
   },
-  "testRegex": "instructors.e2e-spec.ts$",
+  "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   }

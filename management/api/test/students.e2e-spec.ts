@@ -1,21 +1,21 @@
+import { PrismaClientExceptionFilter } from '@/common';
+import { StudentsModule } from '@/students/students.module';
+import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
+import { mockSystemHistoryProxyService } from '@/utils';
 import { INestApplication } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { PrismaClientExceptionFilter } from '@/common';
-import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
-import { mockSystemHistoryProxyService } from '@/utils';
 import { MockAuthGuard } from './mocks/guards';
-import { InstructorsModule } from '@/instructors/instructors.module';
 
-describe('InstructorsController (e2e)', () => {
+describe('StudentsController (e2e)', () => {
   let app: INestApplication;
 
-  const baseUrl = '/instructors';
+  const baseUrl = '/students';
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [InstructorsModule],
+      imports: [StudentsModule],
       providers: [
         {
           provide: APP_GUARD,
@@ -47,35 +47,35 @@ describe('InstructorsController (e2e)', () => {
     expect(list).toStrictEqual([
       {
         code: expect.any(Number),
-        cpf: '572.249.396-17',
-        id: 'b4a0aa0a-ff61-4e72-8551-26942cea858d',
-        name: 'Instructor 1',
+        cpf: '892.175.779-10',
+        id: '70262a58-c48c-440e-bd00-33dc849dfd0d',
+        name: 'Student 1',
       },
       {
         code: expect.any(Number),
-        cpf: '185.174.817-20',
-        id: '04a6982e-ffa5-4040-b7bd-2400ae67a46f',
-        name: 'Instructor 2',
+        cpf: '488.567.780-76',
+        id: '491d119d-b879-4689-9128-6321062e4152',
+        name: 'Student 2',
       },
     ]);
   });
 
   it('/:id (GET)', async () => {
     const response = await request(app.getHttpServer()).get(
-      `${baseUrl}/b4a0aa0a-ff61-4e72-8551-26942cea858d`,
+      `${baseUrl}/70262a58-c48c-440e-bd00-33dc849dfd0d`,
     );
 
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
     expect(response.body).toStrictEqual({
-      id: expect.any(String),
+      id: '70262a58-c48c-440e-bd00-33dc849dfd0d',
       code: expect.any(Number),
-      cpf: expect.any(String),
-      name: expect.any(String),
+      cpf: '892.175.779-10',
+      name: 'Student 1',
     });
   });
 
-  it('/:id (GET -> Bad request when instructor not exists)', async () => {
+  it('/:id (GET -> Bad request when student not exists)', async () => {
     const response = await request(app.getHttpServer()).get(
       `${baseUrl}/mock.id`,
     );
@@ -89,8 +89,8 @@ describe('InstructorsController (e2e)', () => {
 
   it('/:id (POST)', async () => {
     const response = await request(app.getHttpServer()).post(baseUrl).send({
-      name: 'instructor 3',
-      cpf: '812.754.585-64',
+      name: 'Student 3',
+      cpf: '709.593.442-84',
     });
 
     expect(response).toBeDefined();
@@ -98,15 +98,15 @@ describe('InstructorsController (e2e)', () => {
     expect(response.body).toStrictEqual({
       id: expect.any(String),
       code: expect.any(Number),
-      name: 'instructor 3',
-      cpf: '812.754.585-64',
+      name: 'Student 3',
+      cpf: '709.593.442-84',
     });
   });
 
   it('/:id (POST -> Bad request when cpf already exists)', async () => {
     const response = await request(app.getHttpServer()).post(baseUrl).send({
-      name: 'instructor 3',
-      cpf: '812.754.585-64',
+      name: 'Student 3',
+      cpf: '709.593.442-84',
     });
 
     expect(response).toBeDefined();
@@ -116,10 +116,10 @@ describe('InstructorsController (e2e)', () => {
 
   it('/:id (PUT)', async () => {
     const response = await request(app.getHttpServer())
-      .put(`${baseUrl}/04a6982e-ffa5-4040-b7bd-2400ae67a46f`)
+      .put(`${baseUrl}/491d119d-b879-4689-9128-6321062e4152`)
       .send({
-        name: 'instructor updated',
-        cpf: '185.174.817-20',
+        name: 'Student updated',
+        cpf: '488.567.780-76',
       });
 
     expect(response).toBeDefined();
@@ -127,17 +127,17 @@ describe('InstructorsController (e2e)', () => {
     expect(response.body).toStrictEqual({
       id: expect.any(String),
       code: expect.any(Number),
-      cpf: '185.174.817-20',
-      name: 'instructor updated',
+      cpf: '488.567.780-76',
+      name: 'Student updated',
     });
   });
 
   it('/:id (PUT -> Bad request when cpf already exists)', async () => {
     const response = await request(app.getHttpServer())
-      .put(`${baseUrl}/b4a0aa0a-ff61-4e72-8551-26942cea858d`)
+      .put(`${baseUrl}/70262a58-c48c-440e-bd00-33dc849dfd0d`)
       .send({
-        name: 'instructor updated',
-        cpf: '185.174.817-20',
+        name: 'student updated',
+        cpf: '488.567.780-76',
       });
 
     expect(response).toBeDefined();
@@ -147,16 +147,16 @@ describe('InstructorsController (e2e)', () => {
 
   it('/:id (DELETE)', async () => {
     const response = await request(app.getHttpServer()).delete(
-      `${baseUrl}/04a6982e-ffa5-4040-b7bd-2400ae67a46f`,
+      `${baseUrl}/491d119d-b879-4689-9128-6321062e4152`,
     );
 
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
   });
 
-  it('/:id (DELETE -> When instructor already deleted)', async () => {
+  it('/:id (DELETE -> When student already deleted)', async () => {
     const response = await request(app.getHttpServer()).delete(
-      `${baseUrl}/04a6982e-ffa5-4040-b7bd-2400ae67a46f`,
+      `${baseUrl}/491d119d-b879-4689-9128-6321062e4152`,
     );
 
     expect(response).toBeDefined();
