@@ -11,8 +11,8 @@ export class FindEntityDatabaseService {
 
   constructor(private readonly prismaService: PrismaService) {}
 
-  run(entityId: string, resource: Resources) {
-    const entity = this.findEntity(entityId, resource);
+  async run(entityId: string, resource: Resources) {
+    const entity = await this.findEntity(entityId, resource);
 
     if (entity) {
       this.logger.log('Entity found');

@@ -6,6 +6,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
 import { SystemHistoryModule } from '@/system-history/system-history.module';
 import { FindAllStudentsService } from './services/find-all-students/find-all-students.service';
 import { UpdateStudentService } from './services/update-student/update-student.service';
+import { DeleteStudentService } from './services/delete-student/delete-student.service';
 
 @Module({
   imports: [PrismaModule, SystemHistoryModule],
@@ -15,6 +16,7 @@ import { UpdateStudentService } from './services/update-student/update-student.s
     CreateStudentService,
     FindAllStudentsService,
     UpdateStudentService,
+    DeleteStudentService,
   ],
 })
 export class StudentsModule {}

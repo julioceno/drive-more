@@ -1,15 +1,15 @@
 import { Resources } from '@/common';
-import { InstructorEntity } from '@/instructors/entities/instructor.entity';
 import { PrismaService } from '@/prisma/prisma.service';
+import { StudentEntity } from '@/students/entities/student.entity';
 import { ActionEnum } from '@/system-history/interface/system-history.interface';
 import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
 import { Injectable, Logger } from '@nestjs/common';
-import { Instructor } from '@prisma/client';
+import { Student } from '@prisma/client';
 
 @Injectable()
-export class DeleteInstructorService {
+export class DeleteStudentService {
   private readonly logger = new Logger(
-    `@services/${DeleteInstructorService.name}`,
+    `@services/${DeleteStudentService.name}`,
   );
 
   constructor(
@@ -18,28 +18,27 @@ export class DeleteInstructorService {
   ) {}
 
   async run(id: string, creatorEmail: string) {
-    const instructor = await this.deleteInstructor(id);
+    const student = await this.deleteStudent(id);
 
-    this.createRecordHistory(creatorEmail, instructor);
+    this.createRecordHistory(creatorEmail, student);
 
-    return new InstructorEntity(instructor);
+    return new StudentEntity(student);
   }
 
-  private deleteInstructor(id: string) {
-    return this.prismaService.instructor.delete({ where: { id } });
+  private deleteStudent(id: string) {
+    return this.prismaService.student.delete({ where: { id } });
   }
 
-  private async createRecordHistory(
-    creatorEmail: string,
-    instructor: Instructor,
-  ) {
+  private async createRecordHistory(creatorEmail: string, student: Student) {
     return this.systemHistoryProxyService
       .createRecordStandard(
         creatorEmail,
         ActionEnum.DELETE,
-        instructor,
-        Resources.INSTRUCTOR,
+        student,
+        Resources.STUDENT,
       )
-      .catch((err) => this.logger.error(`There was as error ${err}`));
+      .catch((err) => {
+        this.logger.error(`There was as error ${err}`);
+      });
   }
 }

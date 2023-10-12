@@ -63,18 +63,19 @@ export class SystemHistoryProxyService {
   ) {
     this.logger.log(`Search data in database: ${resource}.${entity.id}`);
 
-    const entityFromDB = await this.findEntityDatabaseService.run(
-      entity.id,
-      resource,
-    );
-
     const payload = formatToPrismaJsonObject(
-      action === ActionEnum.DELETE ? entity : entityFromDB,
+      action === ActionEnum.DELETE
+        ? entity
+        : await this.searchFromDb(entity.id, resource),
     );
 
     return {
       id: entity?.code ?? entity.id,
       payload: typeof payload === 'object' ? JSON.stringify(payload) : payload,
     };
+  }
+
+  private searchFromDb(id: string, resource: Resources) {
+    return this.findEntityDatabaseService.run(id, resource);
   }
 }

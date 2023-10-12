@@ -47,7 +47,10 @@ export class StudentsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.studentsService.remove(+id);
+  remove(
+    @Param('id') id: string,
+    @AuthorizedUser('email') creatorEmail: string,
+  ) {
+    return this.studentsService.remove(id, creatorEmail);
   }
 }

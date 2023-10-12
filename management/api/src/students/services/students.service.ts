@@ -5,6 +5,7 @@ import { FindAllStudentsService } from './find-all-students/find-all-students.se
 import { FindAllStudentsDto } from './find-all-students/dto/find-all-students.dto';
 import { UpdateStudentDto } from './update-student/dto/update-student.dto';
 import { UpdateStudentService } from './update-student/update-student.service';
+import { DeleteStudentService } from './delete-student/delete-student.service';
 
 @Injectable()
 export class StudentsService {
@@ -12,6 +13,7 @@ export class StudentsService {
     private readonly createStudentService: CreateStudentService,
     private readonly findAllStudentsService: FindAllStudentsService,
     private readonly updateStudentService: UpdateStudentService,
+    private readonly deleteStudentService: DeleteStudentService,
   ) {}
 
   create(creatorEmail: string, dto: CreateStudentDto) {
@@ -30,7 +32,7 @@ export class StudentsService {
     return this.updateStudentService.run(id, creatorEmail, dto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} student`;
+  remove(id: string, creatorEmail: string) {
+    return this.deleteStudentService.run(id, creatorEmail);
   }
 }
