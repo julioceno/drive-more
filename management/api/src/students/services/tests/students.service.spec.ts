@@ -4,12 +4,16 @@ import {
   handleModuleDependencies,
   mockCreateStudentService,
   mockFindAllStudentsService,
+  mockUpdateStudentService,
 } from '@/utils';
 import { CreateStudentDto } from '../create-student/dto/create-student.dto';
 import { FindAllStudentsDto } from '../find-all-students/dto/find-all-students.dto';
+import { UpdateStudentDto } from '../update-student/dto/update-student.dto';
 
 describe('StudentsService', () => {
   let service: StudentsService;
+
+  const id = 'mock.id';
   const creatorEmail = 'mock.creatorEmail';
 
   beforeEach(async () => {
@@ -37,5 +41,14 @@ describe('StudentsService', () => {
   it('should invoke findAll method', async () => {
     await service.findAll({} as FindAllStudentsDto);
     expect(mockFindAllStudentsService.run).toHaveBeenLastCalledWith({});
+  });
+
+  it('should invoke update method', async () => {
+    await service.update(id, creatorEmail, {} as UpdateStudentDto);
+    expect(mockUpdateStudentService.run).toHaveBeenLastCalledWith(
+      id,
+      creatorEmail,
+      {},
+    );
   });
 });

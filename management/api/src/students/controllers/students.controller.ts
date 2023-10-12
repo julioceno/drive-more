@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { StudentsService } from '../services/students.service';
 import { AuthorizedUser } from '@/common';
 import { CreateStudentDto } from '../services/create-student/dto/create-student.dto';
 import { FindAllStudentsDto } from '../services/find-all-students/dto/find-all-students.dto';
+import { UpdateStudentDto } from '../services/update-student/dto/update-student.dto';
 
 @Controller('students')
 export class StudentsController {
@@ -35,9 +37,13 @@ export class StudentsController {
     return this.studentsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStudentDto: CreateStudentDto) {
-    return this.studentsService.update(+id, updateStudentDto);
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @AuthorizedUser('email') creatorEmail: string,
+    @Body() dto: UpdateStudentDto,
+  ) {
+    return this.studentsService.update(id, creatorEmail, dto);
   }
 
   @Delete(':id')

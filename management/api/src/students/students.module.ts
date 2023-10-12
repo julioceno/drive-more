@@ -5,10 +5,16 @@ import { CreateStudentService } from './services/create-student/create-student.s
 import { PrismaModule } from '@/prisma/prisma.module';
 import { SystemHistoryModule } from '@/system-history/system-history.module';
 import { FindAllStudentsService } from './services/find-all-students/find-all-students.service';
+import { UpdateStudentService } from './services/update-student/update-student.service';
 
 @Module({
   imports: [PrismaModule, SystemHistoryModule],
   controllers: [StudentsController],
-  providers: [StudentsService, CreateStudentService, FindAllStudentsService],
+  providers: [
+    StudentsService,
+    CreateStudentService,
+    FindAllStudentsService,
+    UpdateStudentService,
+  ],
 })
 export class StudentsModule {}
