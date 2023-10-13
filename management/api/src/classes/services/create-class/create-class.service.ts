@@ -1,11 +1,12 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
 import { ClassEntity } from '@/classes/entities/class.entity';
 import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
 import { Class } from '@prisma/client';
 import { ActionEnum } from '@/system-history/interface/system-history.interface';
 import { Resources } from '@/common';
+import { isAfter } from 'date-fns';
 
 @Injectable()
 export class CreateClassService {
@@ -17,6 +18,14 @@ export class CreateClassService {
   ) {}
 
   async run(dto: CreateClassDto, creatorEmail: string) {
+    const endDateValid = isAfter(dto.endAt, dto.startAt);
+
+    if (!endDateValid) {
+      throw new BadRequestException(
+        'Data de término deve ser posterior à data Início.',
+      );
+    }
+
     const classCreated = await this.createClass(dto);
 
     this.createRecordHistory(creatorEmail, classCreated);
