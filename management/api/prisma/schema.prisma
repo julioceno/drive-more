@@ -68,13 +68,13 @@ model Class {
   createdAt DateTime @default(now()) @map("created_at")
 
   studentId String
-  Student   Student @relation(fields: [studentId], references: [id])
+  student   Student @relation(fields: [studentId], references: [id])
 
   instructorId String
-  Instructor   Instructor @relation(fields: [instructorId], references: [id])
+  instructor   Instructor @relation(fields: [instructorId], references: [id])
 
   categoryId String
-  Category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
 
   @@map("classes")
 }

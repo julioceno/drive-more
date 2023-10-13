@@ -1,8 +1,7 @@
 import { Resources } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger, Res } from '@nestjs/common';
-import { InstructorAdpter } from './adpters';
-import { StudentAdpter } from './adpters/student.adpter';
+import { InstructorAdpter, StudentAdpter, ClassAdpter } from './adpters';
 
 @Injectable()
 export class FindEntityDatabaseService {
@@ -30,6 +29,8 @@ export class FindEntityDatabaseService {
         return this.findInstuctor(entityId);
       case Resources.STUDENT:
         return this.findStudent(entityId);
+      case Resources.CLASS:
+        return this.findClass(entityId);
     }
   }
 
@@ -50,6 +51,22 @@ export class FindEntityDatabaseService {
     });
 
     const adapter = new StudentAdpter();
+    const adptedData = adapter.adapt(entity);
+
+    return adptedData;
+  }
+
+  private async findClass(id: string) {
+    const entity = await this.prismaService.class.findUnique({
+      where: { id },
+      include: {
+        category: true,
+        instructor: true,
+        student: true,
+      },
+    });
+
+    const adapter = new ClassAdpter();
     const adptedData = adapter.adapt(entity);
 
     return adptedData;
