@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ClassesService } from '../services/classes.service';
 import { CreateClassDto } from '../services/create-class/dto/create-class.dto';
 import { AuthorizedUser } from '@/common';
+import { FindAllClassesDto } from '../services/find-all-classes/dto/find-all-classes.dto';
 
 @Controller('classes')
 export class ClassesController {
@@ -24,8 +26,8 @@ export class ClassesController {
   }
 
   @Get()
-  findAll() {
-    return this.classesService.findAll();
+  findAll(@Query() dto: FindAllClassesDto) {
+    return this.classesService.findAll(dto);
   }
 
   @Get(':id')

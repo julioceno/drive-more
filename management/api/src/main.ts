@@ -1,13 +1,11 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import {
   PrismaClientExceptionFilter,
   TypeErrorExceptionFilter,
 } from './common';
-import * as cookieParser from 'cookie-parser';
-import { ValidationPipe } from '@nestjs/common';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,7 +21,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.useGlobalFilters(new PrismaClientExceptionFilter());
-  //app.useGlobalFilters(new TypeErrorExceptionFilter());
+  app.useGlobalFilters(new TypeErrorExceptionFilter());
 
   await Promise.all([
     app.startAllMicroservices(),

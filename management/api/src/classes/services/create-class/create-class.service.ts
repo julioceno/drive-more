@@ -6,7 +6,7 @@ import { SystemHistoryProxyService } from '@/system-history/services/system-hist
 import { Class } from '@prisma/client';
 import { ActionEnum } from '@/system-history/interface/system-history.interface';
 import { Resources } from '@/common';
-import { isAfter } from 'date-fns';
+import { isAfter, isBefore } from 'date-fns';
 
 @Injectable()
 export class CreateClassService {
@@ -18,11 +18,24 @@ export class CreateClassService {
   ) {}
 
   async run(dto: CreateClassDto, creatorEmail: string) {
-    const endDateValid = isAfter(dto.endAt, dto.startAt);
+    const isPastDate = isBefore(dto.startAt, new Date());
+    if (isPastDate) {
+      throw new BadRequestException(
+        'A data de início deve ser uma data futura a atual.',
+      );
+    }
 
+    const endDateValid = isAfter(dto.endAt, dto.startAt);
     if (!endDateValid) {
       throw new BadRequestException(
         'Data de término deve ser posterior à data Início.',
+      );
+    }
+
+    const classInTimeInterval = await this.getClassTimeInterval(dto);
+    if (classInTimeInterval.length) {
+      throw new BadRequestException(
+        'Já existe uma aula nesse intervalo de tempo para o instrutor ou para o aluno.',
       );
     }
 
@@ -46,7 +59,7 @@ export class CreateClassService {
     });
   }
 
-  private async createRecordHistory(creatorEmail: string, classCreated: Class) {
+  private createRecordHistory(creatorEmail: string, classCreated: Class) {
     return this.systemHistoryProxyService
       .createRecordStandard(
         creatorEmail,
@@ -55,5 +68,37 @@ export class CreateClassService {
         Resources.CLASS,
       )
       .catch((err) => this.logger.error(`There was as error ${err}`));
+  }
+
+  private getClassTimeInterval(dto: CreateClassDto) {
+    const timeInterval = {
+      gte: dto.startAt,
+      lte: dto.endAt,
+    };
+
+    // TODO: improving this name const
+    const filter = {
+      OR: [{ startAt: timeInterval }, { endAt: timeInterval }],
+    };
+
+    return this.prismaService.class.findMany({
+      where: {
+        OR: [
+          {
+            instructorId: dto.instructorId,
+            ...filter,
+          },
+          {
+            studentId: dto.studentId,
+            ...filter,
+          },
+          {
+            instructorId: dto.instructorId,
+            studentId: dto.studentId,
+            ...filter,
+          },
+        ],
+      },
+    });
   }
 }

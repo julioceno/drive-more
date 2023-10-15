@@ -29,10 +29,7 @@ export class DeleteInstructorService {
     return this.prismaService.instructor.delete({ where: { id } });
   }
 
-  private async createRecordHistory(
-    creatorEmail: string,
-    instructor: Instructor,
-  ) {
+  private createRecordHistory(creatorEmail: string, instructor: Instructor) {
     return this.systemHistoryProxyService
       .createRecordStandard(
         creatorEmail,

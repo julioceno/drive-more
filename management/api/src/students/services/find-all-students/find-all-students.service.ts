@@ -51,6 +51,6 @@ export class FindAllStudentsService {
   }
 
   private getTotalCount(where: Prisma.StudentWhereInput) {
-    return this.prismaService.student.count({ where });
+    return this.prismaService.student.count({ where }); // TODO: fix bug from pagination query data in coubt
   }
 }
