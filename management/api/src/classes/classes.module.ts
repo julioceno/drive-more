@@ -5,10 +5,18 @@ import { CreateClassService } from './services/create-class/create-class.service
 import { SystemHistoryModule } from '@/system-history/system-history.module';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { FindAllClassesService } from './services/find-all-classes/find-all-classes.service';
+import { FindOneClassService } from './services/find-one-class/find-one-class.service';
+import { DeleteClassService } from './services/delete-class/delete-class.service';
 
 @Module({
   controllers: [ClassesController],
   imports: [PrismaModule, SystemHistoryModule],
-  providers: [ClassesService, CreateClassService, FindAllClassesService],
+  providers: [
+    ClassesService,
+    CreateClassService,
+    FindAllClassesService,
+    FindOneClassService,
+    DeleteClassService,
+  ],
 })
 export class ClassesModule {}

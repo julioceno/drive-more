@@ -32,11 +32,11 @@ export class ClassesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.classesService.findOne(+id);
+    return this.classesService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.classesService.remove(+id);
+  delete(@Param('id') id: string, @AuthorizedUser('email') creatorEmail) {
+    return this.classesService.delete(id, creatorEmail);
   }
 }

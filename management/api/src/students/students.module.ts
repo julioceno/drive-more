@@ -19,6 +19,7 @@ import { FindOneStudentService } from './services/find-one-student/find-one-stud
     UpdateStudentService,
     DeleteStudentService,
     FindOneStudentService,
+    DeleteStudentService,
   ],
 })
 export class StudentsModule {}
