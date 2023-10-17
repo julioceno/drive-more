@@ -15,8 +15,8 @@ export class ClassesService {
     private readonly deleteClassService: DeleteClassService,
   ) {}
 
-  create(dto: CreateClassDto, creatorEmail: string) {
-    return this.createClassService.run(dto, creatorEmail);
+  create(creatorEmail: string, dto: CreateClassDto) {
+    return this.createClassService.run(creatorEmail, dto);
   }
 
   findAll(dto: FindAllClassesDto) {

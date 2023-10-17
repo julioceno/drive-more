@@ -19,10 +19,10 @@ export class ClassesController {
 
   @Post()
   create(
-    @Body() createClassDto: CreateClassDto,
     @AuthorizedUser('email') creatorEmail,
+    @Body() createClassDto: CreateClassDto,
   ) {
-    return this.classesService.create(createClassDto, creatorEmail);
+    return this.classesService.create(creatorEmail, createClassDto);
   }
 
   @Get()

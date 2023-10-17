@@ -17,7 +17,7 @@ export class CreateClassService {
     private readonly systemHistoryProxyService: SystemHistoryProxyService,
   ) {}
 
-  async run(dto: CreateClassDto, creatorEmail: string) {
+  async run(creatorEmail: string, dto: CreateClassDto) {
     const isPastDate = isBefore(dto.startAt, new Date());
     if (isPastDate) {
       throw new BadRequestException(
@@ -28,7 +28,7 @@ export class CreateClassService {
     const endDateValid = isAfter(dto.endAt, dto.startAt);
     if (!endDateValid) {
       throw new BadRequestException(
-        'Data de término deve ser posterior à data Início.',
+        'Data de término deve ser posterior à data início.',
       );
     }
 

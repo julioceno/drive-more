@@ -1,12 +1,10 @@
 import { IServiceMock } from '@/common';
 import { mockPrismaService } from './prisma';
 import { PrismaService } from '@/prisma/prisma.service';
-import {
-  classesMock,
-  instructorsMocks,
-  studentsMocks,
-  systemHistoryMocks,
-} from '../index';
+import { systemHistoryMocks } from './system-history';
+import { instructorsMocks } from './instructors';
+import { studentsMocks } from './students';
+import { classesMock } from './classes';
 
 export const servicesMocks: IServiceMock[] = [
   {
