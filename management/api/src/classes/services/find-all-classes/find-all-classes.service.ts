@@ -31,6 +31,7 @@ export class FindAllClassesService {
   private getClasses(dto: FindAllClassesDto, where: Prisma.ClassWhereInput) {
     return this.prismaService.class.findMany({
       ...getPaginationQueryData(dto),
+      orderBy: dto.sort ?? { createdAt: 'desc' },
       where,
     });
   }
@@ -38,6 +39,7 @@ export class FindAllClassesService {
   private getTotalCount(dto: FindAllClassesDto, where: Prisma.ClassWhereInput) {
     return this.prismaService.class.count({
       ...getPaginationQueryData(dto),
+      orderBy: dto.sort ?? { createdAt: 'desc' },
       where,
     });
   }

@@ -1,29 +1,27 @@
 import { handleModuleDependencies, mockPrismaService } from '@/utils';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FindOneStudentService } from '../find-one-student.service';
-import { StudentEntity } from '@/students/entities/student.entity';
+import { FindOneClassService } from '../find-one-class.service';
+import { ClassEntity } from '@/classes/entities/class.entity';
 import { NotFoundException } from '@nestjs/common';
 
-describe('FindOneStudentService', () => {
-  let service: FindOneStudentService;
+describe('FindOneClassService', () => {
+  let service: FindOneClassService;
 
   const id = 'mock.id';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FindOneStudentService],
+      providers: [FindOneClassService],
     })
       .useMocker(handleModuleDependencies)
       .compile();
 
-    mockPrismaService.student.findUnique.mockResolvedValue({
+    mockPrismaService.class.findUnique.mockResolvedValue({
       id,
     });
 
-    service = module.get<FindOneStudentService>(FindOneStudentService);
+    service = module.get<FindOneClassService>(FindOneClassService);
   });
-
-  afterEach(() => jest.clearAllMocks());
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -33,16 +31,16 @@ describe('FindOneStudentService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should invoke prismaService and call student.findUnique', async () => {
+  it('should invoke prismaService and call class.findUnique', async () => {
     await service.run(id);
 
-    expect(mockPrismaService.student.findUnique).toHaveBeenCalledWith({
+    expect(mockPrismaService.class.findUnique).toHaveBeenCalledWith({
       where: { id },
     });
   });
 
-  it('should throw NotFoundExcpetion when student not exists', async () => {
-    mockPrismaService.student.findUnique.mockResolvedValue(null);
+  it('should throw NotFoundExcpetion when class not exists', async () => {
+    mockPrismaService.class.findUnique.mockResolvedValue(null);
 
     let error = null;
     try {
@@ -56,10 +54,10 @@ describe('FindOneStudentService', () => {
     expect(error.message).toBe('Recurso buscado impossível de ser encontrado.');
   });
 
-  it('should return entity in instance of StudentEntity', async () => {
+  it('should return entity in instance of ClassEntity', async () => {
     const response = await service.run(id);
 
     expect(response).toBeDefined();
-    expect(response).toBeInstanceOf(StudentEntity);
+    expect(response).toBeInstanceOf(ClassEntity);
   });
 });

@@ -57,10 +57,10 @@ export class DeleteClassService {
       throw new NotFoundException(messages.NOT_FOUND);
     }
 
-    const isPastCurrentDate = isAfter(classRecord.endAt, new Date());
-    if (isPastCurrentDate) {
+    const endDateIsAfterCurrentDate = isAfter(classRecord.endAt, new Date());
+    if (endDateIsAfterCurrentDate) {
       throw new BadRequestException(
-        'A data de início deve ser uma data futura a atual.',
+        'A data de término já passou da data atual, impossível deletar.',
       );
     }
   }
