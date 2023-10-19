@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { categories, instructors, students } from './resources';
+import { categories, classes, instructors, students } from './resources';
 
 export const prisma = new PrismaClient();
 
@@ -7,6 +7,7 @@ async function main() {
   await categories();
   await instructors();
   await students();
+  await classes();
 }
 
 main()

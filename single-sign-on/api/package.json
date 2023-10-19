@@ -19,9 +19,6 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "./prisma/run-test.sh"
   },
-  "prisma": {
-    "seed": "ts-node ./prisma/seed.ts"
-  },
   "dependencies": {
     "@nestjs/jwt": "^10.0.3",
     "bcrypt": "^5.1.0",

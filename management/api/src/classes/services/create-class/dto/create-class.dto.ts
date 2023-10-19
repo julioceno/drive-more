@@ -1,6 +1,5 @@
 import { messages } from '@/common';
-import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateClassDto {
   @IsNotEmpty({ message: messages.string('studentId') })
@@ -16,12 +15,10 @@ export class CreateClassDto {
   categoryId: string;
 
   @IsNotEmpty({ message: messages.string('startAt') })
-  @IsDate({ message: messages.date('startAt') })
-  @Type(() => Date)
-  startAt: Date;
+  @IsDateString({}, { message: messages.date('startAt') })
+  startAt: string;
 
   @IsNotEmpty({ message: messages.string('endAt') })
-  @IsDate({ message: messages.date('endAt') })
-  @Type(() => Date)
-  endAt: Date;
+  @IsDateString({}, { message: messages.date('endAt') })
+  endAt: string;
 }

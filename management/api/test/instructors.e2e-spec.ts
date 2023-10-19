@@ -87,7 +87,7 @@ describe('InstructorsController (e2e)', () => {
     );
   });
 
-  it('/:id (POST)', async () => {
+  it('/ (POST)', async () => {
     const response = await request(app.getHttpServer()).post(baseUrl).send({
       name: 'instructor 3',
       cpf: '812.754.585-64',
@@ -103,7 +103,7 @@ describe('InstructorsController (e2e)', () => {
     });
   });
 
-  it('/:id (POST -> Bad request when cpf already exists)', async () => {
+  it('/ (POST -> Bad request when cpf already exists)', async () => {
     const response = await request(app.getHttpServer()).post(baseUrl).send({
       name: 'instructor 3',
       cpf: '812.754.585-64',

@@ -6,7 +6,7 @@ import { SystemHistoryProxyService } from '@/system-history/services/system-hist
 import { Class } from '@prisma/client';
 import { ActionEnum } from '@/system-history/interface/system-history.interface';
 import { Resources } from '@/common';
-import { isAfter, isBefore } from 'date-fns';
+import { isAfter, isBefore, parseISO } from 'date-fns';
 
 @Injectable()
 export class CreateClassService {
@@ -18,14 +18,17 @@ export class CreateClassService {
   ) {}
 
   async run(creatorEmail: string, dto: CreateClassDto) {
-    const isPastDate = isBefore(dto.startAt, new Date());
+    const startAt = parseISO(dto.startAt);
+    const endAt = parseISO(dto.endAt);
+
+    const isPastDate = isBefore(startAt, new Date());
     if (isPastDate) {
       throw new BadRequestException(
         'A data de início deve ser uma data futura a atual.',
       );
     }
 
-    const endDateValid = isAfter(dto.endAt, dto.startAt);
+    const endDateValid = isAfter(endAt, startAt);
     if (!endDateValid) {
       throw new BadRequestException(
         'Data de término deve ser posterior à data início.',
