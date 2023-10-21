@@ -14,6 +14,8 @@ import { Resources } from '@/common';
 describe('CreateUserService', () => {
   let service: CreateUserService;
 
+  const creatorEmail = 'mock.creatorEmail';
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [CreateUserService],
@@ -44,7 +46,7 @@ describe('CreateUserService', () => {
       name: 'julio',
     });
 
-    const response = await service.run(dto);
+    const response = await service.run(creatorEmail, dto);
 
     expect(response).toBeInstanceOf(CreatedUserEntity);
   });
@@ -65,7 +67,7 @@ describe('CreateUserService', () => {
       id: 'b08b4171-208e-4798-ac11-6bd545b90fc2',
     });
 
-    await service.run(dto);
+    await service.run(creatorEmail, dto);
 
     expect(mockPrismaService.role.findUniqueOrThrow).toHaveBeenLastCalledWith({
       where: {
@@ -102,7 +104,7 @@ describe('CreateUserService', () => {
     let error = null;
 
     try {
-      await service.run(dto);
+      await service.run(creatorEmail, dto);
     } catch (err) {
       error = err;
     }
@@ -125,12 +127,12 @@ describe('CreateUserService', () => {
 
     mockPrismaService.user.create.mockResolvedValueOnce(user);
 
-    await service.run(dto);
+    await service.run(creatorEmail, dto);
 
     expect(
       mockSystemHistoryProxyService.createRecordStandard,
     ).toHaveBeenLastCalledWith(
-      dto.email,
+      creatorEmail,
       ActionEnum.CREATE,
       user,
       Resources.USER,

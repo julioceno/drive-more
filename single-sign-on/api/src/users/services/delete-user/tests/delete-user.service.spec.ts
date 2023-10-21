@@ -13,6 +13,7 @@ describe('DeleteUserService', () => {
   let service: DeleteUserService;
 
   const id = 'mock.id';
+  const creatorEmail = 'mock.creatorEmail';
   const email = 'mock.email';
 
   beforeEach(async () => {
@@ -38,7 +39,7 @@ describe('DeleteUserService', () => {
   });
 
   it('should invoke prismaService and call delete from user', async () => {
-    await service.run(id);
+    await service.run(id, creatorEmail);
 
     expect(mockPrismaService.user.delete).toHaveBeenLastCalledWith({
       where: {
@@ -48,19 +49,19 @@ describe('DeleteUserService', () => {
   });
 
   it('should return entity deleted in instance of UserEntity', async () => {
-    const response = await service.run(id);
+    const response = await service.run(id, creatorEmail);
 
     expect(response).toBeDefined();
     expect(response).toBeInstanceOf(UserEntity);
   });
 
   it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
-    await service.run(id);
+    await service.run(id, creatorEmail);
 
     expect(
       mockSystemHistoryProxyService.createRecordStandard,
     ).toHaveBeenLastCalledWith(
-      email,
+      creatorEmail,
       ActionEnum.DELETE,
       { email },
       Resources.USER,

@@ -15,9 +15,9 @@ export class DeleteUserService {
     private readonly systemHistoryProxyService: SystemHistoryProxyService,
   ) {}
 
-  async run(id: string) {
+  async run(id: string, creatorEmail: string) {
     const user = await this.deleteUser(id);
-    this.createRecordHistory(user);
+    this.createRecordHistory(creatorEmail, user);
 
     return new UserEntity(user);
   }
@@ -26,9 +26,14 @@ export class DeleteUserService {
     return this.prismaService.user.delete({ where: { id } });
   }
 
-  private async createRecordHistory(user: User) {
+  private async createRecordHistory(creatorEmail: string, user: User) {
     return this.systemHistoryProxyService
-      .createRecordStandard(user.email, ActionEnum.DELETE, user, Resources.USER) // TODO: email is incorrect, should is user admin
+      .createRecordStandard(
+        creatorEmail,
+        ActionEnum.DELETE,
+        user,
+        Resources.USER,
+      )
       .catch((err) => this.logger.error(`There was as error ${err}`));
   }
 }

@@ -18,7 +18,7 @@ export class ChangeRoleUserService {
     private readonly systemHistoryProxyService: SystemHistoryProxyService,
   ) {}
 
-  async run(dto: ChangeRoleUserDto) {
+  async run(creatorEmail: string, dto: ChangeRoleUserDto) {
     const { role, userId } = dto;
 
     await Promise.all([
@@ -28,7 +28,7 @@ export class ChangeRoleUserService {
 
     const user = await this.changeRoleFromUser(userId, role);
 
-    this.createRecordHistory(user);
+    this.createRecordHistory(creatorEmail, user);
 
     return new UserEntity(user);
   }
@@ -59,9 +59,14 @@ export class ChangeRoleUserService {
     });
   }
 
-  private async createRecordHistory(user: User) {
+  private async createRecordHistory(creatorEmail: string, user: User) {
     return this.systemHistoryProxyService
-      .createRecordStandard(user.email, ActionEnum.UPDATE, user, Resources.USER)
+      .createRecordStandard(
+        creatorEmail,
+        ActionEnum.UPDATE,
+        user,
+        Resources.USER,
+      )
       .catch((err) => this.logger.error(`There was as error ${err}`));
   }
 }

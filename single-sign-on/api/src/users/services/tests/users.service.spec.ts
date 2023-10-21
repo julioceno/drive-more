@@ -18,6 +18,9 @@ import { ChangeRoleUserDto } from '../change-role-user/dto/change-role-user.dto'
 describe('UsersService', () => {
   let service: UsersService;
 
+  const userId = 'mock.userId';
+  const creatorEmail = 'mock.creatorEmail';
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UsersService],
@@ -33,8 +36,11 @@ describe('UsersService', () => {
   });
 
   it('should invoke create method', async () => {
-    await service.create({} as CreateUserDto);
-    expect(mockCreateUserService.run).toHaveBeenLastCalledWith({});
+    await service.create(creatorEmail, {} as CreateUserDto);
+    expect(mockCreateUserService.run).toHaveBeenLastCalledWith(
+      creatorEmail,
+      {},
+    );
   });
 
   it('should invoke findAll method', async () => {
@@ -43,27 +49,36 @@ describe('UsersService', () => {
   });
 
   it('should invoke findOne method', async () => {
-    await service.findOne('');
-    expect(mockFindOneUserService.run).toHaveBeenLastCalledWith('');
+    await service.findOne(userId);
+    expect(mockFindOneUserService.run).toHaveBeenLastCalledWith(userId);
   });
 
   it('should invoke update method', async () => {
-    await service.update('', {} as UpdateUserDto);
-    expect(mockUpdateUserService.run).toHaveBeenLastCalledWith('', {});
+    await service.update(userId, {} as UpdateUserDto);
+    expect(mockUpdateUserService.run).toHaveBeenLastCalledWith(userId, {});
   });
 
   it('should invoke updatePassword method', async () => {
-    await service.updatePassword('', {} as UpdatePasswordUserDto);
-    expect(mockUpdatePasswordUserService.run).toHaveBeenLastCalledWith('', {});
+    await service.updatePassword(userId, {} as UpdatePasswordUserDto);
+    expect(mockUpdatePasswordUserService.run).toHaveBeenLastCalledWith(
+      userId,
+      {},
+    );
   });
 
   it('should invoke delete method', async () => {
-    await service.delete('');
-    expect(mockDeleteUserService.run).toHaveBeenLastCalledWith('');
+    await service.delete(userId, creatorEmail);
+    expect(mockDeleteUserService.run).toHaveBeenLastCalledWith(
+      userId,
+      creatorEmail,
+    );
   });
 
   it('should invoke changeRole method', async () => {
-    await service.changeRole({} as ChangeRoleUserDto);
-    expect(mockChangeRoleUserService.run).toHaveBeenLastCalledWith({});
+    await service.changeRole(creatorEmail, {} as ChangeRoleUserDto);
+    expect(mockChangeRoleUserService.run).toHaveBeenLastCalledWith(
+      creatorEmail,
+      {},
+    );
   });
 });

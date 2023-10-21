@@ -15,6 +15,9 @@ import { handleModuleDependencies } from '@/utils';
 describe('UsersController', () => {
   let controller: UsersController;
 
+  const creatorEmail = 'mock.creatorEmail';
+  const userId = 'mock.userId';
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
@@ -36,17 +39,20 @@ describe('UsersController', () => {
   });
 
   it('should invoke create method from UsersController', async () => {
-    await controller.create({} as CreateUserDto);
-    expect(mockCreateUserService.run).toHaveBeenLastCalledWith({});
+    await controller.create(creatorEmail, {} as CreateUserDto);
+    expect(mockCreateUserService.run).toHaveBeenLastCalledWith(
+      creatorEmail,
+      {},
+    );
   });
 
   it('should invoke update method from UsersController', async () => {
-    await controller.update('', {} as UpdateUserDto);
-    expect(mockUpdateUserService.run).toHaveBeenLastCalledWith('', {});
+    await controller.update(userId, {} as UpdateUserDto);
+    expect(mockUpdateUserService.run).toHaveBeenLastCalledWith(userId, {});
   });
 
   it('should invoke findOne method from UsersController', async () => {
-    await controller.findOne('');
-    expect(mockFindOneUserService.run).toHaveBeenLastCalledWith('');
+    await controller.findOne(userId);
+    expect(mockFindOneUserService.run).toHaveBeenLastCalledWith(userId);
   });
 });

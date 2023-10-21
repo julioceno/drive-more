@@ -20,7 +20,7 @@ export class CreateUserService {
 
   private readonly DEFAULT_ROLE = RoleEnum.USER;
 
-  async run(dto: CreateUserDto) {
+  async run(creatorEmail: string, dto: CreateUserDto) {
     const { email } = dto;
 
     await this.checkUserExists(email);
@@ -30,7 +30,7 @@ export class CreateUserService {
 
     const user = await this.createUser(dto, passwordEncrypted);
 
-    this.createRecordHistory(user);
+    this.createRecordHistory(creatorEmail, user);
     return new CreatedUserEntity({ ...user, password });
   }
 
@@ -67,10 +67,10 @@ export class CreateUserService {
     });
   }
 
-  private async createRecordHistory(user: User) {
+  private async createRecordHistory(creatorEmail: string, user: User) {
     return this.systemHistoryProxyService
       .createRecordStandard(
-        user.email /** TODO: creator emails is incorrect */,
+        creatorEmail,
         ActionEnum.CREATE,
         user,
         Resources.USER,

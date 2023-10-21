@@ -24,8 +24,8 @@ export class UsersService {
     private readonly changeRoleUserService: ChangeRoleUserService,
   ) {}
 
-  create(dto: CreateUserDto) {
-    return this.createUserService.run(dto);
+  create(creatorEmail: string, dto: CreateUserDto) {
+    return this.createUserService.run(creatorEmail, dto);
   }
 
   findAll(dto: FindAllUsersDto) {
@@ -44,11 +44,11 @@ export class UsersService {
     return this.updatePasswordUserService.run(userId, dto);
   }
 
-  delete(id: string) {
-    return this.deleteUserService.run(id);
+  delete(creatorEmail: string, id: string) {
+    return this.deleteUserService.run(creatorEmail, id);
   }
 
-  changeRole(dto: ChangeRoleUserDto) {
-    return this.changeRoleUserService.run(dto);
+  changeRole(creatorEmail: string, dto: ChangeRoleUserDto) {
+    return this.changeRoleUserService.run(creatorEmail, dto);
   }
 }

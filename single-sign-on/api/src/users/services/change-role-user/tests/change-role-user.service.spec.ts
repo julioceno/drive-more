@@ -16,6 +16,7 @@ describe('ChangeRoleUserService', () => {
   let service: ChangeRoleUserService;
 
   const userId = 'mock.userId';
+  const creatorEmail = 'mock.creatorEmail';
   const email = 'mock.email';
 
   const dto: ChangeRoleUserDto = { userId, role: RoleEnum.USER };
@@ -49,7 +50,7 @@ describe('ChangeRoleUserService', () => {
   });
 
   it('should return updated user instance of UserEntity', async () => {
-    const response = await service.run(dto);
+    const response = await service.run(creatorEmail, dto);
 
     expect(mockPrismaService.user.update).toHaveBeenLastCalledWith({
       data: {
@@ -77,7 +78,7 @@ describe('ChangeRoleUserService', () => {
     let error = null;
 
     try {
-      await service.run(dto);
+      await service.run(creatorEmail, dto);
     } catch (err) {
       error = err;
     }
@@ -99,7 +100,7 @@ describe('ChangeRoleUserService', () => {
     let error = null;
 
     try {
-      await service.run(dto);
+      await service.run(creatorEmail, dto);
     } catch (err) {
       error = err;
     }
@@ -116,12 +117,12 @@ describe('ChangeRoleUserService', () => {
   });
 
   it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
-    await service.run(dto);
+    await service.run(creatorEmail, dto);
 
     expect(
       mockSystemHistoryProxyService.createRecordStandard,
     ).toHaveBeenLastCalledWith(
-      email,
+      creatorEmail,
       ActionEnum.UPDATE,
       {
         id: userId,

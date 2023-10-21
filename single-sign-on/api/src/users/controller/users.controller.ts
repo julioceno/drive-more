@@ -29,8 +29,11 @@ export class UsersController {
   }
 
   @Post()
-  create(@Body() dto: CreateUserDto) {
-    return this.usersService.create(dto);
+  create(
+    @AuthorizedUser('email') creatorEmail: string,
+    @Body() dto: CreateUserDto,
+  ) {
+    return this.usersService.create(creatorEmail, dto);
   }
 
   @Put()
@@ -49,8 +52,11 @@ export class UsersController {
   }
 
   @Patch('/change-role')
-  changeRole(@Body() dto: ChangeRoleUserDto) {
-    return this.usersService.changeRole(dto);
+  changeRole(
+    @AuthorizedUser('email') creatorEmail: string,
+    @Body() dto: ChangeRoleUserDto,
+  ) {
+    return this.usersService.changeRole(creatorEmail, dto);
   }
 
   @Get(':id')
@@ -59,7 +65,10 @@ export class UsersController {
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.usersService.delete(id);
+  delete(
+    @AuthorizedUser('email') creatorEmail: string,
+    @Param('id') id: string,
+  ) {
+    return this.usersService.delete(creatorEmail, id);
   }
 }
