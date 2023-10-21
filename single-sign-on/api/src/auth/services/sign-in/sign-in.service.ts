@@ -13,7 +13,6 @@ import { SystemHistoryProxyService } from '@/system-history/services/system-hist
 import { User } from '@prisma/client';
 
 @Injectable()
-@Public()
 export class SignInService {
   private readonly logger = new Logger(`@service/${SignInService.name}`);
 
@@ -86,7 +85,7 @@ export class SignInService {
     return { accessToken, refreshToken };
   }
 
-  private async getUser(email: string) {
+  private getUser(email: string) {
     return this.prismaService.user.findUnique({
       where: { email },
       include: {
