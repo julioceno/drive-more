@@ -11,7 +11,7 @@ function developmentConfig() {
     clientsIds: {
       authClientId: process.env.SSO_CLIENT_ID,
       logsClientId: process.env.LOGS_CLIENT_ID,
-      schedulingClientId: process.env.SCHEDULING_CLIENT_ID,
+      schedulingClientId: process.env.MANAGEMENT_CLIENT_ID,
     },
   };
 }
