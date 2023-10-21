@@ -46,25 +46,23 @@ describe('FindAllStudentsService', () => {
   it('should invoke prismaService and call student.findMany and student.count', async () => {
     await service.run(dto);
 
-    const where = {
-      cpf: {
-        contains: undefined,
-        mode: 'insensitive',
-      },
-      name: {
-        contains: undefined,
-        mode: 'insensitive',
-      },
-    };
-
-    expect(mockPrismaService.student.findMany).toHaveBeenLastCalledWith({
+    const select = {
       orderBy: {
         createdAt: 'desc',
       },
-      where,
-    });
-    expect(mockPrismaService.student.count).toHaveBeenLastCalledWith({
-      where,
-    });
+      where: {
+        cpf: {
+          contains: undefined,
+          mode: 'insensitive',
+        },
+        name: {
+          contains: undefined,
+          mode: 'insensitive',
+        },
+      },
+    };
+
+    expect(mockPrismaService.student.findMany).toHaveBeenLastCalledWith(select);
+    expect(mockPrismaService.student.count).toHaveBeenLastCalledWith(select);
   });
 });

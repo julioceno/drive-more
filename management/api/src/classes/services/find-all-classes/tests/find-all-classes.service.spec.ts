@@ -44,20 +44,15 @@ describe('FindAllClassesService', () => {
   it('should invoke prismaService and call class.findMany and class.count', async () => {
     await service.run(dto);
 
-    const where = {};
-
-    expect(mockPrismaService.class.findMany).toHaveBeenLastCalledWith({
+    const select = {
       orderBy: {
         createdAt: 'desc',
       },
-      where,
-    });
+      where: {},
+    };
 
-    expect(mockPrismaService.class.count).toHaveBeenLastCalledWith({
-      orderBy: {
-        createdAt: 'desc',
-      },
-      where,
-    });
+    expect(mockPrismaService.class.findMany).toHaveBeenLastCalledWith(select);
+
+    expect(mockPrismaService.class.count).toHaveBeenLastCalledWith(select);
   });
 });

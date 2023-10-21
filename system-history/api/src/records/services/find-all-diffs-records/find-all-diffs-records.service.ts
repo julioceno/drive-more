@@ -23,7 +23,7 @@ export class FindAllDiffsRecordsService {
     const where = this.buildWhere(dto);
 
     this.logger.log('Getting records to format...');
-    const records = await this.getRecords(dto, where);
+    const [records, totalCount] = await this.getRecords(dto, where);
 
     const promises = [];
 
@@ -33,10 +33,7 @@ export class FindAllDiffsRecordsService {
     }
     this.logger.log('Records formatteds');
 
-    const [recordsFormatted, totalCount] = await Promise.all([
-      Promise.all(promises),
-      this.getTotalCount(where),
-    ]);
+    const recordsFormatted = await Promise.all(promises);
 
     const entities = recordsFormatted.map(
       (record) => new RecordDiffEntity(record),
@@ -51,21 +48,23 @@ export class FindAllDiffsRecordsService {
     dto: FindAllDiffsRecordsDto,
     where: Prisma.RecordWhereInput,
   ) {
-    return this.prismaService.record.findMany({
+    const select = {
       ...getPaginationQueryData(dto),
       orderBy: dto.sort ?? { createdAt: 'desc' },
       where,
-    });
-  }
+    };
 
-  private getTotalCount(where: Prisma.RecordWhereInput) {
-    return this.prismaService.record.count({ where });
+    return Promise.all([
+      this.prismaService.record.findMany(select),
+      this.prismaService.record.count(select),
+    ]);
   }
 
   private buildWhere(dto: FindAllDiffsRecordsDto): Prisma.RecordWhereInput {
     const data = Prisma.validator<Prisma.RecordWhereInput>()({
       entityId: dto.entityId,
       code: dto.code,
+      action: dto.action,
       Resource: {
         name: {
           contains: dto.resource,

@@ -45,7 +45,7 @@ describe('FindAllUsersService', () => {
 
     await service.run(dto);
 
-    expect(mockPrismaService.user.findMany).toHaveBeenLastCalledWith({
+    const select = {
       orderBy: { createdAt: 'desc' },
       skip: undefined,
       take: undefined,
@@ -53,13 +53,9 @@ describe('FindAllUsersService', () => {
         email: { contains: undefined, mode: 'insensitive' },
         name: { contains: undefined, mode: 'insensitive' },
       },
-    });
+    };
 
-    expect(mockPrismaService.user.count).toHaveBeenLastCalledWith({
-      where: {
-        email: { contains: undefined, mode: 'insensitive' },
-        name: { contains: undefined, mode: 'insensitive' },
-      },
-    });
+    expect(mockPrismaService.user.findMany).toHaveBeenLastCalledWith(select);
+    expect(mockPrismaService.user.count).toHaveBeenLastCalledWith(select);
   });
 });

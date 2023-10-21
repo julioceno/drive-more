@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 export interface IGRPCSystemHistoryService {
-  create(params: ICreateRecordParams): Observable<any>; // TODO: create type for return
+  create(params: ICreateRecordParams): Observable<any>;
 }
 
 export enum ActionEnum {

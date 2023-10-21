@@ -1,7 +1,7 @@
 import { Messages, PaginationQueryDto } from '@/common';
-import { Prisma } from '@prisma/client';
+import { Action, Prisma } from '@prisma/client';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class FindAllDiffsRecordsDto extends PaginationQueryDto<Prisma.RecordOrderByWithAggregationInput> {
   @IsOptional()
@@ -21,4 +21,8 @@ export class FindAllDiffsRecordsDto extends PaginationQueryDto<Prisma.RecordOrde
   @IsOptional()
   @IsString({ message: Messages.string('resource') })
   resource?: string;
+
+  @IsOptional()
+  @IsEnum(Action, { message: Messages.enum('action', Action) })
+  action?: Action;
 }

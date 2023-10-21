@@ -13,10 +13,7 @@ export class FindAllClassesService {
   async run(dto: FindAllClassesDto) {
     const where = this.buildWhere(dto);
 
-    const [classes, totalCount] = await Promise.all([
-      this.getClasses(dto, where),
-      this.getTotalCount(dto, where),
-    ]);
+    const [classes, totalCount] = await this.getClasses(dto, where);
 
     const entities = classes.map((classRecord) => new ClassEntity(classRecord));
 
@@ -29,18 +26,15 @@ export class FindAllClassesService {
   }
 
   private getClasses(dto: FindAllClassesDto, where: Prisma.ClassWhereInput) {
-    return this.prismaService.class.findMany({
+    const select = {
       ...getPaginationQueryData(dto),
       orderBy: dto.sort ?? { createdAt: 'desc' },
       where,
-    });
-  }
+    };
 
-  private getTotalCount(dto: FindAllClassesDto, where: Prisma.ClassWhereInput) {
-    return this.prismaService.class.count({
-      ...getPaginationQueryData(dto),
-      orderBy: dto.sort ?? { createdAt: 'desc' },
-      where,
-    });
+    return Promise.all([
+      this.prismaService.class.findMany(select),
+      this.prismaService.class.count(select),
+    ]);
   }
 }

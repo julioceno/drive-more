@@ -13,10 +13,7 @@ export class FindAllUsersService {
   async run(dto: FindAllUsersDto) {
     const where = this.buildWhere(dto);
 
-    const [users, totalCount] = await Promise.all([
-      this.getUsers(dto, where),
-      this.getTotalCount(where),
-    ]);
+    const [users, totalCount] = await this.getUsers(dto, where);
 
     const entities = users.map((user) => new UserEntity(user));
     return new FindListEntity(totalCount, entities);
@@ -40,14 +37,15 @@ export class FindAllUsersService {
   }
 
   private getUsers(dto: FindAllUsersDto, where: Prisma.UserWhereInput) {
-    return this.prismaService.user.findMany({
+    const sleect = {
       ...getPaginationQueryData(dto),
       orderBy: dto.sort ?? { createdAt: 'desc' },
       where,
-    });
-  }
+    };
 
-  private getTotalCount(where: Prisma.UserWhereInput) {
-    return this.prismaService.user.count({ where });
+    return Promise.all([
+      this.prismaService.user.findMany(sleect),
+      this.prismaService.user.count(sleect),
+    ]);
   }
 }

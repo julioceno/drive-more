@@ -50,34 +50,30 @@ describe('FindAllDiffsRecordsService', () => {
 
     await service.run({});
 
-    const where = {
-      Resource: {
-        Module: {
+    const select = {
+      orderBy: {
+        createdAt: 'desc',
+      },
+      where: {
+        Resource: {
+          Module: {
+            name: {
+              contains: undefined,
+              mode: 'insensitive',
+            },
+          },
           name: {
             contains: undefined,
             mode: 'insensitive',
           },
         },
-        name: {
-          contains: undefined,
-          mode: 'insensitive',
-        },
+        code: undefined,
+        entityId: undefined,
       },
-      code: undefined,
-      entityId: undefined,
     };
 
-    expect(mockPrismaService.record.count).toHaveBeenCalledWith({
-      where,
-    });
-    expect(mockPrismaService.record.findMany).toHaveBeenCalledWith({
-      orderBy: {
-        createdAt: 'desc',
-      },
-      skip: undefined,
-      take: undefined,
-      where,
-    });
+    expect(mockPrismaService.record.count).toHaveBeenCalledWith(select);
+    expect(mockPrismaService.record.findMany).toHaveBeenCalledWith(select);
   });
 
   it('should find all diffs', async () => {

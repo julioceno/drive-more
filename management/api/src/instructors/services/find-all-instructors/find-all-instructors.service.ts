@@ -13,10 +13,7 @@ export class FindAllInstructorsService {
   async run(dto: FindAllInstructorsDto) {
     const where = this.buildWhere(dto);
 
-    const [instructors, totalCount] = await Promise.all([
-      this.getInsturctors(dto, where),
-      this.getTotalCount(where),
-    ]);
+    const [instructors, totalCount] = await this.getInsturctors(dto, where);
 
     const entities = instructors.map(
       (instructor) => new InstructorEntity(instructor),
@@ -45,14 +42,15 @@ export class FindAllInstructorsService {
     dto: FindAllInstructorsDto,
     where: Prisma.InstructorWhereInput,
   ) {
-    return this.prismaService.instructor.findMany({
+    const select = {
       ...getPaginationQueryData(dto),
       orderBy: dto.sort ?? { createdAt: 'desc' },
       where,
-    });
-  }
+    };
 
-  private getTotalCount(where: Prisma.InstructorWhereInput) {
-    return this.prismaService.instructor.count({ where });
+    return Promise.all([
+      this.prismaService.instructor.findMany(select),
+      this.prismaService.instructor.count(select),
+    ]);
   }
 }

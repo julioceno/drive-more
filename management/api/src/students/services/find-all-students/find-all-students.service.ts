@@ -13,10 +13,7 @@ export class FindAllStudentsService {
   async run(dto: FindAllStudentsDto) {
     const where = this.buildWhere(dto);
 
-    const [students, totalCount] = await Promise.all([
-      this.getStudents(dto, where),
-      this.getTotalCount(where),
-    ]);
+    const [students, totalCount] = await this.getStudents(dto, where);
 
     const entities = students.map((student) => new StudentEntity(student));
 
@@ -43,14 +40,15 @@ export class FindAllStudentsService {
     dto: FindAllStudentsDto,
     where: Prisma.StudentWhereInput,
   ) {
-    return this.prismaService.student.findMany({
+    const select = {
       ...getPaginationQueryData(dto),
       orderBy: dto.sort ?? { createdAt: 'desc' },
       where,
-    });
-  }
+    };
 
-  private getTotalCount(where: Prisma.StudentWhereInput) {
-    return this.prismaService.student.count({ where }); // TODO: fix bug from pagination query data in coubt
+    return Promise.all([
+      this.prismaService.student.findMany(select),
+      this.prismaService.student.count(select),
+    ]);
   }
 }
