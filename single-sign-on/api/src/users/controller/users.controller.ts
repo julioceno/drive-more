@@ -66,9 +66,9 @@ export class UsersController {
 
   @Delete(':id')
   delete(
-    @AuthorizedUser('email') creatorEmail: string,
     @Param('id') id: string,
+    @AuthorizedUser('email') creatorEmail: string,
   ) {
-    return this.usersService.delete(creatorEmail, id);
+    return this.usersService.delete(id, creatorEmail);
   }
 }

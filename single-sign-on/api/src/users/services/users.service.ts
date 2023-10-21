@@ -44,8 +44,8 @@ export class UsersService {
     return this.updatePasswordUserService.run(userId, dto);
   }
 
-  delete(creatorEmail: string, id: string) {
-    return this.deleteUserService.run(creatorEmail, id);
+  delete(id: string, creatorEmail: string) {
+    return this.deleteUserService.run(id, creatorEmail);
   }
 
   changeRole(creatorEmail: string, dto: ChangeRoleUserDto) {
