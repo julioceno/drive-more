@@ -1,11 +1,11 @@
 version: '3'
 services:
-  dirigir-more-single-sign-on-db:
-    container_name: dirigir-more-single-sign-on-db
+  drive-more-single-sign-on-db:
+    container_name: drive-more-single-sign-on-db
     image: postgres:15-alpine
     environment:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=postgres'
-      - 'POSTGRES_DB=dirigir_more_single_sign_on'
+      - 'POSTGRES_DB=drive_more_single_sign_on'
     ports:
       - 5441:5432

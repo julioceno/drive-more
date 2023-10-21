@@ -16,7 +16,7 @@ describe('RecordsController (e2e)', () => {
     'Identificador Técnico': '2929c915-acaf-4773-aaad-caa67c1f8bbd',
     Código: 21,
     Nome: 'test',
-    Email: 'newemail@dirigir.more.com',
+    Email: 'newemail@drive.more.com',
     Papel: 'Usuário',
     'Data de Criação': '2023-09-09T16:14:23.842Z',
     'Data de Atualização': '2023-09-09T16:14:23.842Z',
@@ -43,7 +43,7 @@ describe('RecordsController (e2e)', () => {
 
   it('/ (POST)', async () => {
     const response = await request(app.getHttpServer()).post(baseUrl).send({
-      creatorEmail: 'user@dirigir.more.com',
+      creatorEmail: 'user@drive.more.com',
       action: Action.UPDATE,
       entityId: '1',
       payload: payload,
@@ -57,7 +57,7 @@ describe('RecordsController (e2e)', () => {
       action: Action.UPDATE,
       code: expect.any(Number),
       createdAt: expect.any(String),
-      creatorEmail: 'user@dirigir.more.com',
+      creatorEmail: 'user@drive.more.com',
       entityId: '1',
       id: expect.any(String),
       payload,
@@ -67,7 +67,7 @@ describe('RecordsController (e2e)', () => {
 
   it('/ (POST -> Create new Module and new Resource, before create history record)', async () => {
     const response = await request(app.getHttpServer()).post(baseUrl).send({
-      creatorEmail: 'user@dirigir.more.com',
+      creatorEmail: 'user@drive.more.com',
       action: Action.CREATE,
       entityId: '2',
       payload: payload,
@@ -81,7 +81,7 @@ describe('RecordsController (e2e)', () => {
       action: Action.CREATE,
       code: expect.any(Number),
       createdAt: expect.any(String),
-      creatorEmail: 'user@dirigir.more.com',
+      creatorEmail: 'user@drive.more.com',
       entityId: '2',
       id: expect.any(String),
       payload,
@@ -90,10 +90,10 @@ describe('RecordsController (e2e)', () => {
   });
 
   it('/ (POST -> Create new record when payload is only an string)', async () => {
-    const payload = `Password from user newemail@dirigir.more.com is modified`;
+    const payload = `Password from user newemail@drive.more.com is modified`;
 
     const response = await request(app.getHttpServer()).post(baseUrl).send({
-      creatorEmail: 'user@dirigir.more.com',
+      creatorEmail: 'user@drive.more.com',
       action: Action.UPDATE,
       entityId: '1',
       payload,
@@ -107,7 +107,7 @@ describe('RecordsController (e2e)', () => {
       action: Action.UPDATE,
       code: expect.any(Number),
       createdAt: expect.any(String),
-      creatorEmail: 'user@dirigir.more.com',
+      creatorEmail: 'user@drive.more.com',
       entityId: '1',
       id: expect.any(String),
       payload,
@@ -129,8 +129,8 @@ describe('RecordsController (e2e)', () => {
         action: 'UPDATE',
         code: 4,
         createdAt: expect.any(String),
-        creatorEmail: 'user@dirigir.more.com',
-        diffs: 'Password from user newemail@dirigir.more.com is modified',
+        creatorEmail: 'user@drive.more.com',
+        diffs: 'Password from user newemail@drive.more.com is modified',
         entityId: '1',
         id: expect.any(String),
         module: 'SINGLE SING ON',
@@ -140,7 +140,7 @@ describe('RecordsController (e2e)', () => {
         action: 'CREATE',
         code: 3,
         createdAt: expect.any(String),
-        creatorEmail: 'user@dirigir.more.com',
+        creatorEmail: 'user@drive.more.com',
         diffs: [
           {
             field: 'Nome',
@@ -149,7 +149,7 @@ describe('RecordsController (e2e)', () => {
           },
           {
             field: 'Email',
-            newValue: 'newemail@dirigir.more.com',
+            newValue: 'newemail@drive.more.com',
             oldValue: null,
           },
           {
@@ -187,12 +187,12 @@ describe('RecordsController (e2e)', () => {
         action: 'UPDATE',
         code: 2,
         createdAt: expect.any(String),
-        creatorEmail: 'user@dirigir.more.com',
+        creatorEmail: 'user@drive.more.com',
         diffs: [
           {
             field: 'Email',
-            newValue: 'newemail@dirigir.more.com',
-            oldValue: 'email@dirigir.more.com',
+            newValue: 'newemail@drive.more.com',
+            oldValue: 'email@drive.more.com',
           },
         ],
         entityId: '1',
@@ -204,7 +204,7 @@ describe('RecordsController (e2e)', () => {
         action: 'CREATE',
         code: 1,
         createdAt: expect.any(String),
-        creatorEmail: 'user@dirigir.more.com',
+        creatorEmail: 'user@drive.more.com',
         diffs: [
           {
             field: 'Nome',
@@ -213,7 +213,7 @@ describe('RecordsController (e2e)', () => {
           },
           {
             field: 'Email',
-            newValue: 'email@dirigir.more.com',
+            newValue: 'email@drive.more.com',
             oldValue: null,
           },
           {
@@ -266,8 +266,8 @@ describe('RecordsController (e2e)', () => {
         action: 'UPDATE',
         code: 4,
         createdAt: expect.any(String),
-        creatorEmail: 'user@dirigir.more.com',
-        diffs: 'Password from user newemail@dirigir.more.com is modified',
+        creatorEmail: 'user@drive.more.com',
+        diffs: 'Password from user newemail@drive.more.com is modified',
         entityId: '1',
         id: expect.any(String),
         module: 'SINGLE SING ON',
@@ -277,12 +277,12 @@ describe('RecordsController (e2e)', () => {
         action: 'UPDATE',
         code: 2,
         createdAt: expect.any(String),
-        creatorEmail: 'user@dirigir.more.com',
+        creatorEmail: 'user@drive.more.com',
         diffs: [
           {
             field: 'Email',
-            newValue: 'newemail@dirigir.more.com',
-            oldValue: 'email@dirigir.more.com',
+            newValue: 'newemail@drive.more.com',
+            oldValue: 'email@drive.more.com',
           },
         ],
         entityId: '1',
@@ -294,7 +294,7 @@ describe('RecordsController (e2e)', () => {
         action: 'CREATE',
         code: 1,
         createdAt: expect.any(String),
-        creatorEmail: 'user@dirigir.more.com',
+        creatorEmail: 'user@drive.more.com',
         diffs: [
           {
             field: 'Nome',
@@ -303,7 +303,7 @@ describe('RecordsController (e2e)', () => {
           },
           {
             field: 'Email',
-            newValue: 'email@dirigir.more.com',
+            newValue: 'email@drive.more.com',
             oldValue: null,
           },
           {

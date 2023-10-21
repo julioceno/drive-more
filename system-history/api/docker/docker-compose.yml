@@ -1,11 +1,11 @@
 version: '3'
 services:
-  dirigir-more-system-history-db:
-    container_name: dirigir-more-system-history-db
+  drive-more-system-history-db:
+    container_name: drive-more-system-history-db
     image: postgres:15-alpine
     environment:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=postgres'
-      - 'POSTGRES_DB=dirigir_more_system_history'
+      - 'POSTGRES_DB=drive_more_system_history'
     ports:
       - 5443:5432

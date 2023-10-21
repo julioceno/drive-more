@@ -38,7 +38,7 @@ describe('AuthController (e2e)', () => {
     const response = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
-        email: 'admin@dirigir.more.com',
+        email: 'admin@drive.more.com',
         password: 'admin',
         clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
       });
@@ -57,7 +57,7 @@ describe('AuthController (e2e)', () => {
     const response = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
-        email: 'admin@dirigir.more.com',
+        email: 'admin@drive.more.com',
         password: 'incorrect password',
         clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
       });
@@ -71,7 +71,7 @@ describe('AuthController (e2e)', () => {
     const response = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
-        email: 'admin@dirigir.more.com',
+        email: 'admin@drive.more.com',
         password: 'admin',
         clientId: 'mock',
       });
@@ -87,7 +87,7 @@ describe('AuthController (e2e)', () => {
     const authenticate = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
-        email: 'admin@dirigir.more.com',
+        email: 'admin@drive.more.com',
         password: 'admin',
         clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
       });
@@ -135,7 +135,7 @@ describe('AuthController (e2e)', () => {
     const authenticate = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
-        email: 'admin@dirigir.more.com',
+        email: 'admin@drive.more.com',
         password: 'admin',
         clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
       });
@@ -173,7 +173,7 @@ describe('AuthController (e2e)', () => {
     const authenticate = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
-        email: 'admin@dirigir.more.com',
+        email: 'admin@drive.more.com',
         password: 'admin',
         clientId: 'eec7a35e-1540-44c8-b4a3-ebeab026da00',
       });

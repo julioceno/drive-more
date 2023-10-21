@@ -46,18 +46,18 @@ describe('UsersController (e2e)', () => {
     expect(list).toStrictEqual([
       {
         id: 'fdbe66f2-f31d-4302-bb97-0ff888045292',
-        email: 'admin@dirigir.more.com',
+        email: 'admin@drive.more.com',
         name: 'Admin',
       },
       {
         id: '92ab7ca5-f68a-4723-8a5f-efad6caaf257',
-        email: 'user@dirigir.more.com',
+        email: 'user@drive.more.com',
         name: 'User',
       },
       {
         id: 'c63fb8c3-e238-4785-8907-273ede43f489',
         name: 'User for delete',
-        email: 'userForDelete@dirigir.more.com',
+        email: 'userForDelete@drive.more.com',
       },
     ]);
   });
@@ -65,7 +65,7 @@ describe('UsersController (e2e)', () => {
   it('/ (POST)', async () => {
     const response = await request(app.getHttpServer()).post('/users').send({
       name: 'c3po',
-      email: 'c3po@dirigir.more.com.br',
+      email: 'c3po@drive.more.com.br',
     });
 
     expect(response).toBeDefined();
@@ -73,7 +73,7 @@ describe('UsersController (e2e)', () => {
     expect(response.body).toStrictEqual({
       id: expect.any(String),
       name: 'c3po',
-      email: 'c3po@dirigir.more.com.br',
+      email: 'c3po@drive.more.com.br',
       password: expect.any(String),
     });
   });
@@ -81,7 +81,7 @@ describe('UsersController (e2e)', () => {
   it('/ (POST -> Bad request when user already exists)', async () => {
     const response = await request(app.getHttpServer()).post('/users').send({
       name: 'Other user',
-      email: 'user@dirigir.more.com',
+      email: 'user@drive.more.com',
     });
 
     expect(response).toBeDefined();
@@ -92,7 +92,7 @@ describe('UsersController (e2e)', () => {
   it('/ (PUT)', async () => {
     const response = await request(app.getHttpServer()).put('/users').send({
       name: 'userUpdated',
-      email: 'userUpdated@dirigir.more.com.br',
+      email: 'userUpdated@drive.more.com.br',
     });
 
     expect(response).toBeDefined();
@@ -100,14 +100,14 @@ describe('UsersController (e2e)', () => {
     expect(response.body).toStrictEqual({
       id: expect.any(String),
       name: 'userUpdated',
-      email: 'userUpdated@dirigir.more.com.br',
+      email: 'userUpdated@drive.more.com.br',
     });
   });
 
   it('/ (PUT -> 409 Throw conflict error when email already exists in other user)', async () => {
     const response = await request(app.getHttpServer()).put('/users').send({
       name: 'other name',
-      email: 'c3po@dirigir.more.com.br',
+      email: 'c3po@drive.more.com.br',
     });
 
     expect(response).toBeDefined();
@@ -128,7 +128,7 @@ describe('UsersController (e2e)', () => {
     expect(response.body).toStrictEqual({
       id: expect.any(String),
       name: 'userUpdated',
-      email: 'userUpdated@dirigir.more.com.br',
+      email: 'userUpdated@drive.more.com.br',
     });
   });
 
@@ -157,7 +157,7 @@ describe('UsersController (e2e)', () => {
     expect(response.status).toBe(200);
     expect(response.body).toStrictEqual({
       id: 'c63fb8c3-e238-4785-8907-273ede43f489',
-      email: 'userForDelete@dirigir.more.com',
+      email: 'userForDelete@drive.more.com',
       name: 'User for delete',
       role: 'ADMIN',
     });
@@ -173,7 +173,7 @@ describe('UsersController (e2e)', () => {
     expect(response.body).toStrictEqual({
       id: expect.any(String),
       name: 'User for delete',
-      email: 'userForDelete@dirigir.more.com',
+      email: 'userForDelete@drive.more.com',
     });
   });
 

@@ -19,7 +19,7 @@ describe('SignInService', () => {
   let service: SignInService;
 
   const userId = 'mock.id';
-  const email = 'mock@dirigir.more.com';
+  const email = 'mock@drive.more.com';
   const name = 'mock.name';
   const ssoClientId = 'e8ef6516-66b3-4fad-8ec6-dfd53d75a34c';
 
@@ -27,7 +27,7 @@ describe('SignInService', () => {
     '$2b$08$ZqYGiCxwNBKUVlcJ.vD0vuqMW9cNgrWDW.339ExcyBRia570uVHLe'; // pass is "user"
 
   const dto: SignInDto = {
-    email: 'mock@dirigir.more.com',
+    email: 'mock@drive.more.com',
     password: 'user',
     clientId: ssoClientId,
   };
@@ -74,7 +74,7 @@ describe('SignInService', () => {
         role: true,
       },
       where: {
-        email: 'mock@dirigir.more.com',
+        email: 'mock@drive.more.com',
       },
     });
   });
@@ -160,7 +160,7 @@ describe('SignInService', () => {
       action: ActionEnum.OTHER,
       creatorEmail: email,
       entityId: 1,
-      payload: 'User mock@dirigir.more.com is authenticate',
+      payload: 'User mock@drive.more.com is authenticate',
       resourceName: Resources.AUTH,
     });
   });

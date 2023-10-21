@@ -36,13 +36,13 @@ describe('CreateUserService', () => {
 
   it('should create user and return in instance CreatedUserEntity', async () => {
     const dto: CreateUserDto = {
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     };
 
     mockPrismaService.user.create.mockResolvedValueOnce({
       id: 'a9f598b9-5008-4cfa-a58e-e469d925ee6a',
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     });
 
@@ -53,13 +53,13 @@ describe('CreateUserService', () => {
 
   it('should invoke prismaService and call create from user and findUniqueOrThrow from role', async () => {
     const dto: CreateUserDto = {
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     };
 
     mockPrismaService.user.create.mockResolvedValueOnce({
       id: 'a9f598b9-5008-4cfa-a58e-e469d925ee6a',
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     });
 
@@ -77,7 +77,7 @@ describe('CreateUserService', () => {
 
     expect(mockPrismaService.user.create).toHaveBeenLastCalledWith({
       data: {
-        email: 'julio@dirigirmore.com',
+        email: 'julio@drive.more.com',
         name: 'julio',
         password: expect.anything(),
         roleId: 'b08b4171-208e-4798-ac11-6bd545b90fc2',
@@ -87,7 +87,7 @@ describe('CreateUserService', () => {
 
   it('should return throw BadRequestException when user already exists', async () => {
     const dto: CreateUserDto = {
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     };
 
@@ -97,7 +97,7 @@ describe('CreateUserService', () => {
 
     mockPrismaService.user.create.mockResolvedValueOnce({
       id: 'a9f598b9-5008-4cfa-a58e-e469d925ee6a',
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     });
 
@@ -115,13 +115,13 @@ describe('CreateUserService', () => {
 
   it('should invoke SystemHistoryProxyService and call createRecordStandard method', async () => {
     const dto: CreateUserDto = {
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     };
 
     const user = {
       id: 'a9f598b9-5008-4cfa-a58e-e469d925ee6a',
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     };
 

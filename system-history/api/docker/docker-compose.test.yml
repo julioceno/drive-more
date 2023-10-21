@@ -1,15 +1,14 @@
 version: '3'
 services:
-  dirigir-more-system-history-test-db:
-    container_name: dirigir-more-system-history-test-db
+  drive-more-system-history-test-db:
+    container_name: drive-more-system-history-test-db
     image: postgres:15-alpine
     environment:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=postgres'
-      - 'POSTGRES_DB=dirigir_more_system_history_test'
+      - 'POSTGRES_DB=drive_more_system_history_test'
     healthcheck:
-      test:
-        ['CMD-SHELL', 'pg_isready', '-d', 'dirigir_more_system_history_test']
+      test: ['CMD-SHELL', 'pg_isready', '-d', 'drive_more_system_history_test']
       interval: 2s
       timeout: 60s
       retries: 5

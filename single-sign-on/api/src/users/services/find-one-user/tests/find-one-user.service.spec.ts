@@ -26,7 +26,7 @@ describe('CreateUserService', () => {
 
     mockPrismaService.user.findUnique.mockResolvedValue({
       id,
-      email: 'julio@dirigirmore.com',
+      email: 'julio@drive.more.com',
       name: 'julio',
     });
 
