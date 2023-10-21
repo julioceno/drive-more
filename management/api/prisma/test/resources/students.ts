@@ -12,6 +12,11 @@ const data: Prisma.StudentCreateManyInput[] = [
     cpf: '488.567.780-76',
     name: 'Student 2',
   },
+  {
+    id: '4eb29d16-081f-4066-a758-64113a140950',
+    cpf: '725.198.874-78',
+    name: 'Student 3',
+  },
 ];
 
 export async function students() {

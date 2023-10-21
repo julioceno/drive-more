@@ -43,7 +43,7 @@ describe('StudentsController (e2e)', () => {
     expect(response.status).toBe(200);
 
     const { totalCount, list } = response.body;
-    expect(totalCount).toBe(2);
+    expect(totalCount).toBe(3);
     expect(list).toStrictEqual([
       {
         code: expect.any(Number),
@@ -56,6 +56,12 @@ describe('StudentsController (e2e)', () => {
         cpf: '488.567.780-76',
         id: '491d119d-b879-4689-9128-6321062e4152',
         name: 'Student 2',
+      },
+      {
+        code: expect.any(Number),
+        cpf: '725.198.874-78',
+        id: '4eb29d16-081f-4066-a758-64113a140950',
+        name: 'Student 3',
       },
     ]);
   });

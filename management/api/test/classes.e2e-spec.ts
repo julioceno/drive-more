@@ -5,7 +5,7 @@ import { mockSystemHistoryProxyService } from '@/utils';
 import { INestApplication } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
-import { addDays } from 'date-fns';
+import { addDays, addHours } from 'date-fns';
 import * as request from 'supertest';
 import { MockAuthGuard } from './mocks/guards';
 
@@ -14,8 +14,8 @@ describe('ClassesController (e2e)', () => {
 
   const baseUrl = '/classes';
 
-  const instructorTwoId = '04a6982e-ffa5-4040-b7bd-2400ae67a46f';
-  const studentTwoId = '491d119d-b879-4689-9128-6321062e4152';
+  const instructorThreeId = '0a947644-3bca-4a43-807d-4382c8600167';
+  const studentThreeId = '4eb29d16-081f-4066-a758-64113a140950';
   const categoryAId = 'b21f11a0-da0d-46c4-941f-288b7ee5a31d';
 
   beforeEach(async () => {
@@ -42,13 +42,13 @@ describe('ClassesController (e2e)', () => {
   });
 
   const date = new Date();
-  const startAt = new Date(addDays(date, 1));
-  const endAt = new Date(addDays(startAt, 2));
+  const startAt = addDays(date, 5);
+  const endAt = addHours(startAt, 2);
 
   it('/ (POST)', async () => {
     const response = await request(app.getHttpServer()).post(baseUrl).send({
-      studentId: studentTwoId,
-      instructorId: instructorTwoId,
+      studentId: studentThreeId,
+      instructorId: instructorThreeId,
       categoryId: categoryAId,
       startAt,
       endAt,
@@ -61,16 +61,16 @@ describe('ClassesController (e2e)', () => {
       code: expect.any(Number),
       categoryId: categoryAId,
       endAt: endAt.toISOString(),
-      instructorId: instructorTwoId,
       startAt: startAt.toISOString(),
-      studentId: studentTwoId,
+      instructorId: instructorThreeId,
+      studentId: studentThreeId,
     });
   });
 
   it('/ (POST -> Bad request when already exists class for time interval)', async () => {
     const response = await request(app.getHttpServer()).post(baseUrl).send({
-      studentId: studentTwoId,
-      instructorId: instructorTwoId,
+      studentId: studentThreeId,
+      instructorId: instructorThreeId,
       categoryId: categoryAId,
       startAt,
       endAt,
@@ -136,9 +136,9 @@ describe('ClassesController (e2e)', () => {
       id: '27c6c025-7472-4afc-ad68-29593fdf7fa1',
       code: expect.any(Number),
 
-      categoryId: 'b21f11a0-da0d-46c4-941f-288b7ee5a31d',
-      studentId: '70262a58-c48c-440e-bd00-33dc849dfd0d',
-      instructorId: 'b4a0aa0a-ff61-4e72-8551-26942cea858d',
+      categoryId: categoryAId,
+      instructorId: instructorThreeId,
+      studentId: studentThreeId,
 
       startAt: expect.any(String),
       endAt: expect.any(String),
