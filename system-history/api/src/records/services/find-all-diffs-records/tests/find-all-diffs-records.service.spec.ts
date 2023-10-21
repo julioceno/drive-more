@@ -50,11 +50,25 @@ describe('FindAllDiffsRecordsService', () => {
 
     await service.run({});
 
-    expect(mockPrismaService.record.count).toHaveBeenCalledWith({
-      where: {
-        code: undefined,
-        entityId: undefined,
+    const where = {
+      Resource: {
+        Module: {
+          name: {
+            contains: undefined,
+            mode: 'insensitive',
+          },
+        },
+        name: {
+          contains: undefined,
+          mode: 'insensitive',
+        },
       },
+      code: undefined,
+      entityId: undefined,
+    };
+
+    expect(mockPrismaService.record.count).toHaveBeenCalledWith({
+      where,
     });
     expect(mockPrismaService.record.findMany).toHaveBeenCalledWith({
       orderBy: {
@@ -62,10 +76,7 @@ describe('FindAllDiffsRecordsService', () => {
       },
       skip: undefined,
       take: undefined,
-      where: {
-        code: undefined,
-        entityId: undefined,
-      },
+      where,
     });
   });
 
