@@ -12,7 +12,6 @@ import {
 import { Resources } from '@/common';
 import { formatToPrismaJsonObject } from '@/system-history/utils';
 
-// TODO: create this test
 describe('SystemHistoryProxyService', () => {
   let service: SystemHistoryProxyService;
 

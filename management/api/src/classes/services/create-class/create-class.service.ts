@@ -79,8 +79,7 @@ export class CreateClassService {
       lte: dto.endAt,
     };
 
-    // TODO: improving this name const
-    const filter = {
+    const timeIntervalFilter = {
       OR: [{ startAt: timeInterval }, { endAt: timeInterval }],
     };
 
@@ -89,16 +88,16 @@ export class CreateClassService {
         OR: [
           {
             instructorId: dto.instructorId,
-            ...filter,
+            ...timeIntervalFilter,
           },
           {
             studentId: dto.studentId,
-            ...filter,
+            ...timeIntervalFilter,
           },
           {
             instructorId: dto.instructorId,
             studentId: dto.studentId,
-            ...filter,
+            ...timeIntervalFilter,
           },
         ],
       },

@@ -1,6 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ClassesController } from '../classes.controller';
-import { ClassesService } from '../../services/classes.service';
+import { CreateClassDto } from '@/classes/services/create-class/dto/create-class.dto';
+import { FindAllClassesDto } from '@/classes/services/find-all-classes/dto/find-all-classes.dto';
 import {
   handleModuleDependencies,
   mockCreateClassService,
@@ -8,8 +7,9 @@ import {
   mockFindAllClassesService,
   mockFindOneClassService,
 } from '@/utils';
-import { Class } from '@prisma/client';
-import { FindAllClassesDto } from '@/classes/services/find-all-classes/dto/find-all-classes.dto';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ClassesService } from '../../services/classes.service';
+import { ClassesController } from '../classes.controller';
 
 describe('ClassesController', () => {
   let controller: ClassesController;
@@ -35,7 +35,7 @@ describe('ClassesController', () => {
   });
 
   it('should invoke create method from ClassesController', async () => {
-    await controller.create(creatorEmail, {} as Class);
+    await controller.create(creatorEmail, {} as CreateClassDto);
     expect(mockCreateClassService.run).toHaveBeenLastCalledWith(
       creatorEmail,
       {},

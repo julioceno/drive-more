@@ -7,7 +7,7 @@ import {
 } from '@/utils';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { addDays } from 'date-fns';
+import { subDays } from 'date-fns';
 import { DeleteClassService } from '../delete-class.service';
 import { ClassEntity } from '@/classes/entities/class.entity';
 
@@ -89,7 +89,7 @@ describe('DeleteClassService', () => {
 
   it('should throw BadRequestException when endDate is After currentDate', async () => {
     mockPrismaService.class.findUnique.mockResolvedValue({
-      endAt: addDays(new Date(), 10),
+      endAt: subDays(new Date(), 10),
     });
 
     let error = null;

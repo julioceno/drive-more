@@ -23,8 +23,8 @@ describe('CreateClassService', () => {
   const categoryId = 'mock.categoryId';
   const studentId = 'mock.studentId';
 
-  const startAt = addHours(new Date(), 1);
-  const endAt = addHours(new Date(), 2);
+  const startAt = addHours(new Date(), 1).toISOString();
+  const endAt = addHours(new Date(), 2).toISOString();
 
   const dto: CreateClassDto = {
     categoryId,
@@ -87,7 +87,10 @@ describe('CreateClassService', () => {
   it('should throw error when startAt is before current date', async () => {
     let error = null;
 
-    const newDto: CreateClassDto = { ...dto, startAt: subDays(new Date(), 8) };
+    const newDto: CreateClassDto = {
+      ...dto,
+      startAt: subDays(new Date(), 8).toISOString(),
+    };
 
     try {
       await service.run(creatorEmail, newDto);
@@ -105,7 +108,10 @@ describe('CreateClassService', () => {
   it('should throw error when endAt is after startAt', async () => {
     let error = null;
 
-    const newDto: CreateClassDto = { ...dto, startAt: addDays(new Date(), 8) };
+    const newDto: CreateClassDto = {
+      ...dto,
+      startAt: addDays(new Date(), 8).toISOString(),
+    };
 
     try {
       await service.run(creatorEmail, newDto);
@@ -123,8 +129,7 @@ describe('CreateClassService', () => {
   it('should invoke prismaService and call class.findMany', async () => {
     await service.run(creatorEmail, dto);
 
-    // TODO: improving this name const
-    const filterTimeInterval = [
+    const timeIntervalFilter = [
       {
         startAt: {
           gte: startAt,
@@ -143,15 +148,15 @@ describe('CreateClassService', () => {
       where: {
         OR: [
           {
-            OR: filterTimeInterval,
+            OR: timeIntervalFilter,
             instructorId: 'mock.instructorId',
           },
           {
-            OR: filterTimeInterval,
+            OR: timeIntervalFilter,
             studentId: 'mock.studentId',
           },
           {
-            OR: filterTimeInterval,
+            OR: timeIntervalFilter,
             instructorId: 'mock.instructorId',
             studentId: 'mock.studentId',
           },
