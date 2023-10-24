@@ -7,6 +7,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
 import { FindAllClassesService } from './services/find-all-classes/find-all-classes.service';
 import { FindOneClassService } from './services/find-one-class/find-one-class.service';
 import { DeleteClassService } from './services/delete-class/delete-class.service';
+import { GeneratePdfService } from './services/generate-pdf/generate-pdf.service';
 
 @Module({
   controllers: [ClassesController],
@@ -17,6 +18,7 @@ import { DeleteClassService } from './services/delete-class/delete-class.service
     FindAllClassesService,
     FindOneClassService,
     DeleteClassService,
+    GeneratePdfService,
   ],
 })
 export class ClassesModule {}

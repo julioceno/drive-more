@@ -5,6 +5,8 @@ import { FindAllClassesService } from './find-all-classes/find-all-classes.servi
 import { FindAllClassesDto } from './find-all-classes/dto/find-all-classes.dto';
 import { FindOneClassService } from './find-one-class/find-one-class.service';
 import { DeleteClassService } from './delete-class/delete-class.service';
+import { GeneratePdfService } from './generate-pdf/generate-pdf.service';
+import { GeneratePdfDto } from './generate-pdf/dto/generate-pdf.dto';
 
 @Injectable()
 export class ClassesService {
@@ -13,6 +15,7 @@ export class ClassesService {
     private readonly findAllClassesService: FindAllClassesService,
     private readonly findOneClassService: FindOneClassService,
     private readonly deleteClassService: DeleteClassService,
+    private readonly generatePdfService: GeneratePdfService,
   ) {}
 
   create(creatorEmail: string, dto: CreateClassDto) {
@@ -29,5 +32,9 @@ export class ClassesService {
 
   delete(id: string, creatorEmail: string) {
     return this.deleteClassService.run(id, creatorEmail);
+  }
+
+  generatePdf(creatorEmail: string, dto: GeneratePdfDto) {
+    return this.generatePdfService.run(creatorEmail, dto);
   }
 }

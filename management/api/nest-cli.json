@@ -4,7 +4,7 @@
   "sourceRoot": "src",
 
   "compilerOptions": {
-    "assets": ["**/*.proto"],
+    "assets": ["**/*.proto", "**/*.html"],
     "watchAssets": true
   }
 }
