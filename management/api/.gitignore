@@ -1,5 +1,7 @@
 .env
 
+files/**
+
 # compiled output
 /dist
 /node_modules

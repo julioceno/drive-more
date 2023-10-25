@@ -41,7 +41,6 @@ export class ClassesController {
   }
 
   @Post('/generate-pdf')
-  @HttpCode(HttpStatus.NO_CONTENT)
   generatePdf(
     @AuthorizedUser('email') creatorEmail,
     @Body() dto: GeneratePdfDto,
