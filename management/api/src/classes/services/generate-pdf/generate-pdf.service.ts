@@ -1,6 +1,8 @@
 import { requireAsPlainTextConstructor } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { formatInTimeZone } from 'date-fns-tz';
+import Handlebars from 'handlebars';
 import { join } from 'path';
 import puppeteer from 'puppeteer';
 import { ClassAdpter } from './adpters/class.adpter';
@@ -10,7 +12,7 @@ const htmlPath = join(
   __dirname,
   '../../../',
   process.env.NODE_ENV === 'test' ? '' : '../',
-  '/html/student-pdf.html',
+  '/template/student-pdf.hbs',
 );
 
 const html = requireAsPlainTextConstructor(htmlPath);
@@ -27,13 +29,17 @@ export class GeneratePdfService {
       this.getClasses(studentId),
     ]);
 
-    const adpter = new ClassAdpter();
+    const adpter = new ClassAdpter(dto.timeZone);
 
-    const classesFormatted = classes.map((classRecord) => {
-      return adpter.adapt(classRecord);
-    });
+    const classesFormatted = classes.map((classRecord) =>
+      adpter.adapt(classRecord),
+    );
 
-    const { url } = await this.generatePdf(student.name);
+    const { url } = await this.generatePdf(
+      student.name,
+      dto.timeZone,
+      classesFormatted,
+    );
 
     return { url };
   }
@@ -57,18 +63,39 @@ export class GeneratePdfService {
     return this.prismaService.student.findUnique({ where: { id: studentId } });
   }
 
-  private async generatePdf(studentName: string) {
+  private async generatePdf(
+    studentName: string,
+    timeZone: string,
+    classes: {
+      instructorName: string;
+      category: string;
+      startAt: string;
+      endAt: string;
+    }[],
+  ) {
+    const template = Handlebars.compile(html);
+
+    const currentDate = new Date();
+
+    const dateOfIsue = formatInTimeZone(
+      currentDate,
+      timeZone,
+      'dd/MM/yyyy - HH:mm ',
+    );
+
+    const transformedHtml = template({ studentName, dateOfIsue, classes });
+
     const browser = await puppeteer.launch({ headless: 'new' });
     const page = await browser.newPage();
 
     await Promise.all([
-      page.setContent(html, { waitUntil: 'domcontentloaded' }),
+      page.setContent(transformedHtml, { waitUntil: 'domcontentloaded' }),
       page.emulateMediaType('screen'),
     ]);
 
     const studentNameFormatted = studentName.replace(/ /g, '_');
 
-    const documentName = `${studentNameFormatted}_${new Date().getTime()}.pdf`;
+    const documentName = `${studentNameFormatted}_${currentDate.getTime()}.pdf`;
 
     const path = `files/${documentName}`;
 
