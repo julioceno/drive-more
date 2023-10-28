@@ -3,7 +3,7 @@ import { formatInTimeZone } from 'date-fns-tz';
 import Handlebars from 'handlebars';
 import { join } from 'node:path';
 import { parentPort } from 'node:worker_threads';
-import puppeteer, { Browser } from 'puppeteer';
+import puppeteer from 'puppeteer';
 import { IBuildData } from './types';
 
 const htmlPath = join(
@@ -48,7 +48,6 @@ class BuildPdf {
 
     await page.pdf({
       path,
-      margin: { top: '100px', right: '50px', bottom: '100px', left: '50px' },
       printBackground: true,
       format: 'A4',
     });

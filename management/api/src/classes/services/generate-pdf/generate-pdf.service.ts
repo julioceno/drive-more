@@ -36,12 +36,12 @@ export class GeneratePdfService {
     ]);
 
     if (!student) {
-      throw new NotFoundException('Estudante não existe.');
+      throw new NotFoundException('Aluno não existe.');
     }
 
     if (!classes.length) {
       throw new NotFoundException(
-        'Não existe nenhuma aula pendente para esse estudante.',
+        'Não existe nenhuma aula pendente para esse aluno.',
       );
     }
 
