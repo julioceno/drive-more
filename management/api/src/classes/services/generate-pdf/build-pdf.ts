@@ -4,6 +4,7 @@ import Handlebars from 'handlebars';
 import { join } from 'node:path';
 import { parentPort } from 'node:worker_threads';
 import puppeteer, { Browser } from 'puppeteer';
+import { IBuildData } from './types';
 
 const htmlPath = join(
   __dirname,
@@ -15,33 +16,35 @@ const htmlPath = join(
 const html = requireAsPlainTextConstructor(htmlPath);
 
 class BuildPdf {
+  PATTERN_DATE_OF_ISUE = 'dd/MM/yyyy - HH:mm ';
+  CURRENT_DATE = new Date();
+
   async run() {
-    const { studentName, classes } = (await this.getParams()) as any; // create tip
+    const data = await this.getParams();
+    const { url, studentName } = data;
 
-    const template = Handlebars.compile(html);
+    const transformedHtml = this.buildTransformedHtml(data);
 
-    const currentDate = new Date();
+    const documentName = this.buildDocumentName(studentName);
 
-    const dateOfIsue = formatInTimeZone(
-      currentDate,
-      'America/Sao_Paulo', // CHANGE
-      'dd/MM/yyyy - HH:mm ',
-    );
-    const transformedHtml = template({
-      studentName,
-      dateOfIsue,
-      classes,
-    });
+    await this.buildPdf(transformedHtml, documentName);
 
+    const urlFile = `${url}/${documentName}`;
+
+    parentPort.postMessage(urlFile);
+  }
+
+  private async buildPdf(transformedHtml: string, documentName: string) {
     const browser = await puppeteer.launch({ headless: 'new' });
 
-    const page = await this.buildPage(browser, transformedHtml);
+    const page = await browser.newPage();
 
-    const studentNameFormatted = studentName.replace(/ /g, '_');
+    await Promise.all([
+      page.setContent(transformedHtml, { waitUntil: 'domcontentloaded' }),
+      page.emulateMediaType('screen'),
+    ]);
 
-    const documentName = `${studentNameFormatted}_${currentDate.getTime()}.pdf`;
-
-    const path = `files/${documentName}`;
+    const path = `./src/public/${documentName}`;
 
     await page.pdf({
       path,
@@ -52,26 +55,39 @@ class BuildPdf {
 
     await browser.close();
 
-    const url = join(__dirname, '..', '..', '..', '..', '..', path);
-
-    parentPort.postMessage(url);
-  }
-
-  private async buildPage(browser: Browser, transformedHtml: string) {
-    const page = await browser.newPage();
-
-    await Promise.all([
-      page.setContent(transformedHtml, { waitUntil: 'domcontentloaded' }),
-      page.emulateMediaType('screen'),
-    ]);
-
     return page;
   }
 
-  private getParams() {
+  private buildTransformedHtml(data: IBuildData) {
+    const { timeZone, studentName, classes } = data;
+
+    const template = Handlebars.compile(html);
+
+    const dateOfIsue = formatInTimeZone(
+      this.CURRENT_DATE,
+      timeZone,
+      this.PATTERN_DATE_OF_ISUE,
+    );
+    const transformedHtml = template({
+      studentName,
+      dateOfIsue,
+      classes,
+    });
+
+    return transformedHtml;
+  }
+
+  private getParams(): Promise<IBuildData> {
     return new Promise((resolve) => {
       parentPort.on('message', resolve);
     });
+  }
+
+  private buildDocumentName(studentName: string) {
+    const studentNameFormatted = studentName.replace(/ /g, '_');
+
+    const documentName = `${studentNameFormatted}_${this.CURRENT_DATE.getTime()}.pdf`;
+    return documentName;
   }
 }
 

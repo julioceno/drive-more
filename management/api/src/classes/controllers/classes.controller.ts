@@ -1,18 +1,17 @@
+import { AuthorizedUser } from '@/common';
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
   Query,
-  HttpStatus,
-  HttpCode,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { ClassesService } from '../services/classes.service';
 import { CreateClassDto } from '../services/create-class/dto/create-class.dto';
-import { AuthorizedUser } from '@/common';
 import { FindAllClassesDto } from '../services/find-all-classes/dto/find-all-classes.dto';
 import { GeneratePdfDto } from '../services/generate-pdf/dto/generate-pdf.dto';
 
@@ -44,7 +43,8 @@ export class ClassesController {
   generatePdf(
     @AuthorizedUser('email') creatorEmail,
     @Body() dto: GeneratePdfDto,
+    @Req() req: Request,
   ) {
-    return this.classesService.generatePdf(creatorEmail, dto);
+    return this.classesService.generatePdf(creatorEmail, dto, req);
   }
 }

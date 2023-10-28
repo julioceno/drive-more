@@ -39,10 +39,12 @@
 
     <section>
       {{#each classes}}
-        <p><strong>Instrutor:</strong>
+        <p>
+          <strong>Instrutor:</strong>
           {{this.instructorName}}
           -
-          <small>{{this.category}}</small></p>
+          <small>Categoria {{this.category}}</small>
+        </p>
         <p>
           <strong>Horário:</strong>
           {{this.startAt}}

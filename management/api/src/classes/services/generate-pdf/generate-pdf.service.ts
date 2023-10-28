@@ -1,39 +1,58 @@
-import { requireAsPlainTextConstructor } from '@/common';
+import { Resources, requireAsPlainTextConstructor } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { join } from 'path';
 import { ClassAdpter } from './adpters/class.adpter';
 import { GeneratePdfDto } from './dto/generate-pdf.dto';
 
-import { Student } from '@prisma/client';
+import { Class, Student } from '@prisma/client';
 import { Worker } from 'node:worker_threads';
-
-const htmlPath = join(
-  __dirname,
-  '../../../',
-  process.env.NODE_ENV === 'test' ? '' : '../',
-  '/template/student-pdf.hbs',
-);
-
-const html = requireAsPlainTextConstructor(htmlPath);
+import { Request } from 'express';
+import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
+import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { IBuildData } from './types';
 
 @Injectable()
 export class GeneratePdfService {
-  constructor(private readonly prismaService: PrismaService) {}
+  private readonly logger = new Logger(`@service/${GeneratePdfService.name}`);
 
-  async run(creatorEmail: string, dto: GeneratePdfDto) {
-    const { studentId } = dto;
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly systemHistoryProxyService: SystemHistoryProxyService,
+  ) {}
 
+  async run(creatorEmail: string, dto: GeneratePdfDto, req: Request) {
+    const { studentId, timeZone } = dto;
+
+    this.logger.log('Find by student and classes...');
     const [student, classes] = await Promise.all([
       this.getStudent(studentId),
       this.getClasses(studentId),
     ]);
 
-    const data = this.buildData(student, classes, dto.timeZone);
+    if (!student) {
+      throw new NotFoundException('Estudante não existe.');
+    }
 
-    const returned = await this.generatePdf(data);
+    if (!classes.length) {
+      throw new NotFoundException(
+        'Não existe nenhuma aula pendente para esse estudante.',
+      );
+    }
 
-    return { returned };
+    this.logger.log(`Student by id ${student.id} found`);
+
+    const data = this.buildData(student, classes, timeZone, req);
+    const url = await this.handleGeneratePdf(data);
+
+    this.createRecordHistory(creatorEmail, student.code);
+
+    return { url };
   }
 
   private getClasses(studentId: string) {
@@ -55,30 +74,63 @@ export class GeneratePdfService {
     return this.prismaService.student.findUnique({ where: { id: studentId } });
   }
 
-  private async generatePdf(data: any) {
+  private async handleGeneratePdf(data: IBuildData) {
+    this.logger.log('Generate pdf...');
+    try {
+      const url = await this.generatePdf(data);
+      this.logger.log(`Pdf generated with url: "${url}"`);
+
+      return url;
+    } catch (err) {
+      this.logger.error(`There was as error: ${JSON.stringify(err, null, 2)}`);
+
+      throw new BadRequestException('Ocorreu um erro ao tentar gerar o pdf.');
+    }
+  }
+
+  private async generatePdf(data: IBuildData): Promise<string> {
     return new Promise((resolve, reject) => {
       const worker = new Worker(join(__dirname, 'build-pdf'));
       worker.on('message', (value) => {
         resolve(value);
       });
-      worker.on('error', resolve);
-      worker.on('exit', (code) => {
-        if (code !== 0) {
-          reject(new Error('Worker stopped: ' + code));
-        }
-      });
-
+      worker.on('error', reject);
       worker.postMessage(data);
     });
   }
 
-  private buildData(student: Student, classes: any[], timeZone: string) {
+  private buildData(
+    student: Student,
+    classes: any[],
+    timeZone: string,
+    req: Request,
+  ): IBuildData {
+    const url = `${req.protocol}://${req.get('Host')}`;
     const adpter = new ClassAdpter(timeZone);
 
     const classesFormatted = classes.map((classRecord) =>
       adpter.adapt(classRecord),
     );
 
-    return { studentName: student.name, classes: classesFormatted };
+    return {
+      studentName: student.name,
+      classes: classesFormatted,
+      url,
+      timeZone,
+    };
+  }
+
+  private createRecordHistory(creatorEmail: string, studentCode: number) {
+    return this.systemHistoryProxyService
+      .createRecordCustom({
+        action: ActionEnum.OTHER,
+        creatorEmail,
+        entityId: studentCode,
+        payload: `Gerando documento com as aulas do aluno.`,
+        resourceName: Resources.STUDENT,
+      })
+      .catch((err) =>
+        this.logger.error(`There was as error ${JSON.stringify(err, null, 2)}`),
+      );
   }
 }

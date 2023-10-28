@@ -1,6 +1,6 @@
 .env
 
-files/**
+**/public/**.*
 
 # compiled output
 /dist

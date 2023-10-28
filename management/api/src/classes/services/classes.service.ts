@@ -7,6 +7,7 @@ import { FindOneClassService } from './find-one-class/find-one-class.service';
 import { DeleteClassService } from './delete-class/delete-class.service';
 import { GeneratePdfService } from './generate-pdf/generate-pdf.service';
 import { GeneratePdfDto } from './generate-pdf/dto/generate-pdf.dto';
+import { Request } from 'express';
 
 @Injectable()
 export class ClassesService {
@@ -34,7 +35,7 @@ export class ClassesService {
     return this.deleteClassService.run(id, creatorEmail);
   }
 
-  generatePdf(creatorEmail: string, dto: GeneratePdfDto) {
-    return this.generatePdfService.run(creatorEmail, dto);
+  generatePdf(creatorEmail: string, dto: GeneratePdfDto, req: Request) {
+    return this.generatePdfService.run(creatorEmail, dto, req);
   }
 }

@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ClassesModule } from './classes/classes.module';
 import { AuthGuard } from './common/guards';
 import { ssoClientConfigs } from './config/sso-client.configs';
 import { InstructorsModule } from './instructors/instructors.module';
-import { SsoModule } from './sso/sso.module';
-import { SystemHistoryModule } from './system-history/system-history.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { SsoModule } from './sso/sso.module';
 import { StudentsModule } from './students/students.module';
-import { ClassesModule } from './classes/classes.module';
+import { SystemHistoryModule } from './system-history/system-history.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -20,6 +22,9 @@ import { ClassesModule } from './classes/classes.module';
     PrismaModule,
     StudentsModule,
     ClassesModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
   ],
   controllers: [AppController],
   providers: [
