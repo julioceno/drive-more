@@ -15,7 +15,7 @@ const htmlPath = join(
 
 const html = requireAsPlainTextConstructor(htmlPath);
 
-class BuildPdf {
+export class BuildPdf {
   PATTERN_DATE_OF_ISUE = 'dd/MM/yyyy - HH:mm ';
   CURRENT_DATE = new Date();
 
