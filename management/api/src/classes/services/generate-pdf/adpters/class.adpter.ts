@@ -24,6 +24,6 @@ export class ClassAdpter {
   }
 
   private formatDate(date: Date) {
-    return formatInTimeZone(date, this.timeZone, 'dd/MM/yyyy - HH:mm ');
+    return formatInTimeZone(date, this.timeZone, 'dd/MM/yyyy - HH:mm');
   }
 }

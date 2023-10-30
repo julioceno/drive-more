@@ -36,7 +36,7 @@ export class GeneratePdfService {
     ]);
 
     if (!student) {
-      throw new NotFoundException('Aluno não existe.');
+      throw new NotFoundException('Aluno não encontrado.');
     }
 
     if (!classes.length) {
@@ -83,18 +83,17 @@ export class GeneratePdfService {
       return url;
     } catch (err) {
       this.logger.error(`There was as error: ${JSON.stringify(err, null, 2)}`);
-
       throw new BadRequestException('Ocorreu um erro ao tentar gerar o pdf.');
     }
   }
 
   private async generatePdf(data: IBuildData): Promise<string> {
     return new Promise((resolve, reject) => {
-      const worker = new Worker(join(__dirname, 'build-pdf'));
-      worker.on('message', (value) => {
-        resolve(value);
-      });
+      const worker = new Worker(join(__dirname, 'build-pdf.ts'));
+
+      worker.on('message', resolve);
       worker.on('error', reject);
+
       worker.postMessage(data);
     });
   }
