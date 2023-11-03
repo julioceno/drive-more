@@ -216,7 +216,6 @@ describe('ClassesController (e2e)', () => {
         studentId: studentThreeId,
       });
 
-    console.log(response.body);
     expect(response).toBeDefined();
     expect(response.status).toBe(201);
     expect(response.body).toBe('file.pdf');
