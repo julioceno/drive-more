@@ -9,6 +9,19 @@ import { addDays, addHours } from 'date-fns';
 import * as request from 'supertest';
 import { MockAuthGuard } from './mocks/guards';
 
+jest.mock('node:worker_threads', () => {
+  return {
+    Worker: jest.fn().mockImplementation(() => ({
+      on: jest.fn().mockImplementation((event, callback) => {
+        if (event === 'message') {
+          callback('file.pdf');
+        }
+      }),
+      postMessage: jest.fn(),
+    })),
+  };
+});
+
 describe('ClassesController (e2e)', () => {
   let app: INestApplication;
 
@@ -194,5 +207,18 @@ describe('ClassesController (e2e)', () => {
       message: 'A data de término já passou da data atual, impossível deletar.',
       statusCode: 400,
     });
+  });
+
+  it('/generate-pdf (POST)', async () => {
+    const response = await request(app.getHttpServer())
+      .post(`${baseUrl}/generate-pdf`)
+      .send({
+        studentId: studentThreeId,
+      });
+
+    console.log(response.body);
+    expect(response).toBeDefined();
+    expect(response.status).toBe(201);
+    expect(response.body).toBe('file.pdf');
   });
 });

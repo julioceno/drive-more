@@ -1,4 +1,4 @@
-import { Resources, requireAsPlainTextConstructor } from '@/common';
+import { Resources } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import {
   BadRequestException,
@@ -10,11 +10,11 @@ import { join } from 'path';
 import { ClassAdpter } from './adpters/class.adpter';
 import { GeneratePdfDto } from './dto/generate-pdf.dto';
 
-import { Class, Student } from '@prisma/client';
-import { Worker } from 'node:worker_threads';
-import { Request } from 'express';
-import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
 import { ActionEnum } from '@/system-history/interface/system-history.interface';
+import { SystemHistoryProxyService } from '@/system-history/services/system-history-proxy/system-history-proxy.service';
+import { Student } from '@prisma/client';
+import { Request } from 'express';
+import { Worker } from 'node:worker_threads';
 import { IBuildData } from './types';
 
 @Injectable()
