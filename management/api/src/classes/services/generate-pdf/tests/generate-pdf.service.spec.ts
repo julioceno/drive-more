@@ -88,7 +88,7 @@ describe('GeneratePdfService', () => {
 
     expect(require('node:worker_threads').Worker).toHaveBeenCalledTimes(1);
     expect(require('node:worker_threads').Worker).toHaveBeenCalledWith(
-      join(__dirname, '..', 'build-pdf.ts'),
+      join(__dirname, '..', 'build-pdf'),
     );
   });
 

@@ -89,7 +89,7 @@ export class GeneratePdfService {
 
   private async generatePdf(data: IBuildData): Promise<string> {
     return new Promise((resolve, reject) => {
-      const worker = new Worker(join(__dirname, 'build-pdf.ts'));
+      const worker = new Worker(join(__dirname, 'build-pdf'));
 
       worker.on('message', resolve);
       worker.on('error', reject);
