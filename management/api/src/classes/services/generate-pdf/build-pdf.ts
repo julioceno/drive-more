@@ -5,7 +5,6 @@ import { join } from 'node:path';
 import { parentPort } from 'node:worker_threads';
 import puppeteer from 'puppeteer';
 import { IBuildData } from './types';
-console.log({ puppeteer });
 
 const htmlPath = join(
   __dirname,
